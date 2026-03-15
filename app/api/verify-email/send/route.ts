@@ -3,9 +3,11 @@ import { Resend } from 'resend'
 import { supabase } from '@/lib/supabase'
 import { generateCode } from '@/lib/utils'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 export async function POST(req: Request) {
+  if (!process.env.RESEND_API_KEY) {
+    return NextResponse.json({ error: 'Email service not configured' }, { status: 503 })
+  }
+  const resend = new Resend(process.env.RESEND_API_KEY)
   const { id, email } = await req.json()
 
   if (!id || !email) {

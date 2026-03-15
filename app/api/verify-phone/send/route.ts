@@ -3,12 +3,11 @@ import twilio from 'twilio'
 import { supabase } from '@/lib/supabase'
 import { generateCode } from '@/lib/utils'
 
-const client = twilio(
-  process.env.TWILIO_ACCOUNT_SID,
-  process.env.TWILIO_AUTH_TOKEN
-)
-
 export async function POST(req: Request) {
+  if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
+    return NextResponse.json({ error: 'SMS service not configured' }, { status: 503 })
+  }
+  const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
   const { id, phone } = await req.json()
 
   if (!id || !phone) {
