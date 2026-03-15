@@ -15,7 +15,8 @@ export async function POST(req: Request) {
     .single()
 
   if (error) {
-    return NextResponse.json({ error: 'Failed to save' }, { status: 500 })
+    console.error('Supabase error:', error)
+    return NextResponse.json({ error: 'Failed to save', detail: error.message }, { status: 500 })
   }
 
   return NextResponse.json({ id: data.id })
