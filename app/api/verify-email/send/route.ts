@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   }
 
   const { error: emailError } = await resend.emails.send({
-    from: 'The Human Movement <noreply@yourdomain.com>',
+    from: 'The Human Movement <noreply@contact.human.mov>',
     to: email,
     subject: 'Your verification code',
     html: `

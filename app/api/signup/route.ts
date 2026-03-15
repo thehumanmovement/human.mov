@@ -1,21 +1,70 @@
 import { NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
+import { Resend } from 'resend'
+import { generateCode } from '@/lib/utils'
 
 export async function POST(req: Request) {
-  const { fullName, email, zipCode } = await req.json()
+  try {
+    const { fullName, email, zipCode } = await req.json()
 
-  if (!fullName || fullName.trim().length < 2) {
-    return NextResponse.json({ error: 'Full name is required' }, { status: 400 })
+    if (!fullName || fullName.trim().length < 2) {
+      return NextResponse.json({ error: 'Full name is required' }, { status: 400 })
+    }
+
+    if (!email || !email.trim()) {
+      return NextResponse.json({ error: 'Email is required' }, { status: 400 })
+    }
+
+    const code = generateCode()
+
+    const { data, error } = await supabase
+      .from('signups')
+      .insert({
+        full_name: fullName.trim(),
+        email: email.trim(),
+        zip_code: zipCode?.trim() || null,
+        email_code: code,
+        email_verified: false,
+      })
+      .select('id')
+      .single()
+
+    if (error) {
+      console.error('Supabase insert error:', JSON.stringify(error))
+      return NextResponse.json({ error: 'Failed to save', detail: error.message, code: error.code }, { status: 500 })
+    }
+
+    if (!data) {
+      console.error('Supabase returned no data after insert')
+      return NextResponse.json({ error: 'Failed to save', detail: 'No data returned' }, { status: 500 })
+    }
+
+    // Send verification email via Resend
+    if (process.env.RESEND_API_KEY) {
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY)
+        await resend.emails.send({
+          from: 'The Human Movement <noreply@contact.human.mov>',
+          to: email.trim(),
+          subject: 'Your verification code',
+          html: `
+            <div style="font-family: 'Helvetica Neue', sans-serif; max-width: 400px; margin: 0 auto; padding: 40px 20px;">
+              <h1 style="font-size: 24px; font-weight: 700; color: #000; margin-bottom: 8px;">The Human Movement</h1>
+              <p style="color: #666; margin-bottom: 32px;">Your verification code:</p>
+              <p style="font-size: 36px; font-weight: 700; letter-spacing: 8px; color: #0A6847; margin-bottom: 32px;">${code}</p>
+              <p style="color: #999; font-size: 13px;">This code expires in 10 minutes.</p>
+            </div>
+          `,
+        })
+      } catch (emailErr) {
+        console.error('Resend email error:', emailErr)
+        // Don't fail the signup if email fails
+      }
+    }
+
+    return NextResponse.json({ success: true, id: data.id })
+  } catch (err) {
+    console.error('Signup route error:', err)
+    return NextResponse.json({ error: 'Server error', detail: String(err) }, { status: 500 })
   }
-
-  const { error } = await supabase
-    .from('signups')
-    .insert({ full_name: fullName.trim(), email: email?.trim() || null, zip_code: zipCode?.trim() || null })
-
-  if (error) {
-    console.error('Supabase error:', error)
-    return NextResponse.json({ error: 'Failed to save', detail: error.message }, { status: 500 })
-  }
-
-  return NextResponse.json({ success: true })
 }

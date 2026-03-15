@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Warm earth circle background -->
+  <circle cx="256" cy="256" r="256" fill="#2C231A"/>
+
+  <!-- Subtle inner glow -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#D4A574" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- THM monogram in Cormorant-inspired serif style -->
+  <!-- T -->
+  <text x="130" y="300" font-family="Georgia, 'Times New Roman', serif" font-size="180" font-weight="300" font-style="italic" fill="#FAF7F2" letter-spacing="-8">T</text>
+
+  <!-- H -->
+  <text x="215" y="300" font-family="Georgia, 'Times New Roman', serif" font-size="180" font-weight="300" font-style="italic" fill="#FAF7F2" letter-spacing="-8">H</text>
+
+  <!-- M in accent color -->
+  <text x="320" y="300" font-family="Georgia, 'Times New Roman', serif" font-size="180" font-weight="300" font-style="italic" fill="#D4A574" letter-spacing="-8">M</text>
+
+  <!-- Subtle dot accent -->
+  <circle cx="432" cy="290" r="6" fill="#D4A574"/>
+</svg>

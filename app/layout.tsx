@@ -1,23 +1,50 @@
 import type { Metadata } from 'next'
-import { Playfair_Display, DM_Sans } from 'next/font/google'
+import { Cormorant_Garamond, Libre_Franklin } from 'next/font/google'
 import './globals.css'
 
-const playfair = Playfair_Display({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
-  variable: '--font-playfair',
-  weight: ['400', '500', '600', '700'],
+  variable: '--font-cormorant',
+  weight: ['300', '400', '500', '600', '700'],
   style: ['normal', 'italic'],
 })
 
-const dmSans = DM_Sans({
+const libre = Libre_Franklin({
   subsets: ['latin'],
-  variable: '--font-dm-sans',
+  variable: '--font-libre',
   weight: ['300', '400', '500', '600'],
 })
 
 export const metadata: Metadata = {
   title: 'The Human Movement',
-  description: 'You were already a part.',
+  description: 'If You\'re Human, You\'re Likely Already Part of It.',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  openGraph: {
+    title: 'The Human Movement',
+    description: 'If You\'re Human, You\'re Likely Already Part of It.',
+    url: 'https://www.human.mov',
+    siteName: 'The Human Movement',
+    images: [
+      {
+        url: 'https://www.human.mov/og-image.jpg',
+        width: 1200,
+        height: 630,
+        type: 'image/jpeg',
+        alt: 'The Human Movement',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'The Human Movement',
+    description: 'If You\'re Human, You\'re Likely Already Part of It.',
+    images: ['https://www.human.mov/og-image.jpg'],
+  },
 }
 
 export default function RootLayout({
@@ -27,7 +54,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${playfair.variable} ${dmSans.variable} font-body`}>
+      <body className={`${cormorant.variable} ${libre.variable} font-body`}>
         {children}
       </body>
     </html>
