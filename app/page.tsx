@@ -24,7 +24,7 @@ export default function Home() {
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fullName, zipCode }),
+      body: JSON.stringify({ fullName, email, zipCode }),
     })
     const data = await res.json()
 
@@ -34,26 +34,9 @@ export default function Home() {
       return
     }
 
-    const id = data.id
-    setSignupId(id)
-
-    // Send email verification
-    const emailRes = await fetch('/api/verify-email/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, email, zipCode }),
-    })
-
-    if (!emailRes.ok) {
-      const emailData = await emailRes.json()
-      setError(emailData.error)
-      setLoading(false)
-      return
-    }
-
+    setSignupId(data.id)
     setLoading(false)
-    setCode('')
-    setStep('verify-email')
+    setStep('welcome')
   }
 
   async function handleEmailVerify(e: FormEvent) {
