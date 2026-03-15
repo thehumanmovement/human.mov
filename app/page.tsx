@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, FormEvent } from 'react'
+import { t, type Lang } from '@/lib/i18n'
 
 type Step = 'form' | 'verify-email' | 'phone' | 'verify-phone' | 'welcome'
 
@@ -14,6 +15,24 @@ export default function Home() {
   const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [lang, setLang] = useState<Lang>('en')
+  const [mounted, setMounted] = useState(false)
+
+  function toggleLang() {
+    const next = lang === 'en' ? 'es' : 'en'
+    setLang(next)
+    localStorage.setItem('lang', next)
+  }
+
+  useEffect(() => {
+    const saved = localStorage.getItem('lang') as Lang | null
+    if (saved === 'es') setLang(saved)
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
 
   // Video background cycling with dual elements for seamless playback
   const videos = ['/videos/baby.mp4', '/videos/soldier.mp4', '/videos/turtle.mp4', '/videos/abuelos.mp4', '/videos/motorbike.mp4', '/videos/hands.mp4']
@@ -65,7 +84,7 @@ export default function Home() {
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fullName, email, zipCode }),
+      body: JSON.stringify({ fullName, email, zipCode, lang }),
     })
     const data = await res.json()
 
@@ -111,7 +130,7 @@ export default function Home() {
     const res = await fetch('/api/verify-phone/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: signupId, phone }),
+      body: JSON.stringify({ id: signupId, phone, lang }),
     })
     const data = await res.json()
 
@@ -156,6 +175,20 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
+      {/* Language toggle */}
+      <button
+        onClick={toggleLang}
+        aria-label="Toggle language"
+        className="absolute top-6 right-6 z-20 flex items-center gap-1.5 px-3 py-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/15 text-white/70 hover:text-white hover:bg-black/30 transition-all"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span className="text-xs font-body font-semibold tracking-wider" suppressHydrationWarning>{mounted ? (lang === 'en' ? 'ES' : 'EN') : 'ES'}</span>
+      </button>
+
       {/* Fullscreen background video */}
       <div className="absolute inset-0 z-0 bg-black">
         <video
@@ -186,9 +219,9 @@ export default function Home() {
         {step !== 'welcome' && (
           <div className="mb-10 text-center">
             <h1 className="font-serif text-6xl sm:text-8xl leading-[1.1] tracking-tight text-white [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">
-              <span className="italic">The Human</span>
+              <span className="italic">{t(lang, 'headingLine1')}</span>
               <br />
-              <span className="italic text-earth-light [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">Movement.</span>
+              <span className="italic text-earth-light [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">{t(lang, 'headingLine2')}</span>
             </h1>
           </div>
         )}
@@ -199,7 +232,7 @@ export default function Home() {
             <div>
               <input
                 type="text"
-                placeholder="Full name *"
+                placeholder={t(lang, 'placeholderName')}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -210,7 +243,7 @@ export default function Home() {
             <div>
               <input
                 type="email"
-                placeholder="Email *"
+                placeholder={t(lang, 'placeholderEmail')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -221,7 +254,7 @@ export default function Home() {
               <input
                 type="text"
                 inputMode="numeric"
-                placeholder="Zip code (optional)"
+                placeholder={t(lang, 'placeholderZip')}
                 value={zipCode}
                 onChange={(e) => setZipCode(e.target.value)}
                 className={inputClass}
@@ -232,7 +265,7 @@ export default function Home() {
               disabled={loading || !fullName.trim() || !email.trim()}
               className={buttonClass}
             >
-              {loading ? 'One moment...' : 'Join the Movement'}
+              {loading ? t(lang, 'buttonJoinLoading') : t(lang, 'buttonJoin')}
             </button>
           </form>
         )}
@@ -241,10 +274,10 @@ export default function Home() {
         {step === 'verify-email' && (
           <form onSubmit={handleEmailVerify} className="step-enter bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/10">
             <p className="font-serif italic text-2xl sm:text-3xl mb-2 leading-snug">
-              Check your inbox.
+              {t(lang, 'checkInbox')}
             </p>
             <p className="text-white/60 text-sm font-body mb-8">
-              We sent a 6-digit code to <span className="text-white">{email}</span>
+              {t(lang, 'sentCode')} <span className="text-white">{email}</span>
             </p>
             <input
               type="text"
@@ -259,14 +292,14 @@ export default function Home() {
               className={`${inputClass} text-center text-3xl tracking-[0.5em] font-serif`}
             />
             <button type="submit" disabled={loading || code.length !== 6} className={buttonClass}>
-              {loading ? 'Verifying...' : 'Verify email'}
+              {loading ? t(lang, 'verifying') : t(lang, 'verifyEmail')}
             </button>
             <button
               type="button"
               onClick={() => { setCode(''); setStep('form') }}
               className="mt-4 w-full text-center text-sm text-white/40 hover:text-white/60 transition-colors font-body"
             >
-              Go back
+              {t(lang, 'goBack')}
             </button>
           </form>
         )}
@@ -275,14 +308,14 @@ export default function Home() {
         {step === 'phone' && (
           <form onSubmit={handlePhoneSend} className="step-enter bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/10">
             <p className="font-serif italic text-2xl sm:text-3xl mb-2 leading-snug">
-              Email verified.
+              {t(lang, 'emailVerified')}
             </p>
             <p className="font-serif italic text-2xl sm:text-3xl mb-8 leading-snug text-earth-light">
-              Now, your phone.
+              {t(lang, 'nowPhone')}
             </p>
             <input
               type="tel"
-              placeholder="+1 (555) 000-0000"
+              placeholder={t(lang, 'phonePlaceholder')}
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
@@ -290,7 +323,7 @@ export default function Home() {
               className={inputClass}
             />
             <button type="submit" disabled={loading || !phone.trim()} className={buttonClass}>
-              {loading ? 'Sending code...' : 'Send verification code'}
+              {loading ? t(lang, 'sendingCode') : t(lang, 'sendCode')}
             </button>
           </form>
         )}
@@ -299,10 +332,10 @@ export default function Home() {
         {step === 'verify-phone' && (
           <form onSubmit={handlePhoneVerify} className="step-enter bg-black/30 backdrop-blur-md rounded-2xl p-8 border border-white/10">
             <p className="font-serif italic text-2xl sm:text-3xl mb-2 leading-snug">
-              Almost there.
+              {t(lang, 'almostThere')}
             </p>
             <p className="text-white/60 text-sm font-body mb-8">
-              We texted a code to <span className="text-white">{phone}</span>
+              {t(lang, 'textedCode')} <span className="text-white">{phone}</span>
             </p>
             <input
               type="text"
@@ -317,14 +350,14 @@ export default function Home() {
               className={`${inputClass} text-center text-3xl tracking-[0.5em] font-serif`}
             />
             <button type="submit" disabled={loading || code.length !== 6} className={buttonClass}>
-              {loading ? 'Verifying...' : 'Verify phone'}
+              {loading ? t(lang, 'verifying') : t(lang, 'verifyPhone')}
             </button>
             <button
               type="button"
               onClick={() => { setCode(''); setStep('phone') }}
               className="mt-4 w-full text-center text-sm text-white/40 hover:text-white/60 transition-colors font-body"
             >
-              Use a different number
+              {t(lang, 'differentNumber')}
             </button>
           </form>
         )}
@@ -333,15 +366,15 @@ export default function Home() {
         {step === 'welcome' && (
           <div className="step-enter text-center">
             <h1 className="font-serif text-6xl sm:text-8xl leading-[1.1] tracking-tight text-white [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">
-              <span className="italic">Welcome to</span>
+              <span className="italic">{t(lang, 'welcomeTo')}</span>
               <br />
-              <span className="italic">The Human</span>
+              <span className="italic">{t(lang, 'theHuman')}</span>
               <br />
-              <span className="italic text-earth-light [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">Movement.</span>
+              <span className="italic text-earth-light [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">{t(lang, 'movement')}</span>
             </h1>
             <div className="mt-20">
               <p className="text-sm text-white/40 font-body tracking-widest uppercase">
-                More soon
+                {t(lang, 'moreSoon')}
               </p>
             </div>
           </div>

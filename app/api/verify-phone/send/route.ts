@@ -2,13 +2,15 @@ import { NextResponse } from 'next/server'
 import twilio from 'twilio'
 import { supabase } from '@/lib/supabase'
 import { generateCode } from '@/lib/utils'
+import { t, type Lang } from '@/lib/i18n'
 
 export async function POST(req: Request) {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
     return NextResponse.json({ error: 'SMS service not configured' }, { status: 503 })
   }
   const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
-  const { id, phone } = await req.json()
+  const { id, phone, lang = 'en' } = await req.json()
+  const l: Lang = lang === 'es' ? 'es' : 'en'
 
   if (!id || !phone) {
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
@@ -27,7 +29,7 @@ export async function POST(req: Request) {
 
   try {
     await client.messages.create({
-      body: `The Human Movement — your code is ${code}`,
+      body: t(l, 'smsBody').replace('{code}', code),
       from: process.env.TWILIO_PHONE_NUMBER,
       to: phone,
     })
