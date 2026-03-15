@@ -34,7 +34,6 @@ export default function Home() {
       return
     }
 
-    setSignupId(data.id)
     setLoading(false)
     setStep('welcome')
   }

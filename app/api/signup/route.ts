@@ -8,16 +8,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Full name is required' }, { status: 400 })
   }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('signups')
     .insert({ full_name: fullName.trim(), email: email?.trim() || null, zip_code: zipCode?.trim() || null })
-    .select('id')
-    .single()
 
   if (error) {
     console.error('Supabase error:', error)
     return NextResponse.json({ error: 'Failed to save', detail: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ id: data.id })
+  return NextResponse.json({ success: true })
 }
