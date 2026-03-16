@@ -5,6 +5,28 @@ import { t, LANGUAGES, isValidLang, type Lang } from '@/lib/i18n'
 
 type Step = 'form' | 'verify-email' | 'phone' | 'verify-phone' | 'welcome'
 
+// Responsive heading sizes per language to prevent overflow on CJK / long translations
+function headingClass(lang: Lang): string {
+  const base = 'font-serif leading-[1.1] tracking-tight text-white [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]'
+  switch (lang) {
+    case 'zh':
+      return `${base} text-6xl sm:text-8xl`         // 2-3 chars per line, keep large
+    case 'ko':
+      return `${base} text-5xl sm:text-7xl`         // hangul runs wider than Latin
+    case 'ja':
+      return `${base} text-4xl sm:text-6xl`         // long katakana, scale down
+    case 'hi':
+      return `${base} text-4xl sm:text-6xl`         // Devanagari runs wide
+    case 'ar':
+      return `${base} text-5xl sm:text-7xl`         // Arabic moderate length
+    case 'es':
+    case 'fr':
+      return `${base} text-5xl sm:text-7xl`         // longer Latin words
+    default:
+      return `${base} text-6xl sm:text-8xl`         // English baseline
+  }
+}
+
 export default function Home() {
   const [step, setStep] = useState<Step>('form')
   const [signupId, setSignupId] = useState('')
@@ -256,7 +278,7 @@ export default function Home() {
         {/* Header — only on non-welcome steps */}
         {step !== 'welcome' && (
           <div className="mb-10 text-center">
-            <h1 className="font-serif text-6xl sm:text-8xl leading-[1.1] tracking-tight text-white [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">
+            <h1 className={headingClass(lang)}>
               <span className="italic">{t(lang, 'headingLine1')}</span>
               <br />
               <span className="italic text-earth-light [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">{t(lang, 'headingLine2')}</span>
@@ -403,7 +425,7 @@ export default function Home() {
         {/* Step: Welcome */}
         {step === 'welcome' && (
           <div className="step-enter text-center">
-            <h1 className="font-serif text-6xl sm:text-8xl leading-[1.1] tracking-tight text-white [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">
+            <h1 className={headingClass(lang)}>
               <span className="italic">{t(lang, 'welcomeTo')}</span>
               <br />
               <span className="italic">{t(lang, 'theHuman')}</span>
