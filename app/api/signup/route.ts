@@ -2,12 +2,12 @@ import { NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
 import { Resend } from 'resend'
 import { generateCode } from '@/lib/utils'
-import { t, type Lang } from '@/lib/i18n'
+import { t, isValidLang, type Lang } from '@/lib/i18n'
 
 export async function POST(req: Request) {
   try {
     const { fullName, email, zipCode, lang = 'en' } = await req.json()
-    const l: Lang = lang === 'es' ? 'es' : 'en'
+    const l: Lang = isValidLang(lang) ? lang : 'en'
 
     if (!fullName || fullName.trim().length < 2) {
       return NextResponse.json({ error: t(l, 'errorNameRequired') }, { status: 400 })

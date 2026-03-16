@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import twilio from 'twilio'
 import { supabase } from '@/lib/supabase'
 import { generateCode } from '@/lib/utils'
-import { t, type Lang } from '@/lib/i18n'
+import { t, isValidLang, type Lang } from '@/lib/i18n'
 
 export async function POST(req: Request) {
   if (!process.env.TWILIO_ACCOUNT_SID || !process.env.TWILIO_AUTH_TOKEN) {
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   }
   const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
   const { id, phone, lang = 'en' } = await req.json()
-  const l: Lang = lang === 'es' ? 'es' : 'en'
+  const l: Lang = isValidLang(lang) ? lang : 'en'
 
   if (!id || !phone) {
     return NextResponse.json({ error: 'Missing fields' }, { status: 400 })

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, FormEvent } from 'react'
-import { t, type Lang } from '@/lib/i18n'
+import { t, LANGUAGES, isValidLang, type Lang } from '@/lib/i18n'
 
 type Step = 'form' | 'verify-email' | 'phone' | 'verify-phone' | 'welcome'
 
@@ -17,22 +17,39 @@ export default function Home() {
   const [error, setError] = useState('')
   const [lang, setLang] = useState<Lang>('en')
   const [mounted, setMounted] = useState(false)
+  const [langMenuOpen, setLangMenuOpen] = useState(false)
+  const langMenuRef = useRef<HTMLDivElement>(null)
 
-  function toggleLang() {
-    const next = lang === 'en' ? 'es' : 'en'
-    setLang(next)
-    localStorage.setItem('lang', next)
+  function selectLang(code: Lang) {
+    setLang(code)
+    localStorage.setItem('lang', code)
+    setLangMenuOpen(false)
   }
 
   useEffect(() => {
-    const saved = localStorage.getItem('lang') as Lang | null
-    if (saved === 'es') setLang(saved)
+    const saved = localStorage.getItem('lang')
+    if (saved && isValidLang(saved)) setLang(saved)
     setMounted(true)
   }, [])
 
   useEffect(() => {
+    const langInfo = LANGUAGES.find((l) => l.code === lang)
     document.documentElement.lang = lang
+    document.documentElement.dir = langInfo?.dir || 'ltr'
   }, [lang])
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (langMenuRef.current && !langMenuRef.current.contains(e.target as Node)) {
+        setLangMenuOpen(false)
+      }
+    }
+    if (langMenuOpen) {
+      document.addEventListener('mousedown', handleClick)
+      return () => document.removeEventListener('mousedown', handleClick)
+    }
+  }, [langMenuOpen])
 
   // Video background cycling with dual elements for seamless playback
   const videos = ['/videos/baby.mp4', '/videos/soldier.mp4', '/videos/turtle.mp4', '/videos/abuelos.mp4', '/videos/motorbike.mp4', '/videos/hands.mp4']
@@ -175,19 +192,40 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
-      {/* Language toggle */}
-      <button
-        onClick={toggleLang}
-        aria-label="Toggle language"
-        className="absolute top-6 right-6 z-20 flex items-center gap-1.5 px-3 py-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/15 text-white/70 hover:text-white hover:bg-black/30 transition-all"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M2 12h20"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-        <span className="text-xs font-body font-semibold tracking-wider" suppressHydrationWarning>{mounted ? (lang === 'en' ? 'ES' : 'EN') : 'ES'}</span>
-      </button>
+      {/* Language selector */}
+      <div ref={langMenuRef} className="absolute top-6 right-6 z-20">
+        <button
+          onClick={() => setLangMenuOpen(!langMenuOpen)}
+          aria-label="Select language"
+          className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/15 text-white/70 hover:text-white hover:bg-black/30 transition-all"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span className="text-xs font-body font-semibold tracking-wider" suppressHydrationWarning>
+            {mounted ? LANGUAGES.find((l) => l.code === lang)?.label || 'English' : 'English'}
+          </span>
+        </button>
+        {langMenuOpen && (
+          <div className="absolute right-0 mt-2 py-1 min-w-[140px] rounded-xl bg-black/40 backdrop-blur-md border border-white/15 shadow-xl overflow-hidden">
+            {LANGUAGES.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => selectLang(l.code)}
+                className={`w-full text-left px-4 py-2.5 text-sm font-body transition-colors ${
+                  lang === l.code
+                    ? 'text-earth-light bg-white/10'
+                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Fullscreen background video */}
       <div className="absolute inset-0 z-0 bg-black">
