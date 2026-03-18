@@ -317,14 +317,11 @@ export default function Home() {
           {step === 'email' && (
             <div className="step-enter">
               <div className="mb-12 text-center">
-                <h2 className={headingClass(lang)}>
-                  <span className="italic">{t(lang, 'headingLine1')}</span>
-                  <br />
-                  <span className="italic text-earth-light">{t(lang, 'headingLine2')}</span>
-                </h2>
-                <p className="mt-6 text-lg sm:text-xl font-body text-white/60 leading-relaxed">
-                  {t(lang, 'tagline1')}<br />
-                  <span className="text-white/80 font-medium">{t(lang, 'tagline2')}</span>
+                <p className="font-serif italic text-3xl sm:text-4xl text-white leading-snug">
+                  {t(lang, 'tagline1')}
+                </p>
+                <p className="font-serif italic text-3xl sm:text-4xl text-earth-light leading-snug mt-1">
+                  {t(lang, 'tagline2')}
                 </p>
               </div>
               <form onSubmit={handleEmailNext} className="space-y-4">
