@@ -55,6 +55,8 @@ const translations = {
     scrollCta: 'Join',
     emailOnlyPlaceholder: 'Enter your email',
     continueButton: 'Continue',
+    tagline1: 'Make your voice heard',
+    tagline2: 'while it still counts.',
   },
   es: {
     headingLine1: 'El Movimiento',
@@ -93,6 +95,8 @@ const translations = {
     scrollCta: 'Únete',
     emailOnlyPlaceholder: 'Ingresa tu correo',
     continueButton: 'Continuar',
+    tagline1: 'Haz que tu voz se escuche',
+    tagline2: 'mientras aún cuenta.',
   },
   zh: {
     headingLine1: '人类',
@@ -131,6 +135,8 @@ const translations = {
     scrollCta: '加入',
     emailOnlyPlaceholder: '输入您的邮箱',
     continueButton: '继续',
+    tagline1: '让你的声音被听见',
+    tagline2: '趁一切还来得及。',
   },
   ja: {
     headingLine1: 'ヒューマン',
@@ -169,6 +175,8 @@ const translations = {
     scrollCta: '参加する',
     emailOnlyPlaceholder: 'メールアドレスを入力',
     continueButton: '続ける',
+    tagline1: 'あなたの声を届けよう',
+    tagline2: '今ならまだ間に合う。',
   },
   ko: {
     headingLine1: '휴먼',
@@ -207,6 +215,8 @@ const translations = {
     scrollCta: '참여하기',
     emailOnlyPlaceholder: '이메일을 입력하세요',
     continueButton: '계속',
+    tagline1: '당신의 목소리를 들려주세요',
+    tagline2: '아직 늦지 않았을 때.',
   },
   fr: {
     headingLine1: 'Le Mouvement',
@@ -245,6 +255,8 @@ const translations = {
     scrollCta: 'Rejoindre',
     emailOnlyPlaceholder: 'Entrez votre e-mail',
     continueButton: 'Continuer',
+    tagline1: 'Faites entendre votre voix',
+    tagline2: 'tant qu\'il est encore temps.',
   },
   hi: {
     headingLine1: 'द ह्यूमन',
@@ -283,6 +295,8 @@ const translations = {
     scrollCta: 'शामिल हों',
     emailOnlyPlaceholder: 'अपना ईमेल दर्ज करें',
     continueButton: 'जारी रखें',
+    tagline1: 'अपनी आवाज़ सुनाओ',
+    tagline2: 'जब तक वक़्त है।',
   },
   ar: {
     headingLine1: 'الحركة',
@@ -321,6 +335,8 @@ const translations = {
     scrollCta: 'انضم',
     emailOnlyPlaceholder: 'أدخل بريدك الإلكتروني',
     continueButton: 'متابعة',
+    tagline1: 'اجعل صوتك مسموعًا',
+    tagline2: 'قبل فوات الأوان.',
   },
 } as const
 
