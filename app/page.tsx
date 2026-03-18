@@ -549,11 +549,53 @@ function SenatorLookup({ lang, initialZip }: { lang: Lang; initialZip: string })
   const [lookupLoading, setLookupLoading] = useState(false)
   const [lookupError, setLookupError] = useState('')
   const [looked, setLooked] = useState(false)
+  const [geoStatus, setGeoStatus] = useState<'idle' | 'asking' | 'loading' | 'done' | 'denied'>('idle')
+  const zipInputRef = useRef<HTMLInputElement>(null)
+  const hasAutoLooked = useRef(false)
 
-  // Auto-lookup if zip was provided during signup
+  // Frictionless priority: geolocation > signup zip > focus input
   useEffect(() => {
+    if (hasAutoLooked.current) return
+    hasAutoLooked.current = true
+
+    // Priority 1: If signup zip exists, use it immediately
     if (initialZip && /^\d{5}$/.test(initialZip)) {
       lookupSenators(initialZip)
+      return
+    }
+
+    // Priority 2: Try geolocation
+    if ('geolocation' in navigator) {
+      setGeoStatus('asking')
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          setGeoStatus('loading')
+          try {
+            const res = await fetch(`/api/geocode?lat=${position.coords.latitude}&lng=${position.coords.longitude}`)
+            const data = await res.json()
+            if (data.zip && /^\d{5}$/.test(data.zip)) {
+              setZip(data.zip)
+              setGeoStatus('done')
+              lookupSenators(data.zip)
+            } else {
+              setGeoStatus('done')
+              zipInputRef.current?.focus()
+            }
+          } catch {
+            setGeoStatus('done')
+            zipInputRef.current?.focus()
+          }
+        },
+        () => {
+          // Denied or error — fall back to manual entry
+          setGeoStatus('denied')
+          zipInputRef.current?.focus()
+        },
+        { timeout: 8000, maximumAge: 300000 }
+      )
+    } else {
+      // Priority 3: No geolocation, focus input
+      zipInputRef.current?.focus()
     }
   }, [initialZip])
 
@@ -610,9 +652,21 @@ function SenatorLookup({ lang, initialZip }: { lang: Lang; initialZip: string })
 
   return (
     <div className="mt-4">
+      {/* Geolocation status hint */}
+      {geoStatus === 'asking' && (
+        <p className="mb-3 text-xs text-white/40 font-body flex items-center gap-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-earth-light animate-pulse"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          {t(lang, 'senatorGeoAsking')}
+        </p>
+      )}
+      {geoStatus === 'loading' && (
+        <p className="mb-3 text-xs text-white/40 font-body">{t(lang, 'senatorGeoLoading')}</p>
+      )}
+
       {/* Zip input + lookup */}
       <form onSubmit={handleLookup} className="flex gap-2">
         <input
+          ref={zipInputRef}
           type="text"
           inputMode="numeric"
           maxLength={5}

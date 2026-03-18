@@ -68,6 +68,8 @@ const translations = {
     senatorSaveContact: 'Save Contact',
     senatorCall: 'Call',
     senatorParty: 'Party',
+    senatorGeoAsking: 'Allow location to auto-find your senators',
+    senatorGeoLoading: 'Detecting your zip code...',
   },
   es: {
     headingLine1: 'El Movimiento',
@@ -119,6 +121,8 @@ const translations = {
     senatorSaveContact: 'Guardar contacto',
     senatorCall: 'Llamar',
     senatorParty: 'Partido',
+    senatorGeoAsking: 'Permite la ubicación para encontrar tus senadores',
+    senatorGeoLoading: 'Detectando tu código postal...',
   },
   zh: {
     headingLine1: '人类',
@@ -170,6 +174,8 @@ const translations = {
     senatorSaveContact: '保存联系人',
     senatorCall: '拨打',
     senatorParty: '党派',
+    senatorGeoAsking: '允许定位以自动查找您的参议员',
+    senatorGeoLoading: '正在检测您的邮政编码...',
   },
   ja: {
     headingLine1: 'ヒューマン',
@@ -221,6 +227,8 @@ const translations = {
     senatorSaveContact: '連絡先を保存',
     senatorCall: '電話する',
     senatorParty: '政党',
+    senatorGeoAsking: '位置情報を許可して上院議員を自動検索',
+    senatorGeoLoading: '郵便番号を検出中...',
   },
   ko: {
     headingLine1: '휴먼',
@@ -272,6 +280,8 @@ const translations = {
     senatorSaveContact: '연락처 저장',
     senatorCall: '전화하기',
     senatorParty: '정당',
+    senatorGeoAsking: '위치를 허용하여 상원의원 자동 검색',
+    senatorGeoLoading: '우편번호 감지 중...',
   },
   fr: {
     headingLine1: 'Le Mouvement',
@@ -323,6 +333,8 @@ const translations = {
     senatorSaveContact: 'Enregistrer le contact',
     senatorCall: 'Appeler',
     senatorParty: 'Parti',
+    senatorGeoAsking: 'Autorisez la localisation pour trouver vos sénateurs',
+    senatorGeoLoading: 'Détection de votre code postal...',
   },
   hi: {
     headingLine1: 'द ह्यूमन',
@@ -374,6 +386,8 @@ const translations = {
     senatorSaveContact: 'संपर्क सहेजें',
     senatorCall: 'कॉल करें',
     senatorParty: 'पार्टी',
+    senatorGeoAsking: 'अपने सीनेटर खोजने के लिए स्थान की अनुमति दें',
+    senatorGeoLoading: 'आपका पिन कोड पता लगा रहे हैं...',
   },
   ar: {
     headingLine1: 'الحركة',
@@ -425,6 +439,8 @@ const translations = {
     senatorSaveContact: 'حفظ جهة الاتصال',
     senatorCall: 'اتصل',
     senatorParty: 'الحزب',
+    senatorGeoAsking: 'اسمح بالموقع للعثور على أعضاء مجلس الشيوخ تلقائيًا',
+    senatorGeoLoading: 'جارٍ اكتشاف الرمز البريدي...',
   },
 } as const
 
