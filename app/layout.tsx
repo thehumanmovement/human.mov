@@ -1,17 +1,21 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, Libre_Franklin } from 'next/font/google'
+import { Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
 
-const cormorant = Cormorant_Garamond({
-  subsets: ['latin'],
-  variable: '--font-cormorant',
-  weight: ['300', '400', '500', '600', '700'],
-  style: ['normal', 'italic'],
+const redaction = localFont({
+  src: [
+    { path: '../public/fonts/Redaction-Regular.woff', weight: '400', style: 'normal' },
+    { path: '../public/fonts/Redaction-Italic.woff', weight: '400', style: 'italic' },
+    { path: '../public/fonts/Redaction-Bold.woff', weight: '700', style: 'normal' },
+  ],
+  variable: '--font-redaction',
+  display: 'swap',
 })
 
-const libre = Libre_Franklin({
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-libre',
+  variable: '--font-inter',
   weight: ['300', '400', '500', '600'],
 })
 
@@ -54,7 +58,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${cormorant.variable} ${libre.variable} font-body`}>
+      <body className={`${redaction.variable} ${inter.variable} font-body`}>
         {children}
       </body>
     </html>

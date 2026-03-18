@@ -52,6 +52,9 @@ const translations = {
     emailBody: 'Your verification code:',
     emailExpiry: 'This code expires in 10 minutes.',
     smsBody: 'The Human Movement — your code is {code}',
+    scrollCta: 'Join',
+    emailOnlyPlaceholder: 'Enter your email',
+    continueButton: 'Continue',
   },
   es: {
     headingLine1: 'El Movimiento',
@@ -87,6 +90,9 @@ const translations = {
     emailBody: 'Tu código de verificación:',
     emailExpiry: 'Este código caduca en 10 minutos.',
     smsBody: 'El Movimiento Humano — tu código es {code}',
+    scrollCta: 'Únete',
+    emailOnlyPlaceholder: 'Ingresa tu correo',
+    continueButton: 'Continuar',
   },
   zh: {
     headingLine1: '人类',
@@ -122,6 +128,9 @@ const translations = {
     emailBody: '您的验证码：',
     emailExpiry: '此验证码将在10分钟后失效。',
     smsBody: '人类运动 — 您的验证码是 {code}',
+    scrollCta: '加入',
+    emailOnlyPlaceholder: '输入您的邮箱',
+    continueButton: '继续',
   },
   ja: {
     headingLine1: 'ヒューマン',
@@ -157,6 +166,9 @@ const translations = {
     emailBody: '認証コード：',
     emailExpiry: 'このコードは10分後に無効になります。',
     smsBody: 'ヒューマン・ムーブメント — 認証コード: {code}',
+    scrollCta: '参加する',
+    emailOnlyPlaceholder: 'メールアドレスを入力',
+    continueButton: '続ける',
   },
   ko: {
     headingLine1: '휴먼',
@@ -192,6 +204,9 @@ const translations = {
     emailBody: '인증번호:',
     emailExpiry: '이 인증번호는 10분 후 만료됩니다.',
     smsBody: '휴먼 무브먼트 — 인증번호: {code}',
+    scrollCta: '참여하기',
+    emailOnlyPlaceholder: '이메일을 입력하세요',
+    continueButton: '계속',
   },
   fr: {
     headingLine1: 'Le Mouvement',
@@ -227,6 +242,9 @@ const translations = {
     emailBody: 'Votre code de vérification :',
     emailExpiry: 'Ce code expire dans 10 minutes.',
     smsBody: 'Le Mouvement Humain — votre code est {code}',
+    scrollCta: 'Rejoindre',
+    emailOnlyPlaceholder: 'Entrez votre e-mail',
+    continueButton: 'Continuer',
   },
   hi: {
     headingLine1: 'द ह्यूमन',
@@ -262,6 +280,9 @@ const translations = {
     emailBody: 'आपका सत्यापन कोड:',
     emailExpiry: 'यह कोड 10 मिनट में समाप्त हो जाएगा।',
     smsBody: 'द ह्यूमन मूवमेंट — आपका कोड है {code}',
+    scrollCta: 'शामिल हों',
+    emailOnlyPlaceholder: 'अपना ईमेल दर्ज करें',
+    continueButton: 'जारी रखें',
   },
   ar: {
     headingLine1: 'الحركة',
@@ -297,6 +318,9 @@ const translations = {
     emailBody: 'رمز التحقق الخاص بك:',
     emailExpiry: 'ينتهي هذا الرمز خلال 10 دقائق.',
     smsBody: 'الحركة الإنسانية — رمزك هو {code}',
+    scrollCta: 'انضم',
+    emailOnlyPlaceholder: 'أدخل بريدك الإلكتروني',
+    continueButton: 'متابعة',
   },
 } as const
 
