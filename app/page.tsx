@@ -286,27 +286,29 @@ export default function Home() {
         {/* Bottom fade into form section */}
         <div className="absolute bottom-0 left-0 right-0 z-[5] h-48 pointer-events-none bg-gradient-to-b from-transparent to-[#111]" />
 
-        {/* Hero content — headline only */}
-        <div className="relative z-10 text-center px-6">
-          <h1 className={headingClass(lang)}>
-            <span className="italic">{t(lang, 'headingLine1')}</span>
-            <br />
-            <span className="italic text-earth-light [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">{t(lang, 'headingLine2')}</span>
-          </h1>
+        {/* Top-left logo */}
+        <div className="absolute top-6 left-6 z-10">
+          <p className="font-serif italic text-lg sm:text-xl text-white/80 [text-shadow:_0_1px_10px_rgba(0,0,0,0.6)]">
+            {t(lang, 'headingLine1')} {t(lang, 'headingLine2')}
+          </p>
         </div>
 
-        {/* Scroll CTA */}
-        <button
-          onClick={scrollToForm}
-          className="absolute bottom-10 z-10 flex flex-col items-center gap-2 text-white/50 hover:text-white transition-colors animate-bounce"
-          aria-label="Scroll to form"
-        >
-          <span className="text-sm font-body font-medium tracking-widest uppercase">{t(lang, 'scrollCta')}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 5v14"/>
-            <path d="m19 12-7 7-7-7"/>
-          </svg>
-        </button>
+        {/* Hero content — new headline */}
+        <div className="relative z-10 text-center px-6 max-w-2xl">
+          <h1 className="font-serif leading-[1.15] tracking-tight text-white text-4xl sm:text-6xl [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">
+            <span className="italic">{t(lang, 'heroLine1')}</span>
+            <br />
+            <span className="italic text-earth-light">{t(lang, 'heroLine2')}</span>
+          </h1>
+
+          {/* Join button */}
+          <button
+            onClick={scrollToForm}
+            className="mt-10 px-10 py-4 bg-earth text-white rounded-lg font-body font-semibold text-base tracking-wide hover:bg-earth-dark transition-all duration-300 shadow-lg shadow-earth/30"
+          >
+            {t(lang, 'buttonJoin')}
+          </button>
+        </div>
       </section>
 
       {/* ===== SECTION 2: FORM ===== */}
