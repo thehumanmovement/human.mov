@@ -112,8 +112,14 @@ export default function Home() {
     }
   }, [activeIndex, aIsActive, videos])
 
+  const emailInputRef = useRef<HTMLInputElement>(null)
+
   function scrollToForm() {
     formSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // Focus the email input after scroll animation completes
+    setTimeout(() => {
+      emailInputRef.current?.focus()
+    }, 600)
   }
 
   // Step 1: Email submitted — move to details
@@ -328,6 +334,7 @@ export default function Home() {
               </div>
               <form onSubmit={handleEmailNext} className="space-y-4">
                 <input
+                  ref={emailInputRef}
                   type="email"
                   placeholder={t(lang, 'emailOnlyPlaceholder')}
                   value={email}
