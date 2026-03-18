@@ -74,7 +74,7 @@ export default function Home() {
   }, [langMenuOpen])
 
   // Video background cycling with dual elements for seamless playback
-  const videos = ['/videos/baby.mp4', '/videos/soldier.mp4', '/videos/turtle.mp4', '/videos/abuelos.mp4', '/videos/motorbike.mp4', '/videos/hands.mp4']
+  const videos = ['/videos/baby.mp4', '/videos/turtle.mp4', '/videos/abuelos.mp4', '/videos/motorbike.mp4', '/videos/hands.mp4']
   const [activeIndex, setActiveIndex] = useState(0)
   const videoARef = useRef<HTMLVideoElement>(null)
   const videoBRef = useRef<HTMLVideoElement>(null)
