@@ -283,6 +283,8 @@ export default function Home() {
 
         {/* Vignette */}
         <div className="absolute inset-0 z-[4] pointer-events-none bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0.35)_0%,_transparent_75%)]" />
+        {/* Bottom fade into form section */}
+        <div className="absolute bottom-0 left-0 right-0 z-[5] h-48 pointer-events-none bg-gradient-to-b from-transparent to-[#111]" />
 
         {/* Hero content — headline only */}
         <div className="relative z-10 text-center px-6">
