@@ -479,7 +479,7 @@ export default function Home() {
             </form>
           )}
 
-          {/* Step: Welcome */}
+          {/* Step: Welcome + Senator Widget */}
           {step === 'welcome' && (
             <div className="step-enter text-center">
               <h1 className={headingClass(lang)}>
@@ -489,7 +489,25 @@ export default function Home() {
                 <br />
                 <span className="italic text-earth-light">{t(lang, 'movement')}</span>
               </h1>
-              <div className="mt-20">
+
+              {/* Senator Lookup Widget */}
+              <div className="mt-16 bg-white/[0.05] border border-white/[0.1] rounded-2xl p-6 text-left">
+                <div className="flex items-center gap-3 mb-1">
+                  <div className="w-10 h-10 rounded-xl bg-earth/20 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-earth-light">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="font-serif italic text-lg text-white">{t(lang, 'senatorTitle')}</p>
+                    <p className="text-white/40 text-xs font-body">{t(lang, 'senatorSubtitle')}</p>
+                  </div>
+                </div>
+
+                <SenatorLookup lang={lang} initialZip={zipCode} />
+              </div>
+
+              <div className="mt-10">
                 <p className="text-sm text-white/30 font-body tracking-widest uppercase">
                   {t(lang, 'moreSoon')}
                 </p>
@@ -504,5 +522,161 @@ export default function Home() {
         </div>
       </section>
     </>
+  )
+}
+
+// --- Senator Lookup Component ---
+interface Senator {
+  name: string
+  party: string
+  phones: string[]
+  photoUrl?: string
+  urls?: string[]
+}
+
+function SenatorLookup({ lang, initialZip }: { lang: Lang; initialZip: string }) {
+  const [zip, setZip] = useState(initialZip || '')
+  const [senators, setSenators] = useState<Senator[]>([])
+  const [lookupLoading, setLookupLoading] = useState(false)
+  const [lookupError, setLookupError] = useState('')
+  const [looked, setLooked] = useState(false)
+
+  // Auto-lookup if zip was provided during signup
+  useEffect(() => {
+    if (initialZip && /^\d{5}$/.test(initialZip)) {
+      lookupSenators(initialZip)
+    }
+  }, [initialZip])
+
+  async function lookupSenators(zipCode: string) {
+    setLookupLoading(true)
+    setLookupError('')
+    setSenators([])
+    setLooked(true)
+
+    try {
+      const res = await fetch(`/api/representatives?zip=${zipCode}`)
+      const data = await res.json()
+
+      if (!res.ok) {
+        setLookupError(data.error || 'Lookup failed')
+        setLookupLoading(false)
+        return
+      }
+
+      setSenators(data.senators || [])
+    } catch {
+      setLookupError('Network error')
+    }
+    setLookupLoading(false)
+  }
+
+  function handleLookup(e: FormEvent) {
+    e.preventDefault()
+    if (/^\d{5}$/.test(zip)) {
+      lookupSenators(zip)
+    }
+  }
+
+  function generateVCard(senator: Senator) {
+    const phone = senator.phones[0] || ''
+    const vcard = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      `FN:Sen. ${senator.name}`,
+      `ORG:U.S. Senate (${senator.party})`,
+      phone ? `TEL;TYPE=WORK:${phone}` : '',
+      senator.urls?.[0] ? `URL:${senator.urls[0]}` : '',
+      'END:VCARD',
+    ].filter(Boolean).join('\n')
+
+    const blob = new Blob([vcard], { type: 'text/vcard' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `Senator_${senator.name.replace(/\s+/g, '_')}.vcf`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  return (
+    <div className="mt-4">
+      {/* Zip input + lookup */}
+      <form onSubmit={handleLookup} className="flex gap-2">
+        <input
+          type="text"
+          inputMode="numeric"
+          maxLength={5}
+          placeholder={t(lang, 'senatorZipPlaceholder')}
+          value={zip}
+          onChange={(e) => setZip(e.target.value.replace(/\D/g, ''))}
+          className="flex-1 bg-white/[0.07] border border-white/[0.12] rounded-lg px-4 py-3 text-base font-body outline-none placeholder:text-white/40 text-white focus:border-earth-light transition-all"
+        />
+        <button
+          type="submit"
+          disabled={lookupLoading || zip.length !== 5}
+          className="px-5 py-3 bg-earth text-white rounded-lg font-body font-semibold text-sm hover:bg-earth-dark transition-all disabled:opacity-30"
+        >
+          {lookupLoading ? t(lang, 'senatorLoading') : t(lang, 'senatorLookup')}
+        </button>
+      </form>
+
+      {/* Error */}
+      {lookupError && (
+        <p className="mt-3 text-sm text-red-400 font-body">{lookupError}</p>
+      )}
+
+      {/* No results */}
+      {looked && !lookupLoading && senators.length === 0 && !lookupError && (
+        <p className="mt-3 text-sm text-white/40 font-body">{t(lang, 'senatorNoResults')}</p>
+      )}
+
+      {/* Senator cards */}
+      {senators.map((senator, i) => (
+        <div key={i} className="mt-4 bg-white/[0.05] border border-white/[0.1] rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            {senator.photoUrl && (
+              <img
+                src={senator.photoUrl}
+                alt={senator.name}
+                className="w-12 h-12 rounded-full object-cover bg-white/10"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+              />
+            )}
+            <div className="flex-1">
+              <p className="font-body font-semibold text-white">{senator.name}</p>
+              <p className="text-white/40 text-xs font-body">
+                {t(lang, 'senatorParty')}: {senator.party}
+              </p>
+              {senator.phones[0] && (
+                <a
+                  href={`tel:${senator.phones[0]}`}
+                  className="text-earth-light text-sm font-body hover:underline"
+                >
+                  {senator.phones[0]}
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div className="flex gap-2 mt-3">
+            {senator.phones[0] && (
+              <a
+                href={`tel:${senator.phones[0]}`}
+                className="flex-1 text-center py-2 bg-earth text-white rounded-lg text-sm font-body font-semibold hover:bg-earth-dark transition-all"
+              >
+                {t(lang, 'senatorCall')}
+              </a>
+            )}
+            <button
+              onClick={() => generateVCard(senator)}
+              className="flex-1 text-center py-2 bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-lg text-sm font-body font-semibold hover:bg-white/10 transition-all"
+            >
+              {t(lang, 'senatorSaveContact')}
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }
