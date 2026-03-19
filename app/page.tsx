@@ -333,6 +333,12 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== SECTION 2B: PROTECT OUR ___ (sticky scroll) ===== */}
+      <ProtectOurScroll lang={lang} />
+
+      {/* ===== SECTION 2C: HUMANITY ISSUE (sticky scroll) ===== */}
+      <HumanityIssueScroll lang={lang} />
+
       {/* ===== SECTION 3: FORM ===== */}
       <section ref={formSectionRef} className="min-h-screen flex items-center justify-center bg-[#111] px-6 py-20">
         <div className="w-full max-w-md">
@@ -550,6 +556,227 @@ export default function Home() {
       {/* ===== SECTION 3: GLOBE ===== */}
       <GlobeSection />
     </>
+  )
+}
+
+// --- Protect Our ___ Scroll Component ---
+const PROTECT_IMAGES: Record<string, string | null> = {
+  protectJobs: '/images/unemployed.png',
+  protectKids: '/images/doomscrolling.webp',
+  protectVote: '/images/voting.png',
+  protectHumanity: '/images/humanity-mosaic.png',
+}
+
+function ProtectOurScroll({ lang }: { lang: Lang }) {
+  const words = ['protectJobs', 'protectKids', 'protectVote', 'protectHumanity'] as const
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    function handleScroll() {
+      if (!sectionRef.current) return
+      const rect = sectionRef.current.getBoundingClientRect()
+      const sectionHeight = sectionRef.current.offsetHeight
+      const scrolled = -rect.top
+      const p = Math.max(0, Math.min(1, scrolled / (sectionHeight - window.innerHeight)))
+      setProgress(p)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Each word gets an equal segment of the scroll
+  const segmentSize = 1 / words.length
+
+  // Compute per-word opacity for background images (same timing as text)
+  function getWordOpacity(i: number): number {
+    const segStart = i * segmentSize
+    const segEnd = segStart + segmentSize
+    const isLast = i === words.length - 1
+    const isFirst = i === 0
+    const fadeInStart = Math.max(0, segStart - segmentSize * 0.25)
+    const fadeInEnd = segStart + segmentSize * 0.35
+    const fadeOutStart = segStart + segmentSize * 0.65
+    const fadeOutEnd = segEnd + segmentSize * 0.25
+
+    if (isLast && progress >= fadeInEnd) return 1
+    if (progress >= fadeInStart && progress < fadeInEnd) {
+      return isFirst
+        ? Math.min(1, (progress - segStart) / (fadeInEnd - segStart))
+        : (progress - fadeInStart) / (fadeInEnd - fadeInStart)
+    }
+    if (progress >= fadeInEnd && progress < fadeOutStart) return 1
+    if (!isLast && progress >= fadeOutStart && progress < fadeOutEnd) {
+      return 1 - (progress - fadeOutStart) / (fadeOutEnd - fadeOutStart)
+    }
+    return 0
+  }
+
+  return (
+    <section ref={sectionRef} className="relative bg-[#111]" style={{ height: `${words.length * 100}vh` }}>
+      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
+        {/* Background images layer */}
+        {words.map((word, i) => {
+          const imgSrc = PROTECT_IMAGES[word]
+          if (!imgSrc) return null
+          const opacity = getWordOpacity(i)
+          if (opacity <= 0) return null
+          return (
+            <div
+              key={`bg-${word}`}
+              className="absolute inset-0 z-0"
+              style={{ opacity: opacity * 0.35 }}
+            >
+              <img
+                src={imgSrc}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/40" />
+            </div>
+          )
+        })}
+
+        {/* Text layer */}
+        <h2 className="relative z-10 font-serif italic text-4xl sm:text-7xl whitespace-nowrap">
+          <span className="text-white/40">{t(lang, 'protectOur')}</span>
+          {' '}
+          <span className="relative inline-block" style={{ minWidth: '4ch' }}>
+            {words.map((word, i) => {
+              const segStart = i * segmentSize
+              const segEnd = segStart + segmentSize
+              const isLast = i === words.length - 1
+              const isFirst = i === 0
+              const fadeInStart = Math.max(0, segStart - segmentSize * 0.25)
+              const fadeInEnd = segStart + segmentSize * 0.35
+              const fadeOutStart = segStart + segmentSize * 0.65
+              const fadeOutEnd = segEnd + segmentSize * 0.25
+
+              let revealP = -1
+              let isFadingOut = false
+
+              if (isLast && progress >= fadeInEnd) {
+                revealP = 1
+              } else if (progress >= fadeInStart && progress < fadeInEnd) {
+                revealP = isFirst
+                  ? Math.min(1, (progress - segStart) / (fadeInEnd - segStart))
+                  : (progress - fadeInStart) / (fadeInEnd - fadeInStart)
+              } else if (progress >= fadeInEnd && progress < fadeOutStart) {
+                revealP = 1
+              } else if (!isLast && progress >= fadeOutStart && progress < fadeOutEnd) {
+                revealP = (progress - fadeOutStart) / (fadeOutEnd - fadeOutStart)
+                isFadingOut = true
+              }
+
+              if (revealP < 0) return null
+
+              const spread = 80
+              let mask: string
+              if (!isFadingOut) {
+                const edge = (1 - revealP) * (100 + spread) - spread
+                mask = `linear-gradient(to bottom, transparent ${edge}%, black ${edge + spread}%)`
+              } else {
+                const edge = revealP * (100 + spread) - spread
+                mask = `linear-gradient(to top, transparent ${edge}%, black ${edge + spread}%)`
+              }
+
+              return (
+                <span
+                  key={word}
+                  className="absolute left-0 text-earth-light"
+                  style={{
+                    WebkitMaskImage: mask,
+                    maskImage: mask,
+                  }}
+                >
+                  {t(lang, word)}
+                </span>
+              )
+            })}
+            {/* Invisible spacer for width */}
+            <span className="invisible">{t(lang, 'protectHumanity')}</span>
+          </span>
+        </h2>
+      </div>
+    </section>
+  )
+}
+
+// --- Humanity Issue Scroll Component ---
+function HumanityIssueScroll({ lang }: { lang: Lang }) {
+  const lines = ['unityLine1', 'unityLine2', 'unityLine3', 'unityLine4'] as const
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const [progress, setProgress] = useState(0)
+
+  useEffect(() => {
+    function handleScroll() {
+      if (!sectionRef.current) return
+      const rect = sectionRef.current.getBoundingClientRect()
+      const sectionHeight = sectionRef.current.offsetHeight
+      const scrolled = -rect.top
+      const p = Math.max(0, Math.min(1, scrolled / (sectionHeight - window.innerHeight)))
+      setProgress(p)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  // Each line fades in sequentially, all stay visible once revealed
+  // Last line also grows bolder/bigger
+  const totalLines = lines.length
+  // Reserve last 20% of scroll for the final line's grow effect
+  const fadeZone = 0.7
+  const growZone = 0.3
+  const fadeSegment = fadeZone / totalLines
+
+  return (
+    <section ref={sectionRef} className="relative bg-[#111]" style={{ height: '500vh' }}>
+      <div className="sticky top-0 h-screen flex items-center justify-center">
+        <div className="max-w-2xl mx-auto text-center space-y-6 px-6">
+          {lines.map((line, i) => {
+            const fadeStart = i * fadeSegment
+            const fadeEnd = fadeStart + fadeSegment * 0.6
+            const isLast = i === totalLines - 1
+
+            // Opacity: fade in during this line's segment
+            let opacity = 0
+            if (progress >= fadeEnd) {
+              opacity = 1
+            } else if (progress >= fadeStart) {
+              opacity = (progress - fadeStart) / (fadeEnd - fadeStart)
+            }
+
+            // Last line: scale and weight grow after all lines visible
+            let scale = 1
+            let fontWeight = 400
+            let color = 'rgba(255,255,255,0.85)'
+            if (isLast) {
+              color = undefined as unknown as string // use class
+              const growProgress = Math.max(0, (progress - fadeZone) / growZone)
+              scale = 1 + growProgress * 0.35
+              fontWeight = Math.round(400 + growProgress * 500)
+            }
+
+            return (
+              <p
+                key={line}
+                className={`font-serif italic text-xl sm:text-2xl leading-relaxed transition-none ${
+                  isLast ? 'text-earth-light' : 'text-white/85'
+                }`}
+                style={{
+                  opacity,
+                  transform: `scale(${isLast ? scale : 1})`,
+                  fontWeight: isLast ? fontWeight : 400,
+                  ...(isLast ? {} : { color }),
+                }}
+              >
+                {t(lang, line)}
+              </p>
+            )
+          })}
+        </div>
+      </div>
+    </section>
   )
 }
 
