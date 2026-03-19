@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.99.1",
     "@types/node": "^25.4.0",
     "@types/react": "^19.2.14",
+    "@types/three": "^0.183.1",
     "autoprefixer": "^10.4.27",
     "globe.gl": "^2.45.1",
     "next": "^14.2.35",
@@ -21,6 +22,7 @@
     "react-dom": "^18.3.1",
     "resend": "^6.9.3",
     "tailwindcss": "^3.4.19",
+    "three": "^0.183.2",
     "topojson-client": "^3.1.0",
     "twilio": "^5.12.2",
     "typescript": "^5.9.3"
