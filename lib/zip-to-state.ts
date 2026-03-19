@@ -166,8 +166,7 @@ const ZIP_PREFIX_TO_STATE: Record<string, string> = {
   '008': 'VI',
   // Guam
   '969': 'GU',
-  // American Samoa
-  '967': 'HI', // Shared with HI
+  // American Samoa (967xx shared with HI, already mapped above)
   // APO/FPO
   '090': 'AE', '091': 'AE', '092': 'AE', '093': 'AE', '094': 'AE', '095': 'AE', '096': 'AE', '097': 'AE', '098': 'AE',
   '340': 'AA', '962': 'AP', '963': 'AP', '964': 'AP', '965': 'AP', '966': 'AP',
