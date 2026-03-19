@@ -169,7 +169,7 @@ const ZIP_PREFIX_TO_STATE: Record<string, string> = {
   // American Samoa (967xx shared with HI, already mapped above)
   // APO/FPO
   '090': 'AE', '091': 'AE', '092': 'AE', '093': 'AE', '094': 'AE', '095': 'AE', '096': 'AE', '097': 'AE', '098': 'AE',
-  '340': 'AA', '962': 'AP', '963': 'AP', '964': 'AP', '965': 'AP', '966': 'AP',
+  '962': 'AP', '963': 'AP', '964': 'AP', '965': 'AP', '966': 'AP',
 }
 
 export function zipToState(zip: string): string | null {
