@@ -300,17 +300,13 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Hero content */}
-        <div className="relative z-10 text-center px-6 max-w-4xl">
-          <p className="font-body text-white/90 text-lg sm:text-2xl leading-relaxed tracking-wide [text-shadow:_0_1px_20px_rgba(0,0,0,0.8)]">
-            {t(lang, 'heroLine1')}
-          </p>
-          <p className="mt-5 font-body text-white/60 text-base sm:text-lg leading-relaxed [text-shadow:_0_1px_10px_rgba(0,0,0,0.6)]">
-            {t(lang, 'heroLine2')}
-          </p>
-          <p className="mt-5 font-serif italic text-earth-light text-xl sm:text-3xl [text-shadow:_0_1px_20px_rgba(0,0,0,0.8)]">
-            {t(lang, 'heroLine3')}
-          </p>
+        {/* Hero content — centered headline + join */}
+        <div className="relative z-10 text-center px-6 max-w-3xl">
+          <h1 className={headingClass(lang)}>
+            <span className="italic">{t(lang, 'headingLine1')}</span>
+            <br />
+            <span className="italic text-earth-light">{t(lang, 'headingLine2')}</span>
+          </h1>
 
           {/* Join button */}
           <button
@@ -322,7 +318,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== SECTION 2: FORM ===== */}
+      {/* ===== SECTION 2: MANIFESTO ===== */}
+      <section className="bg-[#111] px-6 py-32 sm:py-44">
+        <div className="max-w-xl mx-auto text-center space-y-16">
+          <p className="font-serif italic text-white/90 text-xl sm:text-2xl leading-relaxed">
+            {t(lang, 'manifestoLine1')}
+          </p>
+          <p className="font-serif italic text-white/50 text-lg sm:text-xl leading-relaxed">
+            {t(lang, 'manifestoLine2')}
+          </p>
+          <p className="font-serif italic text-earth-light text-xl sm:text-2xl leading-relaxed">
+            {t(lang, 'manifestoLine3')}
+          </p>
+        </div>
+      </section>
+
+      {/* ===== SECTION 3: FORM ===== */}
       <section ref={formSectionRef} className="min-h-screen flex items-center justify-center bg-[#111] px-6 py-20">
         <div className="w-full max-w-md">
 
