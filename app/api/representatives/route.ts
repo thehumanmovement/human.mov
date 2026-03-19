@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { zipToState } from '@/lib/zip-to-state'
 
 interface Official {
   name: string
@@ -8,15 +9,20 @@ interface Official {
   urls?: string[]
 }
 
-interface CivicResponse {
-  offices: { name: string; officialIndices: number[] }[]
-  officials: {
+interface GovTrackRole {
+  person: {
     name: string
-    party?: string
-    phones?: string[]
-    photoUrl?: string
-    urls?: string[]
-  }[]
+    firstname: string
+    lastname: string
+    bioguideid: string
+    link: string
+  }
+  party: string
+  phone: string | null
+  website: string
+  extra?: {
+    contact_form?: string
+  }
 }
 
 export async function GET(req: Request) {
@@ -27,48 +33,52 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Valid 5-digit zip code required' }, { status: 400 })
   }
 
-  const apiKey = process.env.GOOGLE_CIVIC_API_KEY
+  const state = zipToState(zip)
 
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: 'Senator lookup is being configured. Please try again later.' },
-      { status: 503 }
-    )
+  if (!state) {
+    return NextResponse.json({ error: 'Could not determine state from zip code' }, { status: 400 })
+  }
+
+  // DC, territories — no senators
+  if (['DC', 'PR', 'VI', 'GU', 'AS', 'MP', 'AA', 'AE', 'AP'].includes(state)) {
+    return NextResponse.json({ senators: [], note: 'This area does not have voting U.S. Senators.' })
   }
 
   try {
     const res = await fetch(
-      `https://www.googleapis.com/civicinfo/v2/representatives?address=${zip}&levels=country&roles=legislatorUpperBody&key=${apiKey}`,
+      `https://www.govtrack.us/api/v2/role?current=true&role_type=senator&state=${state}`,
       { next: { revalidate: 86400 } }
     )
 
     if (!res.ok) {
-      const errText = await res.text()
-      console.error('Civic API error:', errText)
+      console.error('GovTrack API error:', res.status)
       return NextResponse.json({ error: 'Could not look up representatives' }, { status: 502 })
     }
 
-    const data: CivicResponse = await res.json()
-    const senators: Official[] = []
-
-    for (const office of data.offices) {
-      if (office.name.includes('Senate') || office.name.includes('Senator')) {
-        for (const idx of office.officialIndices) {
-          const o = data.officials[idx]
-          senators.push({
-            name: o.name,
-            party: o.party || 'Unknown',
-            phones: o.phones || [],
-            photoUrl: o.photoUrl,
-            urls: o.urls,
-          })
-        }
+    const data = await res.json()
+    const senators: Official[] = (data.objects || []).map((role: GovTrackRole) => {
+      // Extract numeric GovTrack ID from link like ".../adam_schiff/400361"
+      const govtrackId = role.person.link.replace(/\/$/, '').split('/').pop()
+      // Clean up display name: "Sen. Adam Schiff [D-CA]" → "Adam Schiff"
+      const displayName = role.person.name
+        .replace(/^Sen\.\s*/, '')
+        .replace(/\s*\[.*\]$/, '')
+        .replace(/\u201c.*?\u201d\s*/g, '') // remove quoted nicknames
+        .trim()
+      return {
+        name: displayName,
+        party: role.party || 'Unknown',
+        phones: role.phone ? [role.phone] : [],
+        photoUrl: govtrackId
+          ? `/api/senator-photo?id=${govtrackId}`
+          : undefined,
+        urls: role.website ? [role.website] : [],
       }
-    }
+    })
 
     return NextResponse.json({ senators })
   } catch (err) {
-    console.error('Civic API fetch error:', err)
+    console.error('GovTrack API fetch error:', err)
     return NextResponse.json({ error: 'Service unavailable' }, { status: 503 })
   }
 }

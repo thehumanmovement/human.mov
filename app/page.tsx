@@ -300,18 +300,22 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Hero content — new headline */}
-        <div className="relative z-10 text-center px-6 max-w-2xl">
-          <h1 className="font-serif leading-[1.15] tracking-tight text-white text-4xl sm:text-6xl [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]">
-            <span className="italic">{t(lang, 'heroLine1')}</span>
-            <br />
-            <span className="italic text-earth-light">{t(lang, 'heroLine2')}</span>
-          </h1>
+        {/* Hero content */}
+        <div className="relative z-10 text-center px-6 max-w-4xl">
+          <p className="font-body text-white/90 text-lg sm:text-2xl leading-relaxed tracking-wide [text-shadow:_0_1px_20px_rgba(0,0,0,0.8)]">
+            {t(lang, 'heroLine1')}
+          </p>
+          <p className="mt-5 font-body text-white/60 text-base sm:text-lg leading-relaxed [text-shadow:_0_1px_10px_rgba(0,0,0,0.6)]">
+            {t(lang, 'heroLine2')}
+          </p>
+          <p className="mt-5 font-serif italic text-earth-light text-xl sm:text-3xl [text-shadow:_0_1px_20px_rgba(0,0,0,0.8)]">
+            {t(lang, 'heroLine3')}
+          </p>
 
           {/* Join button */}
           <button
             onClick={scrollToForm}
-            className="mt-10 px-10 py-4 bg-earth text-white rounded-lg font-body font-semibold text-base tracking-wide hover:bg-earth-dark transition-all duration-300 shadow-lg shadow-earth/30"
+            className="mt-12 px-10 py-4 bg-earth text-white rounded-lg font-body font-semibold text-base tracking-wide hover:bg-earth-dark transition-all duration-300 shadow-lg shadow-earth/30"
           >
             {t(lang, 'buttonJoin')}
           </button>
