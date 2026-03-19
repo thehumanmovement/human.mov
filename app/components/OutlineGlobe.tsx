@@ -213,7 +213,7 @@ export default function OutlineGlobe() {
       const width = container.offsetWidth
       const height = container.offsetHeight
 
-      const globe = new Globe({ rendererConfig: { antialias: true, alpha: true } })
+      const globe = (Globe as any)({ rendererConfig: { antialias: true, alpha: true } })
         .globeImageUrl('//unpkg.com/three-globe/example/img/earth-dark.jpg')
         .backgroundColor('rgba(0,0,0,0)')
         .width(width)
