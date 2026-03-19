@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, FormEvent } from 'react'
 import { t, LANGUAGES, isValidLang, type Lang } from '@/lib/i18n'
+import GlobeSection from './components/GlobeSection'
 
 type Step = 'email' | 'details' | 'verify-email' | 'phone' | 'verify-phone' | 'welcome'
 
@@ -530,6 +531,9 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* ===== SECTION 3: GLOBE ===== */}
+      <GlobeSection />
     </>
   )
 }
