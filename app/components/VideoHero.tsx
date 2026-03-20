@@ -36,7 +36,7 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
           muted
           loop
           playsInline
-          src="/videos/earth.mp4"
+          src="/images/earthglobe-hd.mp4"
           className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Subtle darkening overlay */}
