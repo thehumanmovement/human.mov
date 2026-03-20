@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="earth" cx="40%" cy="35%" r="50%">
+      <stop offset="0%" stop-color="#2a6da8"/>
+      <stop offset="40%" stop-color="#1a4a7a"/>
+      <stop offset="75%" stop-color="#0f2d52"/>
+      <stop offset="100%" stop-color="#091c38"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="55%">
+      <stop offset="80%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="rgba(100,180,255,0.3)"/>
+    </radialGradient>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0d1a2e"/>
+      <stop offset="100%" stop-color="#080c18"/>
+    </radialGradient>
+  </defs>
+  <!-- Background -->
+  <circle cx="256" cy="256" r="256" fill="url(#bg)"/>
+  <!-- Earth globe -->
+  <circle cx="256" cy="256" r="180" fill="url(#earth)"/>
+  <!-- Atmosphere glow -->
+  <circle cx="256" cy="256" r="185" fill="none" stroke="rgba(100,180,255,0.25)" stroke-width="3"/>
+  <!-- Landmasses (stylized) -->
+  <!-- Americas -->
+  <path d="M200 150 Q210 140 215 155 Q220 170 210 190 Q205 210 215 230 Q220 245 210 260 Q200 275 205 290 Q210 310 200 330 Q195 340 190 335 Q185 320 190 300 Q195 280 185 260 Q180 245 185 225 Q190 205 185 185 Q180 165 190 150Z" fill="rgba(100,160,100,0.3)"/>
+  <!-- Europe/Africa -->
+  <path d="M275 130 Q285 125 290 140 Q295 155 285 170 Q280 185 285 200 Q290 215 285 235 Q280 255 290 275 Q295 295 285 320 Q280 340 270 335 Q265 320 270 300 Q275 280 268 260 Q262 240 268 220 Q274 200 268 180 Q262 160 270 140Z" fill="rgba(100,160,100,0.25)"/>
+  <!-- Cloud wisps -->
+  <ellipse cx="230" cy="185" rx="35" ry="8" fill="rgba(255,255,255,0.08)"/>
+  <ellipse cx="290" cy="230" rx="30" ry="6" fill="rgba(255,255,255,0.06)"/>
+  <ellipse cx="250" cy="290" rx="40" ry="7" fill="rgba(255,255,255,0.05)"/>
+  <!-- Highlight -->
+  <circle cx="220" cy="200" r="120" fill="rgba(255,255,255,0.04)"/>
+</svg>

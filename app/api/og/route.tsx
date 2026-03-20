@@ -3,6 +3,15 @@ import { ImageResponse } from 'next/og'
 export const runtime = 'edge'
 
 export async function GET() {
+  // Load Oswald font (matches website)
+  const oswaldBold = await fetch(
+    new URL('https://fonts.gstatic.com/s/oswald/v53/TK3iWkUHHAIjg752GT8Dl-1PKw.woff2')
+  ).then((res) => res.arrayBuffer())
+
+  const interRegular = await fetch(
+    new URL('https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2')
+  ).then((res) => res.arrayBuffer())
+
   return new ImageResponse(
     (
       <div
@@ -13,32 +22,71 @@ export async function GET() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(180deg, #0a1628 0%, #0d1f3c 40%, #162a4a 70%, #1a3358 100%)',
+          background: '#080c18',
           position: 'relative',
+          overflow: 'hidden',
         }}
       >
-        {/* Earth-like arc at bottom */}
+        {/* Earth arc */}
         <div
           style={{
             position: 'absolute',
-            bottom: '-200px',
-            left: '-100px',
-            right: '-100px',
-            height: '500px',
+            bottom: '-320px',
+            left: '-200px',
+            width: '1600px',
+            height: '700px',
             borderRadius: '50%',
-            background: 'radial-gradient(ellipse at center top, #1e5a8a 0%, #143d6b 30%, #0a1628 70%)',
+            background: 'radial-gradient(ellipse at 50% 20%, #1a4a7a 0%, #0f2d52 25%, #091c38 50%, #060e1c 75%)',
             display: 'flex',
           }}
         />
-        {/* Atmosphere glow */}
+        {/* Atmosphere glow line */}
         <div
           style={{
             position: 'absolute',
-            bottom: '180px',
+            bottom: '235px',
+            left: '-50px',
+            width: '1300px',
+            height: '4px',
+            borderRadius: '50%',
+            background: 'linear-gradient(90deg, transparent 0%, rgba(120,180,255,0.4) 30%, rgba(120,180,255,0.5) 50%, rgba(120,180,255,0.4) 70%, transparent 100%)',
+            display: 'flex',
+          }}
+        />
+        {/* Atmosphere haze */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '200px',
             left: '0',
             right: '0',
-            height: '80px',
-            background: 'linear-gradient(0deg, rgba(100,180,255,0.15) 0%, transparent 100%)',
+            height: '100px',
+            background: 'linear-gradient(0deg, rgba(80,150,240,0.08) 0%, transparent 100%)',
+            display: 'flex',
+          }}
+        />
+        {/* Cloud-like patches on earth */}
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '260px',
+            left: '200px',
+            width: '300px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'rgba(200,220,255,0.06)',
+            display: 'flex',
+          }}
+        />
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '280px',
+            right: '150px',
+            width: '250px',
+            height: '50px',
+            borderRadius: '50%',
+            background: 'rgba(200,220,255,0.05)',
             display: 'flex',
           }}
         />
@@ -49,64 +97,95 @@ export async function GET() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            marginBottom: '32px',
+            marginBottom: '24px',
+            marginTop: '-40px',
           }}
         >
           <span
             style={{
-              fontSize: '96px',
-              fontWeight: 900,
+              fontSize: '108px',
+              fontWeight: 700,
               color: 'white',
-              lineHeight: 1,
-              fontFamily: 'sans-serif',
+              lineHeight: 1.05,
+              fontFamily: 'Oswald',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '-1px',
             }}
           >
             The Human
           </span>
           <span
             style={{
-              fontSize: '96px',
-              fontWeight: 900,
+              fontSize: '108px',
+              fontWeight: 700,
               color: '#E8B84B',
-              lineHeight: 1,
-              fontFamily: 'sans-serif',
+              lineHeight: 1.05,
+              fontFamily: 'Oswald',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '-1px',
             }}
           >
             Movement.
           </span>
         </div>
 
-        {/* Tagline */}
-        <span
+        {/* Join Now button */}
+        <div
           style={{
-            fontSize: '28px',
-            color: 'rgba(255,255,255,0.8)',
-            textAlign: 'center',
-            maxWidth: '800px',
-            lineHeight: 1.5,
-            fontFamily: 'sans-serif',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#E8B84B',
+            borderRadius: '999px',
+            padding: '16px 64px',
+            marginBottom: '24px',
           }}
         >
-          Social media took our kids. AI is coming for our jobs, agency, and future.
-        </span>
+          <span
+            style={{
+              fontSize: '28px',
+              fontWeight: 700,
+              color: '#080c18',
+              fontFamily: 'Oswald',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '2px',
+            }}
+          >
+            Join Now
+          </span>
+        </div>
 
-        {/* URL */}
+        {/* Human.mov */}
         <span
           style={{
-            fontSize: '22px',
-            color: 'rgba(255,255,255,0.4)',
-            marginTop: '40px',
-            letterSpacing: '4px',
-            fontFamily: 'sans-serif',
+            fontSize: '20px',
+            color: 'rgba(255,255,255,0.35)',
+            letterSpacing: '6px',
+            fontFamily: 'Inter',
+            textTransform: 'uppercase' as const,
           }}
         >
-          HUMAN.MOV
+          Human.mov
         </span>
       </div>
     ),
     {
       width: 1200,
       height: 630,
+      fonts: [
+        {
+          name: 'Oswald',
+          data: oswaldBold,
+          weight: 700,
+          style: 'normal',
+        },
+        {
+          name: 'Inter',
+          data: interRegular,
+          weight: 400,
+          style: 'normal',
+        },
+      ],
     }
   )
 }
