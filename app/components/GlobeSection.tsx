@@ -33,27 +33,16 @@ export default function GlobeSection() {
       <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-20 sm:pt-28 pb-10 sm:pb-16">
         <div className={`text-center mb-8 sm:mb-12 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="font-serif italic text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight">
-            A global{' '}
-            <span className="text-earth-light">movement.</span>
+            The Human Movement is{' '}
+            <span className="text-earth-light">already happening.</span>
           </h2>
           <p className="font-body text-base sm:text-lg text-white/40 max-w-2xl mx-auto">
-            Countries and states highlighted in green have enacted protections for children and citizens in the digital age.
+            The fight against technology taking us over — from social media to AI — is gaining momentum with growing global wins.
           </p>
         </div>
       </div>
       <OutlineGlobe />
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-8">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-sm bg-earth/60" />
-            <span className="font-body text-xs sm:text-sm text-white/40">Active regulation</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-sm bg-white/10" />
-            <span className="font-body text-xs sm:text-sm text-white/40">No regulation yet</span>
-          </div>
-        </div>
-      </div>
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28" />
     </section>
   )
 }

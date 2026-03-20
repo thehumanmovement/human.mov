@@ -60,7 +60,7 @@ const translations = {
     manifestoLine1: 'Social media took over our minds. AI is about to take over our humanity.',
     manifestoLine2: 'Trillion-dollar AI companies are caught in a race to replace our jobs, relationships, and political power.',
     manifestoLine3: 'This is the last chance for us to fight back.',
-    protectOur: 'Protect our',
+    protectOur: 'Protecting our',
     protectJobs: 'Jobs.',
     protectKids: 'Kids.',
     protectVote: 'Vote.',
