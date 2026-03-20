@@ -75,7 +75,7 @@ export default function ProtectOurScroll({ lang }: { lang: Lang }) {
         })}
 
         {/* Text layer */}
-        <h2 className="relative z-10 font-serif italic whitespace-nowrap text-center" style={{ fontSize: 'clamp(1.75rem, 7vw, 4.5rem)' }}>
+        <h2 className="relative z-10 font-serif uppercase text-center px-4 sm:px-8" style={{ fontSize: 'clamp(1.5rem, 6vw, 4.5rem)' }}>
           <span className="text-white/40">{t(lang, 'protectOur').replace(/\s+\S+$/, '')}</span>
           <span className="inline-flex overflow-hidden align-baseline text-white/40" style={{ opacity: 1 - ourFade, maxWidth: `${(1 - ourFade) * 10}ch`, transition: 'none' }}>
             &nbsp;{t(lang, 'protectOur').split(/\s+/).pop()}
@@ -123,7 +123,7 @@ export default function ProtectOurScroll({ lang }: { lang: Lang }) {
               return (
                 <span
                   key={word}
-                  className="absolute left-0 text-earth-light"
+                  className="absolute left-0 text-sunrise"
                   style={{
                     WebkitMaskImage: mask,
                     maskImage: mask,

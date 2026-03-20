@@ -97,7 +97,7 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
 
       {/* Top-left logo */}
       <div className="absolute top-6 left-6 z-10">
-        <p className="font-serif italic text-lg sm:text-xl text-white/80 [text-shadow:_0_1px_10px_rgba(0,0,0,0.6)]">
+        <p className="font-serif uppercase text-lg sm:text-xl text-white/80 [text-shadow:_0_1px_10px_rgba(0,0,0,0.6)]">
           {t(lang, 'headingLine1')} {t(lang, 'headingLine2')}
         </p>
       </div>
@@ -105,9 +105,9 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
       {/* Hero content */}
       <div className="relative z-10 text-center px-6 max-w-3xl">
         <h1 className={headingClass(lang)}>
-          <span className="italic">{t(lang, 'headingLine1')}</span>
+          <span>{t(lang, 'headingLine1')}</span>
           <br />
-          <span className="italic text-earth-light">{t(lang, 'headingLine2')}</span>
+          <span className="text-sunrise">{t(lang, 'headingLine2')}</span>
         </h1>
 
         <p className="mt-8 font-body text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed">
@@ -116,7 +116,7 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
 
         <button
           onClick={onJoinClick}
-          className="mt-8 px-10 py-4 bg-earth text-white rounded-lg font-body font-semibold text-base tracking-wide hover:bg-earth-dark transition-all duration-300 shadow-lg shadow-earth/30"
+          className="mt-8 px-12 py-4 bg-sunrise text-black rounded-full font-body font-bold text-base uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 shadow-lg shadow-sunrise/30 hover:scale-105"
         >
           {t(lang, 'buttonJoin')}
         </button>

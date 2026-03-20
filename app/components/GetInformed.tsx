@@ -61,8 +61,8 @@ export default function GetInformed() {
   return (
     <section className="bg-[#0a0a0a] py-20 sm:py-28 overflow-hidden">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
-        <h2 className="font-serif italic text-4xl sm:text-5xl text-white mb-3 leading-tight text-center">
-          Get <span className="text-earth-light">Informed.</span>
+        <h2 className="font-serif uppercase text-4xl sm:text-5xl text-white mb-3 leading-tight text-center">
+          Get <span className="text-sunrise">Informed.</span>
         </h2>
         <p className="font-body text-base sm:text-lg text-white/40 max-w-2xl mx-auto text-center mb-12">
           Understand what&apos;s at stake and why this movement matters.
@@ -82,7 +82,7 @@ export default function GetInformed() {
           />
         </div>
         <div className="mt-4 text-center">
-          <p className="font-serif italic text-xl sm:text-2xl text-white">
+          <p className="font-serif uppercase text-xl sm:text-2xl text-white">
             {VIDEOS[active].title}
           </p>
           <p className="font-body text-sm text-white/40 mt-1">
@@ -123,7 +123,7 @@ export default function GetInformed() {
               onClick={() => setActive(i)}
               className={`flex-shrink-0 w-[280px] sm:w-[320px] rounded-xl overflow-hidden border transition-all duration-300 text-left ${
                 i === active
-                  ? 'border-earth/50 ring-1 ring-earth/30 scale-[1.02]'
+                  ? 'border-sunrise/50 ring-1 ring-sunrise/30 scale-[1.02]'
                   : 'border-white/10 hover:border-white/20'
               }`}
             >
@@ -135,8 +135,8 @@ export default function GetInformed() {
                   loading="lazy"
                 />
                 {i === active && (
-                  <div className="absolute inset-0 bg-earth/20 flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full bg-earth/80 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-sunrise/20 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-sunrise/80 flex items-center justify-center">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
                     </div>
                   </div>
@@ -144,7 +144,7 @@ export default function GetInformed() {
               </div>
               <div className="p-3 bg-white/[0.03]">
                 <p className={`font-body text-sm font-semibold leading-snug line-clamp-2 ${
-                  i === active ? 'text-earth-light' : 'text-white/80'
+                  i === active ? 'text-sunrise' : 'text-white/80'
                 }`}>
                   {video.title}
                 </p>

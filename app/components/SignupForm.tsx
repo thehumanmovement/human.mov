@@ -26,20 +26,41 @@ function headingClass(lang: Lang): string {
 }
 
 const INPUT_CLASS =
-  'w-full bg-white/[0.07] border border-white/[0.12] focus:border-earth-light rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/40 text-white focus:bg-white/10 focus:ring-1 focus:ring-earth-light/30'
+  'w-full bg-white/[0.07] border border-white/[0.12] focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/40 text-white focus:bg-white/10 focus:ring-1 focus:ring-sunrise/30'
 
 const BUTTON_CLASS =
-  'mt-6 w-full bg-earth text-white rounded-lg py-4 text-base font-body font-semibold tracking-wide hover:bg-earth-dark transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed'
+  'mt-6 w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:scale-[1.02]'
 
 export interface SignupFormHandle {
   scrollToForm: () => void
 }
 
-interface SignupFormProps {
-  lang: Lang
+type Variant = 'default' | 'after-globe' | 'after-protect'
+
+const VARIANT_COPY: Record<Variant, { line1: string; line2: string; button: string }> = {
+  'default': {
+    line1: 'Make your voice heard',
+    line2: 'while it still counts.',
+    button: 'Join Now',
+  },
+  'after-globe': {
+    line1: 'Be part of',
+    line2: 'the global fight.',
+    button: 'Add Your Voice',
+  },
+  'after-protect': {
+    line1: "It starts with",
+    line2: 'people like you.',
+    button: 'Take Action Now',
+  },
 }
 
-const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang }, ref) {
+interface SignupFormProps {
+  lang: Lang
+  variant?: Variant
+}
+
+const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default' }, ref) {
   const [step, setStep] = useState<Step>('email')
   const [signupId, setSignupId] = useState('')
   const [fullName, setFullName] = useState('')
@@ -164,11 +185,11 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
         {step === 'email' && (
           <div className="step-enter">
             <div className="mb-12 text-center">
-              <p className="font-serif italic text-3xl sm:text-4xl text-white leading-snug">
-                {t(lang, 'tagline1')}
+              <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
+                {variant === 'default' ? t(lang, 'tagline1') : VARIANT_COPY[variant].line1}
               </p>
-              <p className="font-serif italic text-3xl sm:text-4xl text-earth-light leading-snug mt-1">
-                {t(lang, 'tagline2')}
+              <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
+                {variant === 'default' ? t(lang, 'tagline2') : VARIANT_COPY[variant].line2}
               </p>
             </div>
             <form onSubmit={handleEmailNext} className="space-y-4">
@@ -186,7 +207,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
                 disabled={!email.trim()}
                 className={BUTTON_CLASS}
               >
-                {t(lang, 'buttonJoin')}
+                {variant === 'default' ? t(lang, 'buttonJoin') : VARIANT_COPY[variant].button}
               </button>
             </form>
           </div>
@@ -194,7 +215,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
         {step === 'details' && (
           <form onSubmit={handleSubmit} className="step-enter space-y-4">
-            <p className="font-serif italic text-2xl sm:text-3xl mb-2 leading-snug text-white text-center">
+            <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white text-center">
               {t(lang, 'headingLine1')} {t(lang, 'headingLine2')}
             </p>
             <p className="text-white/50 text-sm font-body mb-8 text-center">
@@ -236,7 +257,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
         {step === 'verify-email' && (
           <form onSubmit={handleEmailVerify} className="step-enter">
-            <p className="font-serif italic text-2xl sm:text-3xl mb-2 leading-snug text-white">
+            <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white">
               {t(lang, 'checkInbox')}
             </p>
             <p className="text-white/50 text-sm font-body mb-8">
@@ -269,10 +290,10 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
         {step === 'phone' && (
           <form onSubmit={handlePhoneSend} className="step-enter">
-            <p className="font-serif italic text-2xl sm:text-3xl mb-2 leading-snug text-white">
+            <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white">
               {t(lang, 'emailVerified')}
             </p>
-            <p className="font-serif italic text-2xl sm:text-3xl mb-8 leading-snug text-earth-light">
+            <p className="font-serif uppercase text-2xl sm:text-3xl mb-8 leading-snug text-sunrise">
               {t(lang, 'nowPhone')}
             </p>
             <input
@@ -292,7 +313,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
         {step === 'verify-phone' && (
           <form onSubmit={handlePhoneVerify} className="step-enter">
-            <p className="font-serif italic text-2xl sm:text-3xl mb-2 leading-snug text-white">
+            <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white">
               {t(lang, 'almostThere')}
             </p>
             <p className="text-white/50 text-sm font-body mb-8">
@@ -326,22 +347,22 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
         {step === 'welcome' && (
           <div className="step-enter text-center">
             <h1 className={headingClass(lang)}>
-              <span className="italic">{t(lang, 'welcomeTo')}</span>
+              <span>{t(lang, 'welcomeTo')}</span>
               <br />
-              <span className="italic">{t(lang, 'theHuman')}</span>
+              <span>{t(lang, 'theHuman')}</span>
               <br />
-              <span className="italic text-earth-light">{t(lang, 'movement')}</span>
+              <span className="text-sunrise">{t(lang, 'movement')}</span>
             </h1>
 
             <div className="mt-16 bg-white/[0.05] border border-white/[0.1] rounded-2xl p-6 text-left">
               <div className="flex items-center gap-3 mb-1">
-                <div className="w-10 h-10 rounded-xl bg-earth/20 flex items-center justify-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-earth-light">
+                <div className="w-10 h-10 rounded-xl bg-sunrise/20 flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                   </svg>
                 </div>
                 <div>
-                  <p className="font-serif italic text-lg text-white">{t(lang, 'senatorTitle')}</p>
+                  <p className="font-serif uppercase text-lg text-white">{t(lang, 'senatorTitle')}</p>
                   <p className="text-white/40 text-xs font-body">{t(lang, 'senatorSubtitle')}</p>
                 </div>
               </div>

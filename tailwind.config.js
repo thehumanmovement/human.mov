@@ -7,16 +7,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        cream: '#F0F7F2',
+        cream: '#fdf5e1',
         earth: {
           DEFAULT: '#34A853',
           light: '#6ECF81',
           dark: '#1E7A3A',
         },
+        sunrise: {
+          DEFAULT: '#ffd800',
+          light: '#ffe94d',
+          dark: '#ccad00',
+          orange: '#e13f01',
+        },
         warm: {
-          50: '#F0F9F2',
-          100: '#D6F0DC',
-          200: '#B3E2BD',
+          50: '#fdf5e1',
+          100: '#faecc4',
+          200: '#f5d98a',
           300: '#86CF96',
           400: '#5BBD72',
           500: '#3DA857',
@@ -27,7 +33,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        serif: ['var(--font-redaction)', 'Georgia', 'serif'],
+        serif: ['var(--font-display)', 'system-ui', 'sans-serif'],
         body: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
     },

@@ -1,15 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import localFont from 'next/font/local'
+import { Inter, Oswald } from 'next/font/google'
 import './globals.css'
 
-const redaction = localFont({
-  src: [
-    { path: '../public/fonts/Redaction-Regular.woff', weight: '400', style: 'normal' },
-    { path: '../public/fonts/Redaction-Italic.woff', weight: '400', style: 'italic' },
-    { path: '../public/fonts/Redaction-Bold.woff', weight: '700', style: 'normal' },
-  ],
-  variable: '--font-redaction',
+const oswald = Oswald({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['500', '600', '700'],
   display: 'swap',
 })
 
@@ -58,7 +54,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${redaction.variable} ${inter.variable} font-body`}>
+      <body className={`${oswald.variable} ${inter.variable} font-body`}>
         {children}
       </body>
     </html>

@@ -109,13 +109,15 @@ function getWins(name: string): WinInfo[] {
 
 // --- Component ---
 
-export default function OutlineGlobe() {
+export default function OutlineGlobe({ startTourOnVisible = false }: { startTourOnVisible?: boolean }) {
   const containerRef = useRef<HTMLDivElement>(null)
   const globeRef = useRef<any>(null)
   const tourIndex = useRef(0)
   const tourTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const focusedRegion = useRef<string | null>(null) // Currently highlighted by tour
   const isCardHovered = useRef(false)
+  const tourStarted = useRef(false)
+  const globeReady = useRef(false)
 
   const [tourCard, setTourCard] = useState<{ name: string; wins: WinInfo[] } | null>(null)
   const [carouselIndex, setCarouselIndex] = useState(0)
@@ -156,7 +158,7 @@ export default function OutlineGlobe() {
       if (globe.atmosphereAltitude) globe.atmosphereAltitude(0.25)
     } else {
       setFocusedAndRefresh(stop.name)
-      if (globe.atmosphereColor) globe.atmosphereColor('#1E7A3A')
+      if (globe.atmosphereColor) globe.atmosphereColor('#aaaaaa')
       if (globe.atmosphereAltitude) globe.atmosphereAltitude(0.15)
     }
     setCarouselIndex(0)
@@ -219,15 +221,15 @@ export default function OutlineGlobe() {
         .width(width)
         .height(height)
         .showAtmosphere(true)
-        .atmosphereColor('#1E7A3A')
+        .atmosphereColor('#888888')
         .atmosphereAltitude(0.15)
         .polygonStrokeColor((d: any) => {
           const n = getName(d)
           const focused = focusedRegion.current
           // When US is focused, highlight all US state borders too
           const isFocused = n === focused || (focused === 'United States of America' && HIGHLIGHT_STATES.has(n))
-          if (isFocused) return '#b8f0c8cc'
-          return '#3da85780'
+          if (isFocused) return '#ddddddcc'
+          return '#66666680'
         })
         .polygonSideColor(() => 'rgba(0,0,0,0)')
         .polygonAltitude((d: any) => {
@@ -241,8 +243,8 @@ export default function OutlineGlobe() {
           const n = getName(d)
           const focused = focusedRegion.current
           const isFocused = n === focused || (focused === 'United States of America' && HIGHLIGHT_STATES.has(n))
-          if (isFocused && isHighlighted(d)) return '#8eeaa0ee'
-          return isHighlighted(d) ? '#34A853aa' : '#1a281aaa'
+          if (isFocused && isHighlighted(d)) return '#ccccccee'
+          return isHighlighted(d) ? '#888888aa' : '#2a2a2aaa'
         })
         .polygonLabel(() => '')
         .enablePointerInteraction(false) // Disable all mouse interaction with polygons
@@ -253,8 +255,8 @@ export default function OutlineGlobe() {
       if (mat) {
         mat.bumpScale = 5
         const THREE = await import('three')
-        mat.color = new THREE.Color(0x0a150a)
-        mat.emissive = new THREE.Color(0x051005)
+        mat.color = new THREE.Color(0x111111)
+        mat.emissive = new THREE.Color(0x0a0a0a)
         mat.emissiveIntensity = 0.3
       }
 
@@ -296,7 +298,23 @@ export default function OutlineGlobe() {
         const nonUS = countriesGeo.features.filter((f: any) => f.id !== '840')
         globe.polygonsData([...nonUS, ...statesGeo.features])
 
-        startTour()
+        // Show "The World" stop immediately (paused)
+        const worldStop = TOUR_STOPS[0]
+        const worldWins = getWins(worldStop.name)
+        if (worldWins.length > 0) {
+          setFocusedAndRefresh(null)
+          if (globe.atmosphereColor) globe.atmosphereColor('#ffffff')
+          if (globe.atmosphereAltitude) globe.atmosphereAltitude(0.25)
+          setTourCard({ name: worldStop.name, wins: worldWins })
+          globe.pointOfView({ lat: worldStop.lat, lng: worldStop.lng, altitude: worldStop.alt }, 0)
+        }
+        globeReady.current = true
+
+        // If already visible, start the tour
+        if (startTourOnVisible) {
+          tourStarted.current = true
+          startTour()
+        }
       } catch (err) {
         console.error('Failed to load globe data:', err)
       }
@@ -324,6 +342,14 @@ export default function OutlineGlobe() {
     }
   }, [])
 
+  // Start tour when section scrolls into view
+  useEffect(() => {
+    if (startTourOnVisible && globeReady.current && !tourStarted.current) {
+      tourStarted.current = true
+      startTour()
+    }
+  }, [startTourOnVisible])
+
   const [cardHoverState, setCardHoverState] = useState(false)
 
   return (
@@ -336,7 +362,7 @@ export default function OutlineGlobe() {
       {/* Big tour navigation arrows flanking the globe */}
       <button
         onClick={() => jumpTour('prev')}
-        className="absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 p-3 sm:p-4 text-white/20 hover:text-earth-light hover:bg-white/[0.04] rounded-full transition-all duration-300 group"
+        className="absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 p-3 sm:p-4 text-white/20 hover:text-sunrise hover:bg-white/[0.04] rounded-full transition-all duration-300 group"
         aria-label="Previous location"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="sm:w-9 sm:h-9 group-hover:scale-110 transition-transform">
@@ -345,7 +371,7 @@ export default function OutlineGlobe() {
       </button>
       <button
         onClick={() => jumpTour('next')}
-        className="absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 p-3 sm:p-4 text-white/20 hover:text-earth-light hover:bg-white/[0.04] rounded-full transition-all duration-300 group"
+        className="absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 p-3 sm:p-4 text-white/20 hover:text-sunrise hover:bg-white/[0.04] rounded-full transition-all duration-300 group"
         aria-label="Next location"
       >
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="sm:w-9 sm:h-9 group-hover:scale-110 transition-transform">
@@ -353,7 +379,7 @@ export default function OutlineGlobe() {
         </svg>
       </button>
 
-      {/* Tour win card — carousel */}
+      {/* Tour win card — newspaper clipping */}
       <div
         className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-20 w-[92%] max-w-[480px] transition-all duration-700 ${
           tourCard ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
@@ -374,21 +400,15 @@ export default function OutlineGlobe() {
           const goNext = () => goTo((carouselIndex + 1) % total)
 
           return (
-            <div className={`backdrop-blur-lg border rounded-2xl p-6 sm:p-8 transition-all duration-300 ${
-              cardHoverState
-                ? 'bg-black/70 border-earth/40 shadow-[0_8px_40px_rgba(0,0,0,0.5),0_0_40px_rgba(110,207,129,0.12)] -translate-y-1'
-                : 'bg-black/50 border-earth/25 shadow-[0_8px_40px_rgba(0,0,0,0.4),0_0_30px_rgba(110,207,129,0.06)]'
-            }`}>
+            <div className={`newspaper-card rounded-sm p-5 sm:p-6 transition-all duration-300 ${
+              cardHoverState ? '-translate-y-1' : ''
+            }`} style={{ transform: `rotate(-0.5deg)${cardHoverState ? ' translateY(-4px)' : ''}` }}>
               <div>
-                <div className="flex items-center justify-between mb-5">
-                  <h3 className="font-serif italic text-xl sm:text-2xl text-earth-light leading-tight">
-                    {tourCard.name}
-                  </h3>
-                  <span className="text-xs font-body text-amber-400/70 whitespace-nowrap">
-                    {timeAgo(win.date)}
-                  </span>
+                <div className="dateline flex items-center justify-between">
+                  <span className="font-bold text-[#111]">{tourCard.name}</span>
+                  <span>{win.date}</span>
                 </div>
-                <div className="min-h-[100px] overflow-hidden relative">
+                <div className="min-h-[80px] overflow-hidden relative">
                   <div
                     key={`${tourCard.name}-${carouselIndex}`}
                     className={slideDir ? 'animate-slide-in' : ''}
@@ -401,37 +421,37 @@ export default function OutlineGlobe() {
                         href={win.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-serif italic text-base sm:text-lg text-white/90 leading-snug mb-2 block hover:text-earth-light transition-colors duration-200 cursor-pointer"
+                        className="headline text-lg sm:text-xl block mb-2 hover:text-[#111] transition-colors duration-200 cursor-pointer"
                       >
                         {win.title}
                       </a>
                     ) : (
-                      <p className="font-serif italic text-base sm:text-lg text-white/90 leading-snug mb-2">
+                      <p className="headline text-lg sm:text-xl mb-2">
                         {win.title}
                       </p>
                     )}
-                    <p className="font-body text-sm text-white/45 leading-relaxed">
+                    <p className="body-text">
                       {win.description}
                     </p>
                   </div>
                 </div>
               </div>
               {total > 1 && (
-                <div className="flex items-center justify-between mt-5 pt-3 border-t border-white/[0.06]">
+                <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#d4c9a8]">
                   <button
                     onClick={goPrev}
-                    className="text-white/30 hover:text-earth-light transition-colors p-1.5 -ml-1.5"
+                    className="text-[#999] hover:text-[#111] transition-colors p-1.5 -ml-1.5"
                     aria-label="Previous win"
                   >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
                   </button>
-                  <div className="flex gap-2">
+                  <div className="flex gap-1.5">
                     {wins.map((_, i) => (
                       <button
                         key={i}
                         onClick={() => goTo(i)}
-                        className={`h-2 rounded-full transition-all duration-300 ${
-                          i === carouselIndex ? 'bg-earth-light w-6' : 'bg-white/20 hover:bg-white/30 w-2'
+                        className={`h-1.5 rounded-full transition-all duration-300 ${
+                          i === carouselIndex ? 'bg-[#111] w-5' : 'bg-[#ccc] hover:bg-[#999] w-1.5'
                         }`}
                         aria-label={`Win ${i + 1}`}
                       />
@@ -439,10 +459,10 @@ export default function OutlineGlobe() {
                   </div>
                   <button
                     onClick={goNext}
-                    className="text-white/30 hover:text-earth-light transition-colors p-1.5 -mr-1.5"
+                    className="text-[#999] hover:text-[#111] transition-colors p-1.5 -mr-1.5"
                     aria-label="Next win"
                   >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
                   </button>
                 </div>
               )}

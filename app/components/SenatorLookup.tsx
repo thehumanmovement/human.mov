@@ -117,7 +117,7 @@ export default function SenatorLookup({ lang, initialZip }: { lang: Lang; initia
     <div className="mt-4">
       {geoStatus === 'asking' && (
         <p className="mb-3 text-xs text-white/40 font-body flex items-center gap-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-earth-light animate-pulse"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-sunrise animate-pulse"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           {t(lang, 'senatorGeoAsking')}
         </p>
       )}
@@ -134,12 +134,12 @@ export default function SenatorLookup({ lang, initialZip }: { lang: Lang; initia
           placeholder={t(lang, 'senatorZipPlaceholder')}
           value={zip}
           onChange={(e) => setZip(e.target.value.replace(/\D/g, ''))}
-          className="flex-1 bg-white/[0.07] border border-white/[0.12] rounded-lg px-4 py-3 text-base font-body outline-none placeholder:text-white/40 text-white focus:border-earth-light transition-all"
+          className="flex-1 bg-white/[0.07] border border-white/[0.12] rounded-lg px-4 py-3 text-base font-body outline-none placeholder:text-white/40 text-white focus:border-sunrise transition-all"
         />
         <button
           type="submit"
           disabled={lookupLoading || zip.length !== 5}
-          className="px-5 py-3 bg-earth text-white rounded-lg font-body font-semibold text-sm hover:bg-earth-dark transition-all disabled:opacity-30"
+          className="px-5 py-3 bg-sunrise text-black rounded-lg font-body font-semibold text-sm hover:bg-sunrise-light transition-all disabled:opacity-30"
         >
           {lookupLoading ? t(lang, 'senatorLoading') : t(lang, 'senatorLookup')}
         </button>
@@ -172,7 +172,7 @@ export default function SenatorLookup({ lang, initialZip }: { lang: Lang; initia
               {senator.phones[0] && (
                 <a
                   href={`tel:${senator.phones[0]}`}
-                  className="text-earth-light text-sm font-body hover:underline"
+                  className="text-sunrise text-sm font-body hover:underline"
                 >
                   {senator.phones[0]}
                 </a>
@@ -184,7 +184,7 @@ export default function SenatorLookup({ lang, initialZip }: { lang: Lang; initia
             {senator.phones[0] && (
               <a
                 href={`tel:${senator.phones[0]}`}
-                className="flex-1 text-center py-2 bg-earth text-white rounded-lg text-sm font-body font-semibold hover:bg-earth-dark transition-all"
+                className="flex-1 text-center py-2 bg-sunrise text-black rounded-lg text-sm font-body font-semibold hover:bg-sunrise-light transition-all"
               >
                 {t(lang, 'senatorCall')}
               </a>

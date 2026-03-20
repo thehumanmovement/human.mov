@@ -29,19 +29,19 @@ export default function GlobeSection() {
 
   return (
     <section ref={sectionRef} className="relative bg-[#080808] overflow-hidden">
-      <div className="h-px bg-gradient-to-r from-transparent via-earth/20 to-transparent" />
+      <div className="h-px bg-gradient-to-r from-transparent via-sunrise/20 to-transparent" />
       <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-20 sm:pt-28 pb-10 sm:pb-16">
         <div className={`text-center mb-8 sm:mb-12 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="font-serif italic text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight">
+          <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight">
             The Human Movement is{' '}
-            <span className="text-earth-light">already happening.</span>
+            <span className="text-sunrise">already happening.</span>
           </h2>
           <p className="font-body text-base sm:text-lg text-white/40 max-w-2xl mx-auto">
-            The fight against technology taking us over — from social media to AI — is gaining momentum with growing global wins.
+            The fight against technology encroaching on our humanity — from social media to AI — is gaining momentum.
           </p>
         </div>
       </div>
-      <OutlineGlobe />
+      <OutlineGlobe startTourOnVisible={visible} />
       <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28" />
     </section>
   )

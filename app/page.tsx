@@ -38,22 +38,23 @@ export default function Home() {
     <>
       <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} />
       <VideoHero lang={lang} onJoinClick={() => formRef.current?.scrollToForm()} />
+      <SignupForm ref={formRef} lang={lang} variant="after-globe" />
       <GlobeSection />
-      <SignupForm ref={formRef} lang={lang} />
+      {/* <SignupForm ref={formRef} lang={lang} variant="after-globe" /> */}
 
       {/* Transition into Protecting section */}
       <section className="bg-[#111] px-6 py-32 sm:py-44">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-serif italic text-4xl sm:text-5xl lg:text-6xl text-white leading-tight">
+          <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white leading-tight">
             The Human Movement is...
           </h2>
         </div>
       </section>
 
       <ProtectOurScroll lang={lang} />
-      <SignupForm ref={formRef} lang={lang} />
+      <SignupForm lang={lang} variant="after-protect" />
       <GetInformed />
-      <SignupForm ref={formRef} lang={lang} />
+      <SignupForm lang={lang} />
       <Footer />
     </>
   )

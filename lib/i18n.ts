@@ -24,7 +24,7 @@ const translations = {
     placeholderName: 'Full name *',
     placeholderEmail: 'Email *',
     placeholderZip: 'Zip code (optional)',
-    buttonJoin: 'Join the Movement',
+    buttonJoin: 'Join Now',
     buttonJoinLoading: 'One moment...',
     checkInbox: 'Check your inbox.',
     sentCode: 'We sent a 6-digit code to',

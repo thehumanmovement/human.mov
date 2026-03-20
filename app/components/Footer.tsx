@@ -40,7 +40,7 @@ function FooterColumn({ heading, items, showDescriptions = false }: { heading: s
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-earth-light text-sm hover:text-earth hover:underline underline-offset-2"
+              className="text-sunrise text-sm hover:text-sunrise-light hover:underline underline-offset-2"
             >
               {item.title}
             </a>
