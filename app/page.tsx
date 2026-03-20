@@ -54,8 +54,75 @@ export default function Home() {
       {/* <ProtectOurScroll lang={lang} /> */}
       <SignupForm lang={lang} variant="after-protect" />
       <GetInformed />
+
+      {/* In Alliance With */}
+      <section className="px-6 pt-40 pb-44 sm:pt-52 sm:pb-56 bg-[#111]">
+        <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-28">
+          In Alliance With
+        </p>
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36 mb-20 sm:mb-24">
+            {[
+              { src: '/images/partners/CHT_logo.svg', alt: 'Center for Humane Technology', h: 'h-20 sm:h-28', href: 'https://www.humanetech.com/' },
+              { src: '/images/partners/FLI_logo.webp', alt: 'Future of Life Institute', h: 'h-24 sm:h-32', href: 'https://futureoflife.org/' },
+              { src: '/images/partners/Project Liberty_Logo.png', alt: 'Project Liberty Labs', h: 'h-20 sm:h-28', href: 'https://www.projectliberty.io/' },
+            ].map((logo) => (
+              <a key={logo.alt} href={logo.href} target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity">
+                <img src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto brightness-0 invert opacity-70`} />
+              </a>
+            ))}
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36">
+            {[
+              { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-20 sm:h-28', href: 'https://aiphrc.org/' },
+              { src: '/images/partners/humanchange_logo.svg', alt: 'Human Change', h: 'h-18 sm:h-24', href: 'https://humanchange.com/' },
+            ].map((logo) => (
+              <a key={logo.alt} href={logo.href} target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity">
+                <img src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto brightness-0 invert opacity-70`} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <SignupForm lang={lang} />
-      <Footer />
+
+      {/* Press Carousel */}
+      <section className="py-6 sm:py-8 overflow-hidden bg-white">
+        <div
+          className="flex items-center w-max"
+          style={{ animation: 'pressCarousel 150s linear infinite', willChange: 'transform', backfaceVisibility: 'hidden' }}
+        >
+          {[0, 1, 2].map((set) => (
+            <div key={set} className="flex items-center shrink-0">
+              {[
+                { src: '/images/press/logos/washington-post.png', alt: 'The Washington Post' },
+                { src: '/images/press/logos/60-minutes.png', alt: '60 Minutes' },
+                { src: '/images/press/logos/mashable.png', alt: 'Mashable' },
+                { src: '/images/press/logos/economist.png', alt: 'The Economist' },
+                { src: '/images/press/logos/fox-news.png', alt: 'Fox News' },
+                { src: '/images/press/logos/nyt.png', alt: 'The New York Times' },
+                { src: '/images/press/logos/nbc-news.png', alt: 'NBC News Now' },
+                { src: '/images/press/logos/axios.png', alt: 'Axios' },
+                { src: '/images/press/logos/bloomberg.png', alt: 'Bloomberg' },
+                { src: '/images/press/logos/politico.png', alt: 'Politico' },
+                { src: '/images/press/logos/cnet.png', alt: 'CNET' },
+                { src: '/images/press/logos/business-insider.png', alt: 'Business Insider' },
+                { src: '/images/press/logos/wired.png', alt: 'Wired' },
+              ].map((logo) => (
+                <img
+                  key={`${set}-${logo.alt}`}
+                  src={logo.src}
+                  alt={logo.alt}
+                  loading="lazy"
+                  className="h-10 sm:h-14 w-auto mx-8 sm:mx-12 opacity-40"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </section>
+
     </>
   )
 }

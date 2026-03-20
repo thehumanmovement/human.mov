@@ -39,18 +39,18 @@ type Variant = 'default' | 'after-globe' | 'after-protect'
 
 const VARIANT_COPY: Record<Variant, { line1: string; line2: string; button: string }> = {
   'default': {
-    line1: 'Make your voice heard',
+    line1: 'Make my voice heard',
     line2: 'while it still counts.',
-    button: 'Join Now',
-  },
-  'after-globe': {
-    line1: 'Be part of',
-    line2: 'the global fight.',
     button: 'Add My Voice',
   },
-  'after-protect': {
+  'after-globe': {
     line1: "It starts with",
     line2: 'people like you.',
+    button: 'Join Now',
+  },
+  'after-protect': {
+    line1: 'Be part of',
+    line2: 'the global fight.',
     button: 'Take Action Now',
   },
 }
@@ -207,7 +207,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
                 disabled={!email.trim()}
                 className={BUTTON_CLASS}
               >
-                {variant === 'default' ? t(lang, 'buttonJoin') : VARIANT_COPY[variant].button}
+                {VARIANT_COPY[variant].button}
               </button>
             </form>
           </div>

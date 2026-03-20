@@ -55,7 +55,7 @@ const translations = {
     scrollCta: 'Join',
     emailOnlyPlaceholder: 'Enter my email',
     continueButton: 'Continue',
-    tagline1: 'Make your voice heard',
+    tagline1: 'Make my voice heard',
     tagline2: 'while it still counts.',
     manifestoLine1: 'Social media took over our minds. AI is about to take over our humanity.',
     manifestoLine2: 'Trillion-dollar AI companies are caught in a race to replace our jobs, relationships, and political power.',

@@ -36,12 +36,11 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
           muted
           loop
           playsInline
-          src="/videos/earthglobe.mp4"
+          src="/videos/earth.mp4"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Warm filter overlay */}
-        <div className="absolute inset-0 z-[3] bg-[#2a1f14]/45 mix-blend-multiply" />
-        <div className="absolute inset-0 z-[3] bg-[#c4a67a]/20" />
+        {/* Subtle darkening overlay */}
+        <div className="absolute inset-0 z-[3] bg-black/30" />
       </div>
 
       {/* Vignette */}
@@ -64,9 +63,11 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
           <span className="text-sunrise">{t(lang, 'headingLine2')}</span>
         </h1>
 
-        <p className="mt-8 font-body text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed">
-          Trillion-dollar AI companies are caught in a race to replace a billion peoples' livelihoods, crash the economy, and our future... We are fighting back.
-        </p>
+        <div className="mt-8 font-body text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed space-y-4">
+          <p>Social media's race for eyeballs took our kids.</p>
+          <p>Now, trillion-dollar AI companies are caught in a race to take a billion peoples' livelihoods, agency, and future.</p>
+          <p>We are a human movement, against the anti-human machine.</p>
+        </div>
 
         <button
           onClick={onJoinClick}
