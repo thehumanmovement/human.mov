@@ -111,7 +111,7 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
         </h1>
 
         <p className="mt-8 font-body text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed">
-          Trillion-dollar AI companies are caught in a race to take the livelihood of more than a billion people, crash the economy, and crash humanity. We must fight back.
+          Trillion-dollar AI companies are caught in a race to replace a billion peoples' livelihoods, crash the economy, and our future... We are fighting back.
         </p>
 
         <button

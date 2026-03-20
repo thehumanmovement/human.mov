@@ -43,15 +43,15 @@ export default function Home() {
       {/* <SignupForm ref={formRef} lang={lang} variant="after-globe" /> */}
 
       {/* Transition into Protecting section */}
-      <section className="bg-[#111] px-6 py-32 sm:py-44">
+      {/* <section className="bg-[#111] px-6 py-32 sm:py-44">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white leading-tight">
             The Human Movement is...
           </h2>
         </div>
-      </section>
+      </section> */}
 
-      <ProtectOurScroll lang={lang} />
+      {/* <ProtectOurScroll lang={lang} /> */}
       <SignupForm lang={lang} variant="after-protect" />
       <GetInformed />
       <SignupForm lang={lang} />
