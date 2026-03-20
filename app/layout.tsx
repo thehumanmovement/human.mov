@@ -19,8 +19,8 @@ export const metadata: Metadata = {
   title: 'The Human Movement',
   description: 'Social media took our kids. AI is coming for our jobs, agency, and future. We are a human movement, against the anti-human machine.',
   icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: '/favicon.ico?v=2',
+    apple: '/apple-touch-icon.png?v=2',
   },
   openGraph: {
     title: 'The Human Movement',
