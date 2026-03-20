@@ -65,7 +65,6 @@ export default function Home() {
             {[
               { src: '/images/partners/CHT_logo.svg', alt: 'Center for Humane Technology', h: 'h-20 sm:h-28', href: 'https://www.humanetech.com/' },
               { src: '/images/partners/FLI_logo.webp', alt: 'Future of Life Institute', h: 'h-24 sm:h-32', href: 'https://futureoflife.org/' },
-              { src: '/images/partners/Project Liberty_Logo.png', alt: 'Project Liberty Labs', h: 'h-20 sm:h-28', href: 'https://www.projectliberty.io/' },
             ].map((logo) => (
               <a key={logo.alt} href={logo.href} target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity">
                 <img src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto brightness-0 invert opacity-70`} />

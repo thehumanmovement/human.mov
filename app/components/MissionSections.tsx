@@ -98,7 +98,6 @@ export default function MissionSections({ lang }: { lang: Lang }) {
             {[
               { src: '/images/partners/CHT_logo.svg', alt: 'Center for Humane Technology', h: 'h-16 sm:h-20' },
               { src: '/images/partners/FLI_logo.webp', alt: 'Future of Life Institute', h: 'h-20 sm:h-24' },
-              { src: '/images/partners/Project Liberty_Logo.png', alt: 'Project Liberty Labs', h: 'h-16 sm:h-20' },
             ].map((logo) => (
               <img key={logo.alt} src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto`} />
             ))}
