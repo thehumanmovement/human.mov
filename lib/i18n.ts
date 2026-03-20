@@ -53,7 +53,7 @@ const translations = {
     emailExpiry: 'This code expires in 10 minutes.',
     smsBody: 'The Human Movement — your code is {code}',
     scrollCta: 'Join',
-    emailOnlyPlaceholder: 'Enter your email',
+    emailOnlyPlaceholder: 'Enter my email',
     continueButton: 'Continue',
     tagline1: 'Make your voice heard',
     tagline2: 'while it still counts.',

@@ -46,7 +46,7 @@ const VARIANT_COPY: Record<Variant, { line1: string; line2: string; button: stri
   'after-globe': {
     line1: 'Be part of',
     line2: 'the global fight.',
-    button: 'Add Your Voice',
+    button: 'Add My Voice',
   },
   'after-protect': {
     line1: "It starts with",

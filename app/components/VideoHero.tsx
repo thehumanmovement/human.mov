@@ -1,9 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
 import { t, type Lang } from '@/lib/i18n'
-
-const VIDEOS = ['/videos/baby.mp4', '/videos/turtle.mp4', '/videos/abuelos.mp4', '/videos/motorbike.mp4', '/videos/hands.mp4']
 
 function headingClass(lang: Lang): string {
   const base = 'font-serif leading-[1.1] tracking-tight text-white [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]'
@@ -30,60 +27,17 @@ interface VideoHeroProps {
 }
 
 export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const videoARef = useRef<HTMLVideoElement>(null)
-  const videoBRef = useRef<HTMLVideoElement>(null)
-  const [aIsActive, setAIsActive] = useState(true)
-
-  useEffect(() => {
-    if (videoARef.current) {
-      videoARef.current.src = VIDEOS[0]
-      videoARef.current.play()
-    }
-    if (videoBRef.current) {
-      videoBRef.current.src = VIDEOS[1]
-      videoBRef.current.load()
-    }
-  }, [])
-
-  const handleVideoEnd = useCallback(() => {
-    const nextIndex = (activeIndex + 1) % VIDEOS.length
-    const nextRef = aIsActive ? videoBRef : videoARef
-    const currentRef = aIsActive ? videoARef : videoBRef
-
-    if (nextRef.current) {
-      nextRef.current.currentTime = 0
-      nextRef.current.play()
-    }
-
-    setAIsActive(!aIsActive)
-    setActiveIndex(nextIndex)
-
-    const followingIndex = (nextIndex + 1) % VIDEOS.length
-    if (currentRef.current) {
-      currentRef.current.src = VIDEOS[followingIndex]
-      currentRef.current.load()
-    }
-  }, [activeIndex, aIsActive])
-
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Fullscreen background video */}
       <div className="absolute inset-0 z-0 bg-black">
         <video
-          ref={videoARef}
+          autoPlay
           muted
+          loop
           playsInline
-          onEnded={handleVideoEnd}
-          className={`absolute inset-0 w-full h-full object-cover ${aIsActive ? 'z-[2]' : 'z-[1]'}`}
-        />
-        <video
-          ref={videoBRef}
-          muted
-          playsInline
-          preload="none"
-          onEnded={handleVideoEnd}
-          className={`absolute inset-0 w-full h-full object-cover ${!aIsActive ? 'z-[2]' : 'z-[1]'}`}
+          src="/videos/earthglobe.mp4"
+          className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Warm filter overlay */}
         <div className="absolute inset-0 z-[3] bg-[#2a1f14]/45 mix-blend-multiply" />
