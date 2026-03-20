@@ -17,22 +17,22 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'The Human Movement',
-  description: 'If You\'re Human, You\'re Likely Already Part of It.',
+  description: 'Social media took our kids. AI is coming for our jobs, agency, and future. We are a human movement, against the anti-human machine.',
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-touch-icon.png',
   },
   openGraph: {
     title: 'The Human Movement',
-    description: 'If You\'re Human, You\'re Likely Already Part of It.',
+    description: 'Social media took our kids. AI is coming for our jobs, agency, and future. We are a human movement, against the anti-human machine.',
     url: 'https://www.human.mov',
     siteName: 'The Human Movement',
     images: [
       {
-        url: 'https://www.human.mov/og-image.jpg',
+        url: 'https://www.human.mov/api/og',
         width: 1200,
         height: 630,
-        type: 'image/jpeg',
+        type: 'image/png',
         alt: 'The Human Movement',
       },
     ],
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'The Human Movement',
-    description: 'If You\'re Human, You\'re Likely Already Part of It.',
-    images: ['https://www.human.mov/og-image.jpg'],
+    description: 'Social media took our kids. AI is coming for our jobs, agency, and future. We are a human movement, against the anti-human machine.',
+    images: ['https://www.human.mov/api/og'],
   },
 }
 

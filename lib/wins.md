@@ -12,41 +12,43 @@ Each win starts with `## Title` followed by date, optional URL, and description.
 
 ## TAKE IT DOWN Act
 - Date: May 2025
-- URL: https://www.congress.gov/bill/119th-congress/senate-bill/146
+- URL: https://en.wikipedia.org/wiki/TAKE_IT_DOWN_Act
 
 First federal law targeting nonconsensual intimate deepfakes, passed 409-2 in House, unanimously in Senate.
 
 ## Senate Rejects AI Moratorium 99-1
 - Date: Summer 2025
-- URL: https://www.politico.com/news/2025/08/02/senate-ai-moratorium-vote-00182456
+- URL: https://www.commerce.senate.gov/2025/7/senate-strikes-ai-moratorium-from-budget-reconciliation-bill-in-overwhelming-99-1-vote/8415a728-fd1d-4269-98ac-101d1d0c71e0
 
 Struck a 10-year moratorium on state AI laws — strongest rebuke of tech lobbying.
 
 ## 35+ States: Phone-Free Schools
 - Date: 2024–2025
-- URL: https://www.edweek.org/technology/which-states-have-passed-laws-restricting-cellphones-in-schools/2024/09
+- URL: https://www.awayfortheday.org/latest-news/35-states-have-banned-smartphones-in-school---heres-why
 
 35 states + DC enacted phone-free school policies.
 
-## 45 States: Deepfake Laws
-- Date: 2024–2025
-- URL: https://www.ncsl.org/technology-and-communication/artificial-intelligence-2024-legislation
+## 47 States: Deepfake Laws
+- Date: July 2025
+- URL: https://news.ballotpedia.org/2025/07/22/forty-seven-states-have-enacted-deepfake-legislation-since-2019/
 
-45 states now have laws addressing sexually explicit deepfakes.
+47 states now have laws addressing sexually explicit deepfakes.
 
 ## 78 Chatbot Bills in 27 States
 - Date: 2025
-- URL: https://www.ncsl.org/technology-and-communication/artificial-intelligence-2025-legislation
+- URL: https://www.transparencycoalition.ai/news/chatbot-bill-surge-nationwide-concern-spurs-78-proposals-in-27-states
 
 27 states introduced 78 chatbot protection bills this year.
 
 ## US Surgeon General: Warning Labels
 - Date: June 2024
+- URL: https://www.nytimes.com/2024/06/17/opinion/social-media-health-warning.html
 
 Called for warning labels on social media platforms, comparing the risks to tobacco.
 
 ## 42 State AGs Demand AI Reforms
 - Date: December 2025
+- URL: https://www.attorneygeneral.gov/taking-action/ag-sunday-leads-coalition-of-42-attorneys-general-in-letter-to-a-i-software-companies-demanding-safeguards-to-protect-vulnerable-residents-from-harmful-interactions-with-bots/
 
 42 AGs sent a letter to 13 AI companies demanding chatbot safety reforms, third-party audits, and incident reporting.
 
@@ -57,13 +59,13 @@ Called for warning labels on social media platforms, comparing the risks to toba
 
 ## Online Safety Act
 - Date: October 2023
-- URL: https://www.gov.uk/government/news/online-safety-act-receives-royal-assent
+- URL: https://www.gov.uk/government/publications/online-safety-act-explainer/online-safety-act-explainer
 
 Legally enforceable "duty of care" to protect users from harmful content.
 
 ## Council of Europe AI Treaty
 - Date: September 2024
-- URL: https://www.coe.int/en/web/artificial-intelligence/the-framework-convention-on-artificial-intelligence
+- URL: https://www.coe.int/en/web/portal/-/council-of-europe-adopts-first-international-treaty-on-artificial-intelligence
 
 Co-signed the world's first legally binding international AI treaty.
 
@@ -74,7 +76,7 @@ Co-signed the world's first legally binding international AI treaty.
 
 ## Social Media Age Restrictions
 - Date: 2024–2025
-- URL: https://www.france24.com/en/france/20240619-france-passes-law-banning-children-under-15-from-social-media
+- URL: https://www.theguardian.com/world/2026/jan/27/france-social-media-ban-under-15s
 
 Enacted age verification laws requiring platforms to verify users are over 15.
 
@@ -85,18 +87,18 @@ Enacted age verification laws requiring platforms to verify users are over 15.
 
 ## Social Media Ban for Kids Under 16
 - Date: Feb 2026
-- URL: https://www.reuters.com/technology/india-proposes-ban-children-under-16-social-media-2025-01-03/
+- URL: https://techcrunch.com/2026/01/27/indian-states-weigh-australia-style-ban-on-social-media-for-children/
 
-Combined with Indonesia, covers 21% of world population.
+Combined with Indonesia, social media bans now cover 21% of world population.
 
 ---
 
 # Australia
 > Tour: lat -25, lng 134, zoom 2.0
 
-## Social Media Ban for Under-16s
+## Social Media Ban for Kinds Under 16
 - Date: December 2025
-- URL: https://www.bbc.com/news/articles/c20m41qnknzo
+- URL: https://www.theguardian.com/australia-news/2026/mar/04/australia-social-media-ban-under-16s-three-month-review
 
 First nation to ban social media for children under 16, sparking a global wave of similar action.
 
@@ -107,7 +109,7 @@ First nation to ban social media for children under 16, sparking a global wave o
 
 ## Social Media Ban for Minors
 - Date: 2025
-- URL: https://www.euronews.com/next/2025/01/21/spain-plans-to-ban-social-media-for-children-under-16
+- URL: https://www.bbc.com/news/articles/c5y2nddvmryo
 
 Announced plans for social media restrictions for children.
 
@@ -118,7 +120,7 @@ Announced plans for social media restrictions for children.
 
 ## Digital Statute of the Child
 - Date: September 2025
-- URL: https://www.reuters.com/technology/brazil-passes-bill-restricting-social-media-use-by-children-2025-06-17/
+- URL: https://abcnews.com/Technology/wireStory/brazil-rolls-law-boosting-online-protection-minors-131234132
 
 Requires age verification, parental account linking, and safety-by-design obligations.
 
@@ -129,13 +131,13 @@ Requires age verification, parental account linking, and safety-by-design obliga
 
 ## Anthropomorphic AI Regulation
 - Date: December 2025
-- URL: https://www.reuters.com/world/asia-pacific/china-issues-drafts-rules-regulate-ai-with-human-like-interaction-2025-12-27/
+- URL: https://lawwwing.com/en/blog-anthropomorphic-artificial-intelligence-and-regulation-can-china-lead-the-way/
 
 Draft rules requiring minor mode, addiction intervention, and prohibiting chatbots from encouraging self-harm.
 
 ## Social Media Curfews for Minors
 - Date: December 2025
-- URL: https://www.reuters.com/world/asia-pacific/china-issues-drafts-rules-regulate-ai-with-human-like-interaction-2025-12-27/
+- URL: https://www.chinalawtranslate.com/en/overview-of-protections-for-minors-online/
 
 Curfew: Internet access for minors is generally banned from 10 p.m. to 6 a.m..
 
@@ -146,19 +148,19 @@ Curfew: Internet access for minors is generally banned from 10 p.m. to 6 a.m..
 
 ## AI Whistleblower Protections
 - Date: October 2025
-- URL: https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202520260AB1018
+- URL: https://www.gtlaw.com/en/insights/2025/10/california-expands-whistleblower-retaliation-protections-for-employees-in-the-ai-sector
 
 First state to protect AI company employees who report safety concerns.
 
 ## First Chatbot Safeguards Law
 - Date: October 2025
-- URL: https://leginfo.legislature.ca.gov/faces/billNavClient.xhtml?bill_id=202520260SB1047
+- URL: https://sd18.senate.ca.gov/news/california-legislature-passes-first-nation-ai-chatbot-safeguards
 
 First-in-the-nation law regulating AI chatbot interactions.
 
 ## Phone-Free Schools
 - Date: 2024–2025
-- URL: https://www.gov.ca.gov/2024/09/23/governor-newsom-signs-nation-leading-legislation-restricting-smartphone-use-in-schools/
+- URL: https://www.gov.ca.gov/2024/09/23/governor-newsom-signs-legislation-to-limit-the-use-of-smartphones-during-school-hours/
 
 Enacted phone-free school policies.
 
@@ -220,7 +222,7 @@ Signed by Steve Bannon, Glenn Beck, Prince Harry, Susan Rice, and Admiral Mike M
 ## Pro-Human AI Declaration
 - Date: 2024
 
-Signed by 46+ groups affirming: keeping humans in charge, avoiding concentration of power, protecting the human experience.
+Signed by a coalition of 46+ groups affirming: keeping humans in charge, avoiding concentration of power, protecting the human experience.
 
 ## First International AI Treaty
 - Date: September 2024
