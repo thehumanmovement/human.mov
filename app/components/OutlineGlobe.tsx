@@ -356,28 +356,8 @@ export default function OutlineGlobe({ startTourOnVisible = false }: { startTour
     <div className="relative">
       <div
         ref={containerRef}
-        className="w-full h-[500px] sm:h-[600px] lg:h-[700px] mx-auto max-w-[900px]"
+        className="w-full h-[500px] sm:h-[600px] lg:h-[700px] mx-auto max-w-[900px] pointer-events-none"
       />
-
-      {/* Big tour navigation arrows flanking the globe */}
-      <button
-        onClick={() => jumpTour('prev')}
-        className="absolute left-2 sm:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 p-3 sm:p-4 text-white/20 hover:text-sunrise hover:bg-white/[0.04] rounded-full transition-all duration-300 group"
-        aria-label="Previous location"
-      >
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="sm:w-9 sm:h-9 group-hover:scale-110 transition-transform">
-          <path d="M15 18l-6-6 6-6"/>
-        </svg>
-      </button>
-      <button
-        onClick={() => jumpTour('next')}
-        className="absolute right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 p-3 sm:p-4 text-white/20 hover:text-sunrise hover:bg-white/[0.04] rounded-full transition-all duration-300 group"
-        aria-label="Next location"
-      >
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="sm:w-9 sm:h-9 group-hover:scale-110 transition-transform">
-          <path d="M9 18l6-6-6-6"/>
-        </svg>
-      </button>
 
       {/* Tour win card — newspaper clipping */}
       <div
@@ -396,8 +376,22 @@ export default function OutlineGlobe({ startTourOnVisible = false }: { startTour
             setSlideDir(i > carouselIndex ? 'left' : 'right')
             setCarouselIndex(i)
           }
-          const goPrev = () => goTo((carouselIndex - 1 + total) % total)
-          const goNext = () => goTo((carouselIndex + 1) % total)
+          const goPrev = () => {
+            if (carouselIndex === 0) {
+              // At first dot — jump to previous tour stop
+              jumpTour('prev')
+            } else {
+              goTo(carouselIndex - 1)
+            }
+          }
+          const goNext = () => {
+            if (carouselIndex === total - 1) {
+              // At last dot — jump to next tour stop
+              jumpTour('next')
+            } else {
+              goTo(carouselIndex + 1)
+            }
+          }
 
           return (
             <div className={`newspaper-card rounded-sm p-5 sm:p-6 transition-all duration-300 ${
@@ -436,36 +430,34 @@ export default function OutlineGlobe({ startTourOnVisible = false }: { startTour
                   </div>
                 </div>
               </div>
-              {total > 1 && (
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#d4c9a8]">
-                  <button
-                    onClick={goPrev}
-                    className="text-[#999] hover:text-[#111] transition-colors p-1.5 -ml-1.5"
-                    aria-label="Previous win"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
-                  </button>
-                  <div className="flex gap-1.5">
-                    {wins.map((_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => goTo(i)}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${
-                          i === carouselIndex ? 'bg-[#111] w-5' : 'bg-[#ccc] hover:bg-[#999] w-1.5'
-                        }`}
-                        aria-label={`Win ${i + 1}`}
-                      />
-                    ))}
-                  </div>
-                  <button
-                    onClick={goNext}
-                    className="text-[#999] hover:text-[#111] transition-colors p-1.5 -mr-1.5"
-                    aria-label="Next win"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
-                  </button>
+              <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#d4c9a8]">
+                <button
+                  onClick={goPrev}
+                  className="text-[#999] hover:text-[#111] transition-colors p-1.5 -ml-1.5"
+                  aria-label="Previous win"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+                <div className="flex gap-1.5">
+                  {wins.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => goTo(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${
+                        i === carouselIndex ? 'bg-[#111] w-5' : 'bg-[#ccc] hover:bg-[#999] w-1.5'
+                      }`}
+                      aria-label={`Win ${i + 1}`}
+                    />
+                  ))}
                 </div>
-              )}
+                <button
+                  onClick={goNext}
+                  className="text-[#999] hover:text-[#111] transition-colors p-1.5 -mr-1.5"
+                  aria-label="Next win"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+              </div>
             </div>
           )
         })()}
