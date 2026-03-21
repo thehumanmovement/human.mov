@@ -1,5 +1,7 @@
 'use client'
 
+import { t, type Lang } from '@/lib/i18n'
+
 type LinkItem = { title: string; url: string; description?: string }
 
 const POLICY: LinkItem[] = [
@@ -54,28 +56,28 @@ function FooterColumn({ heading, items, showDescriptions = false }: { heading: s
   )
 }
 
-export default function Footer() {
+export default function Footer({ lang }: { lang: Lang }) {
   return (
     <footer className="bg-[#0a0a0a] text-white/80">
       <div className="max-w-6xl mx-auto px-6 py-16 sm:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          <FooterColumn heading="Track AI Policy" items={POLICY} showDescriptions />
-          <FooterColumn heading="Your New Podcast" items={PODCASTS} showDescriptions />
-          <FooterColumn heading="Support Advocacy" items={ADVOCACY} />
-          <FooterColumn heading="Pro-Human Orgs" items={PRO_HUMAN} />
+          <FooterColumn heading={t(lang, 'footerPolicy')} items={POLICY} showDescriptions />
+          <FooterColumn heading={t(lang, 'footerPodcasts')} items={PODCASTS} showDescriptions />
+          <FooterColumn heading={t(lang, 'footerAdvocacy')} items={ADVOCACY} />
+          <FooterColumn heading={t(lang, 'footerProHuman')} items={PRO_HUMAN} />
         </div>
       </div>
 
       <div className="border-t border-white/10 px-6 py-6">
         <p className="text-center text-white/30 text-sm">
-          This page brought to you by{' '}
+          {t(lang, 'footerBroughtBy')}{' '}
           <a
             href="https://www.humanetech.com"
             target="_blank"
             rel="noopener noreferrer"
             className="text-white/50 hover:text-white/70"
           >
-            The Center for Humane Technology
+            {t(lang, 'footerCHT')}
           </a>
         </p>
       </div>

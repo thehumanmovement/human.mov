@@ -35,24 +35,19 @@ export interface SignupFormHandle {
   scrollToForm: () => void
 }
 
-type Variant = 'default' | 'after-globe' | 'after-protect'
+type Variant = 'default' | 'after-globe' | 'after-protect' | 'final'
 
-const VARIANT_COPY: Record<Variant, { line1: string; line2: string; button: string }> = {
-  'default': {
-    line1: 'Make my voice heard',
-    line2: 'while it still counts.',
-    button: 'Add My Voice',
-  },
-  'after-globe': {
-    line1: "It starts with",
-    line2: 'people like you.',
-    button: 'Join Now',
-  },
-  'after-protect': {
-    line1: 'Be part of',
-    line2: 'the global fight.',
-    button: 'Take Action Now',
-  },
+function getVariantCopy(lang: Lang, variant: Variant) {
+  switch (variant) {
+    case 'after-globe':
+      return { line1: t(lang, 'variantLine1Globe'), line2: t(lang, 'variantLine2Globe'), button: t(lang, 'variantButtonGlobe') }
+    case 'after-protect':
+      return { line1: t(lang, 'variantLine1Protect'), line2: t(lang, 'variantLine2Protect'), button: t(lang, 'variantButtonProtect') }
+    case 'final':
+      return { line1: t(lang, 'variantLine1Final'), line2: t(lang, 'variantLine2Final'), button: t(lang, 'variantButtonFinal') }
+    default:
+      return { line1: t(lang, 'tagline1'), line2: t(lang, 'tagline2'), button: t(lang, 'variantButtonDefault') }
+  }
 }
 
 interface SignupFormProps {
@@ -186,10 +181,10 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
           <div className="step-enter">
             <div className="mb-12 text-center">
               <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
-                {variant === 'default' ? t(lang, 'tagline1') : VARIANT_COPY[variant].line1}
+                {getVariantCopy(lang, variant).line1}
               </p>
               <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
-                {variant === 'default' ? t(lang, 'tagline2') : VARIANT_COPY[variant].line2}
+                {getVariantCopy(lang, variant).line2}
               </p>
             </div>
             <form onSubmit={handleEmailNext} className="space-y-4">
@@ -207,7 +202,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
                 disabled={!email.trim()}
                 className={BUTTON_CLASS}
               >
-                {VARIANT_COPY[variant].button}
+                {getVariantCopy(lang, variant).button}
               </button>
             </form>
           </div>

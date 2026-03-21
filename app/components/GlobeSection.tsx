@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
+import { t, type Lang } from '@/lib/i18n'
 
 const OutlineGlobe = dynamic(() => import('./OutlineGlobe'), {
   ssr: false,
@@ -12,7 +13,7 @@ const OutlineGlobe = dynamic(() => import('./OutlineGlobe'), {
   ),
 })
 
-export default function GlobeSection() {
+export default function GlobeSection({ lang }: { lang: Lang }) {
   const sectionRef = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
 
@@ -33,15 +34,15 @@ export default function GlobeSection() {
       <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-20 sm:pt-28 pb-10 sm:pb-16">
         <div className={`text-center mb-2 sm:mb-4 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight">
-            The Human Movement is
+            {t(lang, 'globeTitle1')}
             <br />
-            <span className="text-sunrise">already happening.</span>
+            <span className="text-sunrise">{t(lang, 'globeTitle2')}</span>
           </h2>
           <div className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto space-y-4 text-center">
-            <p>From phone-free schools...</p>
-            <p>To countries banning social media for kids under 16<br />in Australia, India, and France...</p>
-            <p>To people boycotting AI companies that enable mass surveillance...</p>
-            <p className="text-white font-bold">Humanity is pushing back against the anti-human machine.</p>
+            <p>{t(lang, 'globeDesc1')}</p>
+            <p>{t(lang, 'globeDesc2')}</p>
+            <p>{t(lang, 'globeDesc3')}</p>
+            <p className="text-white font-bold">{t(lang, 'globeDesc4')}</p>
           </div>
         </div>
       </div>

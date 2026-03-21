@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
-import { isValidLang, LANGUAGES, type Lang } from '@/lib/i18n'
+import { isValidLang, LANGUAGES, t, type Lang } from '@/lib/i18n'
 import LanguageSelector from './components/LanguageSelector'
 import VideoHero from './components/VideoHero'
 import SignupForm, { type SignupFormHandle } from './components/SignupForm'
@@ -39,7 +39,7 @@ export default function Home() {
       <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} />
       <VideoHero lang={lang} onJoinClick={() => formRef.current?.scrollToForm()} />
       <SignupForm ref={formRef} lang={lang} variant="after-globe" />
-      <GlobeSection />
+      <GlobeSection lang={lang} />
       {/* <SignupForm ref={formRef} lang={lang} variant="after-globe" /> */}
 
       {/* Transition into Protecting section */}
@@ -53,12 +53,12 @@ export default function Home() {
 
       {/* <ProtectOurScroll lang={lang} /> */}
       <SignupForm lang={lang} variant="after-protect" />
-      <GetInformed />
+      <GetInformed lang={lang} />
 
       {/* In Alliance With */}
       <section className="px-6 pt-40 pb-44 sm:pt-52 sm:pb-56 bg-[#111]">
         <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-28">
-          In Alliance With
+          {t(lang, 'partnersTitle')}
         </p>
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36 mb-20 sm:mb-24">

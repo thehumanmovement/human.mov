@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { t, type Lang } from '@/lib/i18n'
 
 const VIDEOS = [
   {
@@ -20,14 +21,14 @@ const VIDEOS = [
   },
 ]
 
-export default function GetInformed() {
+export default function GetInformed({ lang }: { lang: Lang }) {
   const [active, setActive] = useState(0)
 
   return (
     <section className="bg-[#0a0a0a] py-20 sm:py-28 overflow-hidden">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
         <h2 className="font-serif uppercase text-4xl sm:text-5xl text-white mb-12 leading-tight text-center">
-          Get <span className="text-sunrise">Informed.</span>
+          {t(lang, 'getInformed1')}<span className="text-sunrise">{t(lang, 'getInformed2')}</span>
         </h2>
       </div>
 

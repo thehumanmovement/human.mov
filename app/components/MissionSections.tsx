@@ -44,17 +44,17 @@ export default function MissionSections({ lang }: { lang: Lang }) {
         <div className="max-w-3xl mx-auto">
           <div className="space-y-12 sm:space-y-16 mb-16 sm:mb-20">
             <p className="font-serif italic text-white text-2xl sm:text-4xl lg:text-5xl leading-snug sm:leading-tight tracking-tight text-center font-bold">
-              A handful of companies are deciding how the world&apos;s most powerful technologies will shape humanity&apos;s future.
+              {t(lang, 'missionLine1')}
             </p>
             <p className="font-serif italic text-white/70 text-2xl sm:text-4xl lg:text-5xl leading-snug sm:leading-tight tracking-tight text-center font-semibold">
-              AI is being unleashed recklessly, driven by deeply misaligned incentives.
+              {t(lang, 'missionLine2')}
             </p>
             <p className="font-serif italic text-[#D4A84B] text-3xl sm:text-5xl lg:text-6xl leading-snug sm:leading-tight tracking-tight text-center font-black">
-              It&apos;s our time to choose.
+              {t(lang, 'missionLine3')}
             </p>
           </div>
           <p className="text-center text-[#D4A84B]/50 font-body text-xs sm:text-sm tracking-wide font-semibold">
-            Join {signupCount.toLocaleString()} Humans
+            {t(lang, 'joinCount').replace('{count}', signupCount.toLocaleString())}
           </p>
         </div>
       </section>
@@ -64,10 +64,10 @@ export default function MissionSections({ lang }: { lang: Lang }) {
         <div className="max-w-3xl mx-auto">
           <blockquote>
             <p className="font-serif italic text-white text-2xl sm:text-4xl lg:text-5xl leading-snug sm:leading-tight tracking-tight text-center font-bold">
-              &ldquo;If we can be the wisest and most mature version of ourselves, there might be a way through this.&rdquo;
+              {t(lang, 'quoteTristan')}
             </p>
             <footer className="mt-6 text-center text-[#D4A84B]/70 font-body text-sm sm:text-base tracking-wide font-semibold">
-              &mdash; Tristan Harris
+              {t(lang, 'quoteAttrib')}
             </footer>
           </blockquote>
         </div>
@@ -91,7 +91,7 @@ export default function MissionSections({ lang }: { lang: Lang }) {
       {/* Partners */}
       <section className="px-6 py-24 sm:py-32 bg-white">
         <p className="text-center text-sm font-body font-semibold tracking-widest uppercase text-black/50 mb-16">
-          Partners
+          {t(lang, 'partnersTitle')}
         </p>
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-12 sm:gap-16 lg:gap-20 mb-10 sm:mb-14">

@@ -64,9 +64,9 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
         </h1>
 
         <div className="mt-8 font-body text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed space-y-4">
-          <p>Social media's race for eyeballs took our kids.</p>
-          <p>Now, trillion-dollar AI companies are caught in a race to take a billion peoples' livelihoods, agency, and future.</p>
-          <p>We are a human movement, against the anti-human machine.</p>
+          <p>{t(lang, 'heroLine1')}</p>
+          <p>{t(lang, 'heroLine2')}</p>
+          <p>{t(lang, 'heroLine3')}</p>
         </div>
 
         <button
