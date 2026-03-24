@@ -19,6 +19,7 @@ export default function SenatorLookup({ lang, initialZip, signupId, userName, us
   const [lookupError, setLookupError] = useState('')
   const [looked, setLooked] = useState(false)
   const [geoStatus, setGeoStatus] = useState<'idle' | 'asking' | 'loading' | 'done' | 'denied'>('idle')
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
   const zipInputRef = useRef<HTMLInputElement>(null)
   const hasAutoLooked = useRef(false)
 
@@ -99,6 +100,39 @@ export default function SenatorLookup({ lang, initialZip, signupId, userName, us
     e.preventDefault()
     if (/^\d{5}$/.test(zip)) {
       lookupSenators(zip)
+    }
+  }
+
+  function getEmailBody(senator: Senator) {
+    return `Dear Senator ${senator.name},
+
+My name is ${userName || '[Your Name]'} and I am a constituent from ${userZip || zip || '[Your Zip Code]'}.
+
+I am writing to ask you to watch the documentary "The AI Doc: Or How I Became an Apocaloptimist," which premieres March 27th. The film examines the urgent risks that artificial intelligence poses to American jobs, our children's wellbeing, and our democratic institutions.
+
+I believe it is critical that our elected officials understand these challenges as they consider AI policy. I would be grateful if you would watch the film and share it with your colleagues.
+
+You can find more information at: https://www.human.mov
+
+Thank you for your time and service.
+
+Sincerely,
+${userName || '[Your Name]'}`
+  }
+
+  async function copyMessageAndOpen(senator: Senator, index: number) {
+    const message = getEmailBody(senator)
+    try {
+      await navigator.clipboard.writeText(message)
+      setCopiedIndex(index)
+      setTimeout(() => setCopiedIndex(null), 2000)
+    } catch {
+      // fallback
+    }
+    // Open contact form or website in new tab
+    const url = senator.contactForm || senator.urls?.[0]
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer')
     }
   }
 
@@ -191,6 +225,12 @@ export default function SenatorLookup({ lang, initialZip, signupId, userName, us
           </div>
 
           <div className="flex gap-2 mt-3">
+            <button
+              onClick={() => copyMessageAndOpen(senator, i)}
+              className="flex-1 text-center py-2 bg-sunrise text-black rounded-lg text-sm font-body font-semibold hover:bg-sunrise-light transition-all"
+            >
+              {copiedIndex === i ? `✓ ${t(lang, 'senatorCopied')}` : t(lang, 'senatorWrite')}
+            </button>
             {senator.phones[0] && (
               <a
                 href={`tel:${senator.phones[0]}`}
@@ -199,24 +239,19 @@ export default function SenatorLookup({ lang, initialZip, signupId, userName, us
                 {t(lang, 'senatorCall')}
               </a>
             )}
-            <a
-              href={`mailto:?subject=${encodeURIComponent(`Please watch "The AI Doc" — a film about AI's impact on humanity`)}&body=${encodeURIComponent(`Dear Senator ${senator.name},\n\nMy name is ${userName || '[Your Name]'} and I am a constituent from ${userZip || zip || '[Your Zip Code]'}.\n\nI am writing to ask you to watch the documentary "The AI Doc: Or How I Became an Apocaloptimist," which premieres March 27th. The film examines the urgent risks that artificial intelligence poses to American jobs, our children's wellbeing, and our democratic institutions.\n\nI believe it is critical that our elected officials understand these challenges as they consider AI policy. I would be grateful if you would watch the film and share it with your colleagues.\n\nYou can find more information at: https://www.human.mov\n\nThank you for your time and service.\n\nSincerely,\n${userName || '[Your Name]'}`)}`}
-              className="flex-1 text-center py-2 bg-sunrise text-black rounded-lg text-sm font-body font-semibold hover:bg-sunrise-light transition-all"
-            >
-              Email
-            </a>
           </div>
           <div className="flex gap-2 mt-2">
-            {senator.contactForm && (
-              <a
-                href={senator.contactForm}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 text-center py-2 bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-lg text-sm font-body font-semibold hover:bg-white/10 transition-all"
-              >
-                Contact Form
-              </a>
-            )}
+            <button
+              onClick={() => {
+                const message = getEmailBody(senator)
+                navigator.clipboard.writeText(message).catch(() => {})
+                setCopiedIndex(i)
+                setTimeout(() => setCopiedIndex(null), 2000)
+              }}
+              className="flex-1 text-center py-2 bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-lg text-sm font-body font-semibold hover:bg-white/10 transition-all"
+            >
+              {copiedIndex === i ? `✓ ${t(lang, 'senatorCopied')}` : t(lang, 'senatorCopyMessage')}
+            </button>
             <button
               onClick={() => generateVCard(senator)}
               className="flex-1 text-center py-2 bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-lg text-sm font-body font-semibold hover:bg-white/10 transition-all"
