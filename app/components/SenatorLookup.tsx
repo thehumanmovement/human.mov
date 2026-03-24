@@ -160,7 +160,7 @@ export default function SenatorLookup({ lang, initialZip }: { lang: Lang; initia
               <img
                 src={senator.photoUrl}
                 alt={senator.name}
-                className="w-12 h-12 rounded-full object-cover bg-white/10"
+                className="w-14 h-14 rounded-full object-cover bg-white/10 border border-white/20"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
               />
             )}
