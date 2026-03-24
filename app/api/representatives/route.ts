@@ -7,6 +7,7 @@ interface Official {
   phones: string[]
   photoUrl?: string
   urls?: string[]
+  contactForm?: string
 }
 
 interface GovTrackRole {
@@ -73,6 +74,7 @@ export async function GET(req: Request) {
           ? `/api/senator-photo?id=${govtrackId}`
           : undefined,
         urls: role.website ? [role.website] : [],
+        contactForm: role.extra?.contact_form || undefined,
       }
     })
 

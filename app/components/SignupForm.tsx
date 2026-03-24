@@ -1,8 +1,10 @@
 'use client'
 
-import { useState, useRef, forwardRef, useImperativeHandle, type FormEvent } from 'react'
+import { useState, useEffect, useRef, forwardRef, useImperativeHandle, type FormEvent } from 'react'
 import { t, type Lang } from '@/lib/i18n'
+import type { AbVariant } from '@/lib/useAbVariant'
 import SenatorLookup from './SenatorLookup'
+import PhoneInput from './PhoneInput'
 
 type Step = 'email' | 'details' | 'verify-email' | 'phone' | 'verify-phone' | 'welcome'
 
@@ -53,10 +55,12 @@ function getVariantCopy(lang: Lang, variant: Variant) {
 interface SignupFormProps {
   lang: Lang
   variant?: Variant
+  abVariant?: AbVariant
 }
 
-const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default' }, ref) {
-  const [step, setStep] = useState<Step>('email')
+const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default', abVariant = 'A' }, ref) {
+  const isPhoneFirst = abVariant === 'B'
+  const [step, setStep] = useState<Step>(isPhoneFirst ? 'phone' : 'email')
   const [signupId, setSignupId] = useState('')
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
@@ -67,19 +71,32 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   const [error, setError] = useState('')
   const [openAction, setOpenAction] = useState<number | null>(0)
 
+  // Sync step when abVariant changes after mount (cookie read is async)
+  useEffect(() => {
+    if (step === 'email' && isPhoneFirst) setStep('phone')
+    else if (step === 'phone' && !isPhoneFirst) setStep('email')
+  }, [isPhoneFirst]) // eslint-disable-line react-hooks/exhaustive-deps
+
   const formSectionRef = useRef<HTMLElement>(null)
   const emailInputRef = useRef<HTMLInputElement>(null)
+  const phoneInputRef = useRef<HTMLInputElement>(null)
 
   useImperativeHandle(ref, () => ({
     scrollToForm() {
       formSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
-      setTimeout(() => emailInputRef.current?.focus(), 600)
+      setTimeout(() => (isPhoneFirst ? phoneInputRef : emailInputRef).current?.focus(), 600)
     },
   }))
 
   function handleEmailNext(e: FormEvent) {
     e.preventDefault()
     if (!email.trim()) return
+    setStep('details')
+  }
+
+  function handlePhoneNext(e: FormEvent) {
+    e.preventDefault()
+    if (!phone.trim()) return
     setStep('details')
   }
 
@@ -91,7 +108,14 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fullName, email, zipCode, lang }),
+      body: JSON.stringify({
+        fullName,
+        email: email || undefined,
+        phone: isPhoneFirst ? phone : undefined,
+        zipCode,
+        lang,
+        abVariant,
+      }),
     })
     const data = await res.json()
 
@@ -103,7 +127,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
     setSignupId(data.id)
     setLoading(false)
-    setStep('verify-email')
+    setStep(isPhoneFirst ? 'verify-phone' : 'verify-email')
   }
 
   async function handleEmailVerify(e: FormEvent) {
@@ -215,7 +239,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               {t(lang, 'headingLine1')} {t(lang, 'headingLine2')}
             </p>
             <p className="text-white/50 text-sm font-body mb-8 text-center">
-              {email}
+              {isPhoneFirst ? phone : email}
             </p>
             <input
               type="text"
@@ -226,6 +250,15 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               autoFocus
               className={INPUT_CLASS}
             />
+            {isPhoneFirst && (
+              <input
+                type="email"
+                placeholder={t(lang, 'placeholderEmailOptional')}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={INPUT_CLASS}
+              />
+            )}
             <input
               type="text"
               inputMode="numeric"
@@ -243,7 +276,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             </button>
             <button
               type="button"
-              onClick={() => setStep('email')}
+              onClick={() => setStep(isPhoneFirst ? 'phone' : 'email')}
               className="mt-2 w-full text-center text-sm text-white/30 hover:text-white/50 transition-colors font-body"
             >
               {t(lang, 'goBack')}
@@ -291,7 +324,36 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
           </form>
         )}
 
-        {step === 'phone' && (
+        {step === 'phone' && isPhoneFirst && (
+          <div className="step-enter">
+            <div className="mb-12 text-center">
+              <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
+                {getVariantCopy(lang, variant).line1}
+              </p>
+              <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
+                {getVariantCopy(lang, variant).line2}
+              </p>
+            </div>
+            <form onSubmit={handlePhoneNext} className="space-y-4">
+              <PhoneInput
+                ref={phoneInputRef}
+                placeholder={t(lang, 'phoneOnlyPlaceholder')}
+                value={phone}
+                onChange={setPhone}
+                className={INPUT_CLASS}
+              />
+              <button
+                type="submit"
+                disabled={!phone.trim()}
+                className={BUTTON_CLASS}
+              >
+                {getVariantCopy(lang, variant).button}
+              </button>
+            </form>
+          </div>
+        )}
+
+        {step === 'phone' && !isPhoneFirst && (
           <form onSubmit={handlePhoneSend} className="step-enter">
             <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white">
               {t(lang, 'emailVerified')}
@@ -299,12 +361,10 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             <p className="font-serif uppercase text-2xl sm:text-3xl mb-8 leading-snug text-sunrise">
               {t(lang, 'nowPhone')}
             </p>
-            <input
-              type="tel"
+            <PhoneInput
               placeholder={t(lang, 'phonePlaceholder')}
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
+              onChange={setPhone}
               autoFocus
               className={INPUT_CLASS}
             />
@@ -317,10 +377,10 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
         {step === 'verify-phone' && (
           <form onSubmit={handlePhoneVerify} className="step-enter">
             <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white">
-              {t(lang, 'almostThere')}
+              {isPhoneFirst ? t(lang, 'checkPhone') : t(lang, 'almostThere')}
             </p>
             <p className="text-white/50 text-sm font-body mb-8">
-              {t(lang, 'textedCode')} <span className="text-white">{phone}</span>
+              {t(lang, isPhoneFirst ? 'sentSmsCode' : 'textedCode')} <span className="text-white">{phone}</span>
             </p>
             <input
               type="text"
@@ -339,11 +399,20 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             </button>
             <button
               type="button"
-              onClick={() => { setCode(''); setStep('phone') }}
+              onClick={() => { setCode(''); setStep(isPhoneFirst ? 'details' : 'phone') }}
               className="mt-4 w-full text-center text-sm text-white/30 hover:text-white/50 transition-colors font-body"
             >
-              {t(lang, 'differentNumber')}
+              {t(lang, 'goBack')}
             </button>
+            {isPhoneFirst && (
+              <button
+                type="button"
+                onClick={() => setStep('welcome')}
+                className="mt-3 w-full text-center text-sm text-white/20 hover:text-white/40 transition-colors font-body"
+              >
+                {t(lang, 'skipVerification')}
+              </button>
+            )}
           </form>
         )}
 
@@ -435,12 +504,11 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
                 {chevron(3)}
               </button>
               <div className={panel(3)}><div className="px-5 pb-5">
-                {openAction === 3 && <SenatorLookup lang={lang} initialZip={zipCode} />}
+                {openAction === 3 && <SenatorLookup lang={lang} initialZip={zipCode} signupId={signupId} userName={fullName} userZip={zipCode} />}
                 <div className="mt-5 bg-white/[0.03] border border-white/[0.08] rounded-xl p-4">
                   <p className="text-white/60 text-xs font-body font-semibold uppercase tracking-wide mb-2">If calling, say something like:</p>
                   <p className="text-white/50 text-sm font-body italic leading-relaxed">&ldquo;Hi, my name is <span className="text-white/80">{fullName || '[Your Name]'}</span> and I&apos;m a constituent. I&apos;m calling to ask the Senator to watch the documentary &lsquo;The AI Doc&rsquo; — it covers the urgent risks AI poses to jobs, children, and democracy. I&apos;d appreciate it if the Senator would watch it and share it with colleagues. Thank you.&rdquo;</p>
                 </div>
-                <a href={'mailto:?subject=' + encodeURIComponent('Please watch "The AI Doc" — a film about AI\'s impact on humanity') + '&body=' + encodeURIComponent('Dear Senator,\n\nMy name is ' + (fullName || '[Your Name]') + ' and I am a constituent from ' + (zipCode || '[Your Zip Code]') + '.\n\nI am writing to ask you to watch the documentary "The AI Doc: Or How I Became an Apocaloptimist," which premieres March 27th. The film examines the urgent risks that artificial intelligence poses to American jobs, our children\'s wellbeing, and our democratic institutions.\n\nI believe it is critical that our elected officials understand these challenges as they consider AI policy. I would be grateful if you would watch the film and share it with your colleagues.\n\nYou can find more information at: https://www.human.mov\n\nThank you for your time and service.\n\nSincerely,\n' + (fullName || '[Your Name]'))} className="mt-4 block w-full text-center bg-sunrise text-black rounded-full py-3 text-sm font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 hover:scale-[1.02]">Email Your Senators</a>
               </div></div>
             </div>
 

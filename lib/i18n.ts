@@ -123,6 +123,11 @@ const translations = {
     variantLine2Final: 'while it still counts.',
     variantButtonFinal: 'Join Now',
     skipVerification: 'Continue without verification',
+    // Phone-first AB variant (B)
+    phoneOnlyPlaceholder: 'Enter my phone number',
+    checkPhone: 'Check your phone.',
+    sentSmsCode: 'We texted a 6-digit code to',
+    placeholderEmailOptional: 'Email (optional)',
   },
   es: {
     headingLine1: 'El Movimiento',
@@ -222,6 +227,10 @@ const translations = {
     variantLine2Final: 'mientras aún cuenta.',
     variantButtonFinal: 'Únete Ahora',
     skipVerification: 'Continuar sin verificación',
+    phoneOnlyPlaceholder: 'Ingresa tu teléfono',
+    checkPhone: 'Revisa tu teléfono.',
+    sentSmsCode: 'Enviamos un código de 6 dígitos a',
+    placeholderEmailOptional: 'Correo electrónico (opcional)',
   },
   zh: {
     headingLine1: '人类',
@@ -321,6 +330,10 @@ const translations = {
     variantLine2Final: '趁一切还来得及。',
     variantButtonFinal: '立即加入',
     skipVerification: '跳过验证，继续',
+    phoneOnlyPlaceholder: '输入我的手机号',
+    checkPhone: '请查看手机。',
+    sentSmsCode: '我们已发送6位验证码到',
+    placeholderEmailOptional: '电子邮箱（可选）',
   },
   ja: {
     headingLine1: 'ヒューマン',
@@ -420,6 +433,10 @@ const translations = {
     variantLine2Final: '今ならまだ間に合う。',
     variantButtonFinal: '今すぐ参加',
     skipVerification: '認証せずに続ける',
+    phoneOnlyPlaceholder: '電話番号を入力',
+    checkPhone: '携帯電話を確認してください。',
+    sentSmsCode: '6桁の認証コードを送信しました',
+    placeholderEmailOptional: 'メールアドレス（任意）',
   },
   ko: {
     headingLine1: '휴먼',
@@ -519,6 +536,10 @@ const translations = {
     variantLine2Final: '아직 늦지 않았을 때.',
     variantButtonFinal: '지금 참여',
     skipVerification: '인증 없이 계속',
+    phoneOnlyPlaceholder: '전화번호를 입력하세요',
+    checkPhone: '휴대폰을 확인하세요.',
+    sentSmsCode: '6자리 인증 코드를 전송했습니다',
+    placeholderEmailOptional: '이메일 (선택사항)',
   },
   fr: {
     headingLine1: 'Le Mouvement',
@@ -618,6 +639,10 @@ const translations = {
     variantLine2Final: "tant qu'il est encore temps.",
     variantButtonFinal: 'Rejoindre Maintenant',
     skipVerification: 'Continuer sans vérification',
+    phoneOnlyPlaceholder: 'Entrez mon numéro de téléphone',
+    checkPhone: 'Vérifiez votre téléphone.',
+    sentSmsCode: 'Nous avons envoyé un code à 6 chiffres au',
+    placeholderEmailOptional: 'E-mail (facultatif)',
   },
   hi: {
     headingLine1: 'द ह्यूमन',
@@ -717,6 +742,10 @@ const translations = {
     variantLine2Final: 'जब तक वक़्त है।',
     variantButtonFinal: 'अभी जुड़ें',
     skipVerification: 'सत्यापन के बिना जारी रखें',
+    phoneOnlyPlaceholder: 'अपना फ़ोन नंबर दर्ज करें',
+    checkPhone: 'अपना फ़ोन जांचें।',
+    sentSmsCode: 'हमने 6 अंकों का कोड भेजा है',
+    placeholderEmailOptional: 'ईमेल (वैकल्पिक)',
   },
   ar: {
     headingLine1: 'الحركة',
@@ -816,6 +845,10 @@ const translations = {
     variantLine2Final: 'قبل فوات الأوان.',
     variantButtonFinal: 'انضم الآن',
     skipVerification: 'المتابعة بدون تحقق',
+    phoneOnlyPlaceholder: 'أدخل رقم هاتفي',
+    checkPhone: 'تحقق من هاتفك.',
+    sentSmsCode: 'أرسلنا رمزًا مكونًا من 6 أرقام إلى',
+    placeholderEmailOptional: 'البريد الإلكتروني (اختياري)',
   },
 } as const
 

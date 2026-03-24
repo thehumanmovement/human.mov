@@ -9,9 +9,10 @@ interface Senator {
   phones: string[]
   photoUrl?: string
   urls?: string[]
+  contactForm?: string
 }
 
-export default function SenatorLookup({ lang, initialZip }: { lang: Lang; initialZip: string }) {
+export default function SenatorLookup({ lang, initialZip, signupId, userName, userZip }: { lang: Lang; initialZip: string; signupId?: string; userName?: string; userZip?: string }) {
   const [zip, setZip] = useState(initialZip || '')
   const [senators, setSenators] = useState<Senator[]>([])
   const [lookupLoading, setLookupLoading] = useState(false)
@@ -79,6 +80,15 @@ export default function SenatorLookup({ lang, initialZip }: { lang: Lang; initia
       }
 
       setSenators(data.senators || [])
+
+      // Save zip code to signup record if not already stored
+      if (signupId) {
+        fetch('/api/signup/update-zip', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: signupId, zipCode }),
+        }).catch(() => {}) // fire-and-forget
+      }
     } catch {
       setLookupError('Network error')
     }
@@ -187,6 +197,24 @@ export default function SenatorLookup({ lang, initialZip }: { lang: Lang; initia
                 className="flex-1 text-center py-2 bg-sunrise text-black rounded-lg text-sm font-body font-semibold hover:bg-sunrise-light transition-all"
               >
                 {t(lang, 'senatorCall')}
+              </a>
+            )}
+            <a
+              href={`mailto:?subject=${encodeURIComponent(`Please watch "The AI Doc" — a film about AI's impact on humanity`)}&body=${encodeURIComponent(`Dear Senator ${senator.name},\n\nMy name is ${userName || '[Your Name]'} and I am a constituent from ${userZip || zip || '[Your Zip Code]'}.\n\nI am writing to ask you to watch the documentary "The AI Doc: Or How I Became an Apocaloptimist," which premieres March 27th. The film examines the urgent risks that artificial intelligence poses to American jobs, our children's wellbeing, and our democratic institutions.\n\nI believe it is critical that our elected officials understand these challenges as they consider AI policy. I would be grateful if you would watch the film and share it with your colleagues.\n\nYou can find more information at: https://www.human.mov\n\nThank you for your time and service.\n\nSincerely,\n${userName || '[Your Name]'}`)}`}
+              className="flex-1 text-center py-2 bg-sunrise text-black rounded-lg text-sm font-body font-semibold hover:bg-sunrise-light transition-all"
+            >
+              Email
+            </a>
+          </div>
+          <div className="flex gap-2 mt-2">
+            {senator.contactForm && (
+              <a
+                href={senator.contactForm}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 text-center py-2 bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-lg text-sm font-body font-semibold hover:bg-white/10 transition-all"
+              >
+                Contact Form
               </a>
             )}
             <button

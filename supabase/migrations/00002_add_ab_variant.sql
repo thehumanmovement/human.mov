@@ -1,0 +1,1 @@
+ALTER TABLE signups ADD COLUMN IF NOT EXISTS ab_variant text DEFAULT 'A';
