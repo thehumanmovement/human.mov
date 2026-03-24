@@ -280,6 +280,13 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             >
               {t(lang, 'goBack')}
             </button>
+            <button
+              type="button"
+              onClick={() => setStep('welcome')}
+              className="mt-3 w-full text-center text-sm text-white/20 hover:text-white/40 transition-colors font-body"
+            >
+              {t(lang, 'skipVerification')}
+            </button>
           </form>
         )}
 

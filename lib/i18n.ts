@@ -122,6 +122,7 @@ const translations = {
     variantLine1Final: 'Help us reach 1 million voices',
     variantLine2Final: 'while it still counts.',
     variantButtonFinal: 'Join Now',
+    skipVerification: 'Continue without verification',
   },
   es: {
     headingLine1: 'El Movimiento',
@@ -220,6 +221,7 @@ const translations = {
     variantLine1Final: 'Ayúdanos a llegar a 1 millón de voces',
     variantLine2Final: 'mientras aún cuenta.',
     variantButtonFinal: 'Únete Ahora',
+    skipVerification: 'Continuar sin verificación',
   },
   zh: {
     headingLine1: '人类',
@@ -318,6 +320,7 @@ const translations = {
     variantLine1Final: '帮助我们达到一百万个声音',
     variantLine2Final: '趁一切还来得及。',
     variantButtonFinal: '立即加入',
+    skipVerification: '跳过验证，继续',
   },
   ja: {
     headingLine1: 'ヒューマン',
@@ -416,6 +419,7 @@ const translations = {
     variantLine1Final: '100万の声を集めよう',
     variantLine2Final: '今ならまだ間に合う。',
     variantButtonFinal: '今すぐ参加',
+    skipVerification: '認証せずに続ける',
   },
   ko: {
     headingLine1: '휴먼',
@@ -514,6 +518,7 @@ const translations = {
     variantLine1Final: '100만 명의 목소리를 모아주세요',
     variantLine2Final: '아직 늦지 않았을 때.',
     variantButtonFinal: '지금 참여',
+    skipVerification: '인증 없이 계속',
   },
   fr: {
     headingLine1: 'Le Mouvement',
@@ -612,6 +617,7 @@ const translations = {
     variantLine1Final: 'Aidez-nous à atteindre 1 million de voix',
     variantLine2Final: "tant qu'il est encore temps.",
     variantButtonFinal: 'Rejoindre Maintenant',
+    skipVerification: 'Continuer sans vérification',
   },
   hi: {
     headingLine1: 'द ह्यूमन',
@@ -710,6 +716,7 @@ const translations = {
     variantLine1Final: '10 लाख आवाज़ें जुटाने में हमारी मदद करें',
     variantLine2Final: 'जब तक वक़्त है।',
     variantButtonFinal: 'अभी जुड़ें',
+    skipVerification: 'सत्यापन के बिना जारी रखें',
   },
   ar: {
     headingLine1: 'الحركة',
@@ -808,6 +815,7 @@ const translations = {
     variantLine1Final: 'ساعدنا في الوصول إلى مليون صوت',
     variantLine2Final: 'قبل فوات الأوان.',
     variantButtonFinal: 'انضم الآن',
+    skipVerification: 'المتابعة بدون تحقق',
   },
 } as const
 
