@@ -38,6 +38,16 @@ export default function Home() {
     <>
       <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} />
       <VideoHero lang={lang} onJoinClick={() => formRef.current?.scrollToForm()} onHeroSignup={(email) => formRef.current?.startWithEmail(email)} />
+
+      {/* Manifesto section */}
+      <section className="bg-[#111] px-6 py-24 sm:py-32">
+        <div className="max-w-2xl mx-auto text-center font-body text-lg sm:text-xl text-white/80 leading-relaxed space-y-6">
+          <p>{t(lang, 'heroLine1')}</p>
+          <p>{t(lang, 'heroLine2')}</p>
+          <p className="text-white font-semibold">{t(lang, 'heroLine3')}</p>
+        </div>
+      </section>
+
       <SignupForm ref={formRef} lang={lang} variant="after-globe" />
       <GlobeSection lang={lang} />
       {/* <SignupForm ref={formRef} lang={lang} variant="after-globe" /> */}
