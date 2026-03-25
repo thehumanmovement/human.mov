@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { WINS, type WinInfo } from '../../lib/wins-data'
 
 interface CardRegion {
@@ -9,7 +9,7 @@ interface CardRegion {
 
 const REGIONS: CardRegion[] = [
   { names: [{ name: 'United States of America', label: 'United States' }] },
-  { names: [{ name: 'Australia', label: 'Australia' }, { name: 'India', label: 'India' }] },
+  { names: [{ name: 'Australia', label: 'World Wide' }, { name: 'India', label: 'World Wide' }] },
   { names: [{ name: 'China', label: 'China' }] },
 ]
 
@@ -40,6 +40,20 @@ export default function WatchGlobeScroll({ lang }: Props) {
   const [slideDirs, setSlideDirs] = useState<(string | null)[]>(REGIONS.map(() => null))
   const touchStartX = useRef<number | null>(null)
   const touchCardIdx = useRef<number | null>(null)
+  const [contentHeights, setContentHeights] = useState<(number | null)[]>(REGIONS.map(() => null))
+
+  const measureContentHeight = useCallback((cardIndex: number, el: HTMLDivElement | null) => {
+    if (!el) return
+    requestAnimationFrame(() => {
+      const h = el.scrollHeight
+      setContentHeights(prev => {
+        if (prev[cardIndex] === h) return prev
+        const n = [...prev]
+        n[cardIndex] = h
+        return n
+      })
+    })
+  }, [])
 
   useEffect(() => {
     const el = sectionRef.current
@@ -126,7 +140,8 @@ export default function WatchGlobeScroll({ lang }: Props) {
                   <span>{win.date}</span>
                 </div>
                 <div
-                  className="min-h-[80px] overflow-hidden relative"
+                  className="overflow-hidden relative transition-[height] duration-400 ease-out"
+                  style={{ height: contentHeights[i] != null ? `${contentHeights[i]}px` : 'auto', minHeight: '80px' }}
                   onTouchStart={(e) => {
                     touchStartX.current = e.touches[0].clientX
                     touchCardIdx.current = i
@@ -145,6 +160,7 @@ export default function WatchGlobeScroll({ lang }: Props) {
                 >
                   <div
                     key={`${region.names[0].name}-${curIdx}`}
+                    ref={(el) => measureContentHeight(i, el)}
                     className={slideDir ? 'animate-slide-in' : ''}
                     style={slideDir ? {
                       animationName: slideDir === 'left' ? 'slideFromRight' : 'slideFromLeft',

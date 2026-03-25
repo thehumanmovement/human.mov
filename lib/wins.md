@@ -95,11 +95,11 @@ The Indian Parliament is in discussions on a bill to restrict social media for t
 # Australia
 > Tour: lat -25, lng 134, zoom 2.0
 
-## Social Media Ban for Kids Under 16
+## Australia Sparks Wave of Countries Banning Social Media for Kids
 - Date: December 2025
 - URL: https://www.theguardian.com/australia-news/2026/mar/04/australia-social-media-ban-under-16s-three-month-review
 
-First nation to ban social media for children under 16, sparking a global wave of similar action and planned action: France, Denmark, Spain, Indonesia, ...
+Australia becomes the first nation to ban social media for children under 16, sparking a global wave of similar action and planned action: France, Denmark, Spain, Indonesia, ...
 
 ---
 
