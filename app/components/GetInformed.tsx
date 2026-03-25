@@ -1,7 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-import { t, type Lang } from '@/lib/i18n'
+import { type Lang } from '@/lib/i18n'
 
 const VIDEOS = [
   {
@@ -22,13 +21,14 @@ const VIDEOS = [
 ]
 
 export default function GetInformed({ lang }: { lang: Lang }) {
-  const [active, setActive] = useState(0)
 
   return (
     <section className="bg-[#0a0a0a] py-20 sm:py-28 overflow-hidden">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
-        <h2 className="font-serif uppercase text-4xl sm:text-5xl text-white mb-12 leading-tight text-center">
-          {t(lang, 'getInformed1')}<span className="text-sunrise">{t(lang, 'getInformed2')}</span>
+        <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight text-center">
+          Out Now
+          <br />
+          <span className="text-sunrise">In Theaters Only.</span>
         </h2>
       </div>
 
@@ -36,60 +36,21 @@ export default function GetInformed({ lang }: { lang: Lang }) {
       <div className="max-w-4xl mx-auto px-5 sm:px-8 mb-10">
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black/50 border border-white/10">
           <iframe
-            key={VIDEOS[active].id}
-            src={`https://www.youtube.com/embed/${VIDEOS[active].id}?rel=0`}
-            title={VIDEOS[active].title}
+            src={`https://www.youtube.com/embed/${VIDEOS[0].id}?rel=0&modestbranding=1`}
+            title={VIDEOS[0].title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="absolute inset-0 w-full h-full"
           />
+          {/* Gradient overlay to hide YouTube title bar */}
+          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/80 to-transparent pointer-events-none" />
         </div>
       </div>
 
-      {/* Thumbnail carousel */}
-      <div className="max-w-4xl mx-auto px-5 sm:px-8">
-        <div className="flex gap-4 justify-center">
-          {VIDEOS.map((video, i) => (
-            <button
-              key={video.id}
-              onClick={() => setActive(i)}
-              className={`flex-shrink-0 w-[200px] sm:w-[280px] rounded-xl overflow-hidden border transition-all duration-300 text-left ${
-                i === active
-                  ? 'border-sunrise/50 ring-1 ring-sunrise/30 scale-[1.02]'
-                  : 'border-white/10 hover:border-white/20'
-              }`}
-            >
-              <div className="relative aspect-video bg-black/40">
-                <img
-                  src={`https://img.youtube.com/vi/${video.id}/mqdefault.jpg`}
-                  alt={video.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                  loading="lazy"
-                />
-                {i === active && (
-                  <div className="absolute inset-0 bg-sunrise/20 flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full bg-sunrise/80 flex items-center justify-center">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="p-3 bg-white/[0.03]">
-                <p className={`font-body text-xs sm:text-sm font-semibold leading-snug line-clamp-2 ${
-                  i === active ? 'text-sunrise' : 'text-white/80'
-                }`}>
-                  {video.title}
-                </p>
-                {video.subtitle && (
-                  <p className="font-body text-xs text-white/30 mt-1 truncate">
-                    {video.subtitle}
-                  </p>
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
+      <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto text-center px-5 sm:px-8">
+        2.5 years in the making, The AI Doc clarifies the consequences of the default path.
+      </p>
+
     </section>
   )
 }

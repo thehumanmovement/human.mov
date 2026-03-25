@@ -38,6 +38,8 @@ export default function WatchGlobeScroll({ lang }: Props) {
   const [activeCard, setActiveCard] = useState(-1)
   const [carouselIndices, setCarouselIndices] = useState<number[]>(REGIONS.map(() => 0))
   const [slideDirs, setSlideDirs] = useState<(string | null)[]>(REGIONS.map(() => null))
+  const touchStartX = useRef<number | null>(null)
+  const touchCardIdx = useRef<number | null>(null)
 
   useEffect(() => {
     const el = sectionRef.current
@@ -83,7 +85,9 @@ export default function WatchGlobeScroll({ lang }: Props) {
           <span className="text-sunrise">Gaining Speed.</span>
         </h2>
         <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto">
-          A global force is growing to protect our jobs, our kids and our freedom. To keep humans in control and make it safe for all of us.
+          A global force is growing to protect our jobs, our kids and our freedom.
+          <br />
+          To keep humans in control and make it safe for all of us.
         </p>
       </div>
 
@@ -121,7 +125,24 @@ export default function WatchGlobeScroll({ lang }: Props) {
                   <span className="font-bold text-[#111]">{win.regionLabel}</span>
                   <span>{win.date}</span>
                 </div>
-                <div className="min-h-[80px] overflow-hidden relative">
+                <div
+                  className="min-h-[80px] overflow-hidden relative"
+                  onTouchStart={(e) => {
+                    touchStartX.current = e.touches[0].clientX
+                    touchCardIdx.current = i
+                  }}
+                  onTouchEnd={(e) => {
+                    if (touchStartX.current === null || touchCardIdx.current !== i) return
+                    const dx = e.changedTouches[0].clientX - touchStartX.current
+                    const cardWins = getCardWins(region).slice(0, 10)
+                    if (Math.abs(dx) > 40) {
+                      if (dx < 0 && curIdx < cardWins.length - 1) goNext()
+                      else if (dx > 0 && curIdx > 0) goPrev()
+                    }
+                    touchStartX.current = null
+                    touchCardIdx.current = null
+                  }}
+                >
                   <div
                     key={`${region.names[0].name}-${curIdx}`}
                     className={slideDir ? 'animate-slide-in' : ''}
