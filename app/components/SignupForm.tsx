@@ -142,7 +142,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   if (alreadySignedUp) return null
 
   return (
-    <section ref={formSectionRef} className="min-h-screen flex items-center justify-center bg-[#111] px-6 py-20">
+    <section ref={formSectionRef} className="flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32">
       <div className="w-full max-w-md">
 
         {step === 'email' && (
