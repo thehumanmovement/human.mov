@@ -37,10 +37,10 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
           loop
           playsInline
           src="/images/earthglobe-hd.mp4"
-          className="absolute inset-0 w-full h-full object-cover brightness-[0.7] contrast-[1.15]"
+          className="absolute inset-0 w-full h-full object-cover brightness-[0.6] contrast-[1.15]"
         />
         {/* Subtle darkening overlay */}
-        <div className="absolute inset-0 z-[3] bg-black/30" />
+        <div className="absolute inset-0 z-[3] bg-black/45" />
       </div>
 
       {/* Vignette */}
