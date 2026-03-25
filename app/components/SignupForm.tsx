@@ -62,7 +62,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     localStorage.setItem('thm-name', fullName)
     localStorage.setItem('thm-zip', zipCode)
     localStorage.setItem('thm-signup-id', signupId)
-    window.location.href = '/welcome'
+    window.location.href = '/share'
   }
 
   const formSectionRef = useRef<HTMLElement>(null)
@@ -138,7 +138,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   }
 
 
-  // If already signed up, hide all forms (welcome is at /welcome now)
+  // If already signed up, hide all forms (welcome is at /share now)
   if (alreadySignedUp) return null
 
   return (
