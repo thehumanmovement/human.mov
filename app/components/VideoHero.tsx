@@ -101,6 +101,7 @@ export default function VideoHero({ lang, onJoinClick, onHeroSignup }: VideoHero
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoFocus
               className="w-full bg-white/[0.12] backdrop-blur-sm border border-white/20 focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/50 text-white focus:bg-white/15 focus:ring-1 focus:ring-sunrise/30 [text-shadow:none]"
             />
             <button
