@@ -7,6 +7,7 @@ import LanguageSelector from './components/LanguageSelector'
 import VideoHero from './components/VideoHero'
 import SignupForm, { type SignupFormHandle } from './components/SignupForm'
 import Footer from './components/Footer'
+import ContactSection from './components/ContactSection'
 
 const ProtectOurScroll = dynamic(() => import('./components/ProtectOurScroll'), { ssr: false })
 const GlobeSection = dynamic(() => import('./components/GlobeSection'), { ssr: false })
@@ -99,24 +100,7 @@ export default function Home() {
       <SignupForm lang={lang} variant="final" />
 
       {/* Contact / Submit Your Solutions */}
-      <section className="bg-[#111] px-6 py-24 sm:py-32 border-t border-white/[0.06]">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-4">
-            {t(lang, 'contactTitle1')}
-            <br />
-            <span className="text-sunrise">{t(lang, 'contactTitle2')}</span>
-          </h2>
-          <p className="font-body text-base sm:text-lg text-white/60 mb-10 max-w-lg mx-auto">
-            {t(lang, 'contactDesc')}
-          </p>
-          <a
-            href="mailto:hello@human.mov"
-            className="inline-block px-10 py-4 border-2 border-sunrise text-sunrise rounded-full font-body font-bold text-base uppercase tracking-widest hover:bg-sunrise hover:text-black transition-all duration-300"
-          >
-            {t(lang, 'contactButton')}
-          </a>
-        </div>
-      </section>
+      <ContactSection lang={lang} />
 
     </>
   )
