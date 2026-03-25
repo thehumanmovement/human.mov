@@ -107,7 +107,7 @@ export default function VideoHero({ lang, onJoinClick, onHeroSignup }: VideoHero
             <button
               type="submit"
               disabled={!email.trim()}
-              className="mt-4 w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 shadow-lg shadow-sunrise/30 hover:scale-[1.02] disabled:opacity-30 disabled:cursor-not-allowed"
+              className="mt-4 w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 shadow-lg shadow-sunrise/30 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {t(lang, 'heroButton')}
             </button>
