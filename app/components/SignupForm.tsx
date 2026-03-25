@@ -148,12 +148,18 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     <section ref={formSectionRef} className="flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32">
       <div className="w-full max-w-md opacity-50">
         <div className="mb-12 text-center">
-          <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
-            {getVariantCopy(lang, variant).line1}
-          </p>
-          <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
-            {getVariantCopy(lang, variant).line2}
-          </p>
+          {overrideHeading ?? (
+            <>
+              <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
+                {overrideLine1 ?? getVariantCopy(lang, variant).line1}
+              </p>
+              {(overrideLine2 !== '' && (overrideLine2 || getVariantCopy(lang, variant).line2)) && (
+                <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
+                  {overrideLine2 ?? getVariantCopy(lang, variant).line2}
+                </p>
+              )}
+            </>
+          )}
         </div>
         <div className="w-full bg-white/[0.07] border border-white/[0.12] rounded-lg px-5 py-4 text-base font-body text-white/40 text-center">
           {t(lang, 'youreIn')}
