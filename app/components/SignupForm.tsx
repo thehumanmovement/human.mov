@@ -70,6 +70,20 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     window.location.href = '/share'
   }
 
+  function handleSignOut() {
+    localStorage.removeItem('thm-signed-up')
+    localStorage.removeItem('thm-name')
+    localStorage.removeItem('thm-zip')
+    localStorage.removeItem('thm-signup-id')
+    setAlreadySignedUp(false)
+    setStep('email')
+    setEmail('')
+    setFullName('')
+    setZipCode('')
+    setCode('')
+    setSignupId('')
+  }
+
   const formSectionRef = useRef<HTMLElement>(null)
   const emailInputRef = useRef<HTMLInputElement>(null)
 
@@ -164,7 +178,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
         <div className="w-full bg-white/[0.07] border border-white/[0.12] rounded-lg px-5 py-4 text-base font-body text-white/40 text-center">
           {t(lang, 'youreIn')}
         </div>
-        <div className="mt-6 w-full bg-sunrise/40 text-black/40 rounded-full py-4 text-base font-body font-bold uppercase tracking-widest text-center cursor-default">
+        <div onDoubleClick={handleSignOut} className="mt-6 w-full bg-sunrise/40 text-black/40 rounded-full py-4 text-base font-body font-bold uppercase tracking-widest text-center cursor-default select-none">
           ✓ {t(lang, 'youreIn')}
         </div>
       </div>
@@ -204,6 +218,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               <button
                 type="submit"
                 disabled={!email.trim()}
+                onDoubleClick={handleSignOut}
                 className={BUTTON_CLASS}
               >
                 {overrideButton ?? getVariantCopy(lang, variant).button}
@@ -240,6 +255,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             <button
               type="submit"
               disabled={loading || !fullName.trim()}
+              onDoubleClick={handleSignOut}
               className={BUTTON_CLASS}
             >
               {loading ? t(lang, 'buttonJoinLoading') : t(lang, 'continueButton')}
@@ -274,7 +290,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               autoFocus
               className={`${INPUT_CLASS} text-center text-3xl tracking-[0.5em] font-serif`}
             />
-            <button type="submit" disabled={loading || code.length !== 6} className={BUTTON_CLASS}>
+            <button type="submit" disabled={loading || code.length !== 6} onDoubleClick={handleSignOut} className={BUTTON_CLASS}>
               {loading ? t(lang, 'verifying') : t(lang, 'verifyEmail')}
             </button>
             <button

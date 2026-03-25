@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       try {
         const resend = new Resend(process.env.RESEND_API_KEY)
         await resend.emails.send({
-          from: `${t(l, 'emailHeading')} <noreply@contact.human.mov>`,
+          from: `${t(l, 'emailHeading')} <onboarding@resend.dev>`,
           to: email.trim(),
           subject: t(l, 'emailSubject'),
           html: `
