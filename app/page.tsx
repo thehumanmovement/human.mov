@@ -15,10 +15,30 @@ const VIMEO_HASH = '65046f9d31'
 const LOOP_START = 82   // 1:22
 const LOOP_END = 139    // 2:19
 
+/** Pick background video quality based on connection speed */
+function getBgQuality(): string {
+  if (typeof navigator !== 'undefined' && 'connection' in navigator) {
+    const conn = (navigator as unknown as { connection: { effectiveType?: string; downlink?: number } }).connection
+    // effectiveType: 'slow-2g', '2g', '3g', '4g'
+    if (conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g' || conn.effectiveType === '3g') {
+      return '540p'
+    }
+    // downlink is Mbps estimate
+    if (typeof conn.downlink === 'number' && conn.downlink < 5) {
+      return '540p'
+    }
+    if (typeof conn.downlink === 'number' && conn.downlink < 10) {
+      return '720p'
+    }
+  }
+  return '720p'
+}
+
 export default function WatchPage() {
   const [lang, setLang] = useState<Lang>('en')
   const [mounted, setMounted] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [bgQuality, setBgQuality] = useState('720p')
   const formRef = useRef<SignupFormHandle>(null)
   const bgIframeRef = useRef<HTMLIFrameElement>(null)
   const fullscreenIframeRef = useRef<HTMLIFrameElement>(null)
@@ -27,6 +47,7 @@ export default function WatchPage() {
   useEffect(() => {
     const saved = localStorage.getItem('lang')
     if (saved && isValidLang(saved)) setLang(saved)
+    setBgQuality(getBgQuality())
     setMounted(true)
   }, [])
 
@@ -102,7 +123,7 @@ export default function WatchPage() {
         {/* Background looping video (muted) */}
         <iframe
           ref={bgIframeRef}
-          src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=1&loop=0&background=1&quality=1080p&api=1#t=${LOOP_START}s`}
+          src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=1&loop=0&background=1&quality=${bgQuality}&api=1#t=${LOOP_START}s`}
           allow="autoplay; fullscreen"
           onLoad={onBgIframeLoad}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-full pointer-events-none"
