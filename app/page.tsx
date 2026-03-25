@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { isValidLang, LANGUAGES, t, type Lang } from '@/lib/i18n'
 import LanguageSelector from './components/LanguageSelector'
 import SignupForm, { type SignupFormHandle } from './components/SignupForm'
+import ContactSection from './components/ContactSection'
 
 const GlobeSection = dynamic(() => import('./components/WatchGlobeScroll'), { ssr: false })
 const GetInformed = dynamic(() => import('./components/GetInformed'), { ssr: false })
@@ -195,6 +196,13 @@ export default function WatchPage() {
           </div>
         </div>
       </section>
+
+      <ContactSection lang={lang} overrideHeading={
+        <h2 className="font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
+          WE&apos;D LOVE TO HEAR{' '}
+          <span className="text-sunrise">FROM YOU</span>
+        </h2>
+      } hideDesc emailPlaceholder="My email" messagePlaceholder="My idea, solution, or message..." />
 
     </>
   )

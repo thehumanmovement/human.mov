@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from 'react'
 import { t, type Lang } from '@/lib/i18n'
 
-export default function ContactSection({ lang }: { lang: Lang }) {
+export default function ContactSection({ lang, overrideHeading, hideDesc, emailPlaceholder, messagePlaceholder }: { lang: Lang; overrideHeading?: React.ReactNode; hideDesc?: boolean; emailPlaceholder?: string; messagePlaceholder?: string }) {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
@@ -42,14 +42,20 @@ export default function ContactSection({ lang }: { lang: Lang }) {
     <section className="bg-[#111] px-6 py-24 sm:py-32 border-t border-white/[0.06]">
       <div className="max-w-2xl mx-auto">
         <div className="text-center mb-10">
-          <h2 className="font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-4">
-            {t(lang, 'contactTitle1')}
-            <br />
-            <span className="text-sunrise">{t(lang, 'contactTitle2')}</span>
-          </h2>
-          <p className="font-body text-base sm:text-lg text-white/60 max-w-lg mx-auto">
-            {t(lang, 'contactDesc')}
-          </p>
+          {overrideHeading ? (
+            <div className="mb-4">{overrideHeading}</div>
+          ) : (
+            <h2 className="font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-4">
+              {t(lang, 'contactTitle1')}
+              <br />
+              <span className="text-sunrise">{t(lang, 'contactTitle2')}</span>
+            </h2>
+          )}
+          {!hideDesc && (
+            <p className="font-body text-base sm:text-lg text-white/60 max-w-lg mx-auto">
+              {t(lang, 'contactDesc')}
+            </p>
+          )}
         </div>
 
         {sent ? (
@@ -65,13 +71,14 @@ export default function ContactSection({ lang }: { lang: Lang }) {
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="email"
-              placeholder={t(lang, 'contactEmailPlaceholder')}
+              placeholder={emailPlaceholder || "Your email"}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
               className="w-full bg-white/[0.07] border border-white/[0.12] focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/40 text-white focus:bg-white/10 focus:ring-1 focus:ring-sunrise/30"
             />
             <textarea
-              placeholder={t(lang, 'contactMessagePlaceholder')}
+              placeholder={messagePlaceholder || t(lang, 'contactMessagePlaceholder')}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               required
