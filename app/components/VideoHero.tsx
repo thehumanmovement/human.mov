@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect, type FormEvent } from 'react'
 import { t, type Lang } from '@/lib/i18n'
 
 function headingClass(lang: Lang): string {
@@ -24,9 +25,34 @@ function headingClass(lang: Lang): string {
 interface VideoHeroProps {
   lang: Lang
   onJoinClick: () => void
+  onHeroSignup?: (email: string) => void
 }
 
-export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
+export default function VideoHero({ lang, onJoinClick, onHeroSignup }: VideoHeroProps) {
+  const [email, setEmail] = useState('')
+  const [alreadySignedUp, setAlreadySignedUp] = useState(false)
+
+  useEffect(() => {
+    if (localStorage.getItem('thm-signed-up')) {
+      setAlreadySignedUp(true)
+    }
+    const handler = () => setAlreadySignedUp(true)
+    window.addEventListener('thm-signed-up', handler)
+    return () => window.removeEventListener('thm-signed-up', handler)
+  }, [])
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!email.trim()) return
+    localStorage.setItem('thm-signed-up', '1')
+    window.dispatchEvent(new Event('thm-signed-up'))
+    if (onHeroSignup) {
+      onHeroSignup(email)
+    } else {
+      onJoinClick()
+    }
+  }
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Fullscreen background video */}
@@ -63,18 +89,29 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
           <span className="text-sunrise">{t(lang, 'headingLine2')}</span>
         </h1>
 
-        <div className="mt-8 font-body text-base sm:text-lg text-white max-w-xl mx-auto leading-relaxed space-y-4 [text-shadow:_0_1px_20px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)]">
-          <p>{t(lang, 'heroLine1')}</p>
-          <p>{t(lang, 'heroLine2')}</p>
-          <p>{t(lang, 'heroLine3')}</p>
-        </div>
+        <p className="mt-6 font-body text-base sm:text-lg text-white max-w-xl mx-auto leading-relaxed [text-shadow:_0_1px_20px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)]">
+          {t(lang, 'heroLine3')}
+        </p>
 
-        <button
-          onClick={onJoinClick}
-          className="mt-8 px-12 py-4 bg-sunrise text-black rounded-full font-body font-bold text-base uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 shadow-lg shadow-sunrise/30 hover:scale-105"
-        >
-          {t(lang, 'buttonJoin')}
-        </button>
+        {!alreadySignedUp && (
+          <form onSubmit={handleSubmit} className="mt-8 max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder={t(lang, 'emailOnlyPlaceholder')}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full bg-white/[0.12] backdrop-blur-sm border border-white/20 focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/50 text-white focus:bg-white/15 focus:ring-1 focus:ring-sunrise/30 [text-shadow:none]"
+            />
+            <button
+              type="submit"
+              disabled={!email.trim()}
+              className="mt-4 w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 shadow-lg shadow-sunrise/30 hover:scale-[1.02] disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              {t(lang, 'heroButton')}
+            </button>
+          </form>
+        )}
       </div>
     </section>
   )

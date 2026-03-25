@@ -13,6 +13,7 @@ const BUTTON_CLASS =
 
 export interface SignupFormHandle {
   scrollToForm: () => void
+  startWithEmail: (email: string) => void
 }
 
 type Variant = 'default' | 'after-globe' | 'after-protect' | 'final'
@@ -71,6 +72,11 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     scrollToForm() {
       formSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
       setTimeout(() => emailInputRef.current?.focus(), 600)
+    },
+    startWithEmail(heroEmail: string) {
+      setEmail(heroEmail)
+      setStep('details')
+      setTimeout(() => formSectionRef.current?.scrollIntoView({ behavior: 'smooth' }), 100)
     },
   }))
 

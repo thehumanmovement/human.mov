@@ -37,7 +37,7 @@ export default function Home() {
   return (
     <>
       <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} />
-      <VideoHero lang={lang} onJoinClick={() => formRef.current?.scrollToForm()} />
+      <VideoHero lang={lang} onJoinClick={() => formRef.current?.scrollToForm()} onHeroSignup={(email) => formRef.current?.startWithEmail(email)} />
       <SignupForm ref={formRef} lang={lang} variant="after-globe" />
       <GlobeSection lang={lang} />
       {/* <SignupForm ref={formRef} lang={lang} variant="after-globe" /> */}
