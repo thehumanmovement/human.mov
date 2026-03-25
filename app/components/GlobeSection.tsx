@@ -33,10 +33,8 @@ export default function GlobeSection({ lang }: { lang: Lang }) {
       <div className="h-px bg-gradient-to-r from-transparent via-sunrise/20 to-transparent" />
       <div className="max-w-6xl mx-auto px-5 sm:px-8 pt-20 sm:pt-28 pb-10 sm:pb-16">
         <div className={`text-center mb-2 sm:mb-4 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight">
+          <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white mb-8 leading-tight">
             {t(lang, 'globeTitle1')}
-            <br />
-            <span className="text-sunrise">{t(lang, 'globeTitle2')}</span>
           </h2>
           <div className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto space-y-4 text-center">
             <p>{t(lang, 'globeDesc1')}</p>
@@ -47,7 +45,11 @@ export default function GlobeSection({ lang }: { lang: Lang }) {
         </div>
       </div>
       <OutlineGlobe startTourOnVisible={visible} />
-      <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28" />
+      <div className="max-w-6xl mx-auto px-5 sm:px-8 pb-20 sm:pb-28">
+        <p className={`text-center font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-sunrise leading-tight transition-all duration-1000 delay-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+          {t(lang, 'globeTitle2')}
+        </p>
+      </div>
     </section>
   )
 }
