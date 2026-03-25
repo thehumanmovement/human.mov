@@ -44,8 +44,6 @@ export default function VideoHero({ lang, onJoinClick, onHeroSignup }: VideoHero
   function handleSubmit(e: FormEvent) {
     e.preventDefault()
     if (!email.trim()) return
-    localStorage.setItem('thm-signed-up', '1')
-    window.dispatchEvent(new Event('thm-signed-up'))
     if (onHeroSignup) {
       onHeroSignup(email)
     } else {
@@ -104,13 +102,44 @@ export default function VideoHero({ lang, onJoinClick, onHeroSignup }: VideoHero
               autoFocus
               className="w-full bg-white/[0.12] backdrop-blur-sm border border-white/20 focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/50 text-white focus:bg-white/15 focus:ring-1 focus:ring-sunrise/30 [text-shadow:none]"
             />
-            <button
-              type="submit"
-              disabled={!email.trim()}
-              className="mt-4 w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 shadow-lg shadow-sunrise/30 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-              {t(lang, 'heroButton')}
-            </button>
+            <div className="relative mt-4">
+              {/* Hand-drawn pencil circle animation */}
+              <svg
+                className="absolute -inset-3 sm:-inset-4 w-[calc(100%+24px)] h-[calc(100%+24px)] sm:w-[calc(100%+32px)] sm:h-[calc(100%+32px)] pointer-events-none z-10"
+                viewBox="0 0 400 80"
+                fill="none"
+                preserveAspectRatio="none"
+              >
+                <path
+                  d="M 30 40 C 30 15, 80 5, 200 8 C 320 5, 375 15, 378 38 C 380 55, 340 72, 200 75 C 80 78, 25 65, 22 45 C 20 30, 60 18, 140 14"
+                  stroke="#d4a843"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                  opacity="0.85"
+                  style={{
+                    strokeDasharray: 1200,
+                    strokeDashoffset: 1200,
+                    animation: 'drawCircle 2s ease-out 1.5s forwards',
+                    filter: 'url(#pencilTexture)',
+                  }}
+                />
+                <defs>
+                  <filter id="pencilTexture">
+                    <feTurbulence type="turbulence" baseFrequency="0.04" numOctaves="4" result="noise" />
+                    <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" />
+                  </filter>
+                </defs>
+              </svg>
+              <button
+                type="submit"
+                disabled={!email.trim()}
+                className="relative w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 shadow-lg shadow-sunrise/30 hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {t(lang, 'heroButton')}
+              </button>
+            </div>
           </form>
         )}
       </div>

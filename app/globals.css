@@ -112,3 +112,9 @@
     transform: translateX(-33.333%);
   }
 }
+
+@keyframes drawCircle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

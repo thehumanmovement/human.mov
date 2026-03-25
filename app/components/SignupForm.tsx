@@ -83,8 +83,6 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   function handleEmailNext(e: FormEvent) {
     e.preventDefault()
     if (!email.trim()) return
-    localStorage.setItem('thm-signed-up', '1')
-    window.dispatchEvent(new Event('thm-signed-up'))
     setStep('details')
   }
 
