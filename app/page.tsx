@@ -84,7 +84,7 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36">
             {[
-              { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-20 sm:h-28', href: 'https://aiphrc.org/' },
+              { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-12 sm:h-16', href: 'https://aiphrc.org/' },
               { src: '/images/partners/humanchange_logo.svg', alt: 'Human Change', h: 'h-18 sm:h-24', href: 'https://humanchange.com/' },
               { src: '/images/partners/humansfirst_logo.webp', alt: 'Humans First', h: 'h-20 sm:h-28', href: 'https://www.humansfirst.ai/', detailed: true },
             ].map((logo) => (
