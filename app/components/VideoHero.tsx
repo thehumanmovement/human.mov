@@ -37,7 +37,7 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
           loop
           playsInline
           src="/images/earthglobe-hd.mp4"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover brightness-[0.7] contrast-[1.15]"
         />
         {/* Subtle darkening overlay */}
         <div className="absolute inset-0 z-[3] bg-black/30" />
@@ -63,7 +63,7 @@ export default function VideoHero({ lang, onJoinClick }: VideoHeroProps) {
           <span className="text-sunrise">{t(lang, 'headingLine2')}</span>
         </h1>
 
-        <div className="mt-8 font-body text-base sm:text-lg text-white/70 max-w-xl mx-auto leading-relaxed space-y-4">
+        <div className="mt-8 font-body text-base sm:text-lg text-white max-w-xl mx-auto leading-relaxed space-y-4 [text-shadow:_0_1px_20px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)]">
           <p>{t(lang, 'heroLine1')}</p>
           <p>{t(lang, 'heroLine2')}</p>
           <p>{t(lang, 'heroLine3')}</p>
