@@ -10,17 +10,17 @@ Each win starts with `## Title` followed by date, optional URL, and description.
 # United States of America
 > Tour: lat 38, lng -97, zoom 1.8
 
-## TAKE IT DOWN Act
-- Date: May 2025
-- URL: https://en.wikipedia.org/wiki/TAKE_IT_DOWN_Act
-
-First federal law targeting nonconsensual intimate deepfakes, passed 409-2 in House, unanimously in Senate.
-
 ## Senate Rejects AI Moratorium 99-1
 - Date: Summer 2025
 - URL: https://www.commerce.senate.gov/2025/7/senate-strikes-ai-moratorium-from-budget-reconciliation-bill-in-overwhelming-99-1-vote/8415a728-fd1d-4269-98ac-101d1d0c71e0
 
 Struck a 10-year moratorium on state AI laws — strongest rebuke of tech lobbying.
+
+## TAKE IT DOWN Act
+- Date: May 2025
+- URL: https://en.wikipedia.org/wiki/TAKE_IT_DOWN_Act
+
+First federal law targeting nonconsensual intimate deepfakes, passed 409-2 in House, unanimously in Senate.
 
 ## 35+ States: Phone-Free Schools
 - Date: 2024–2025
@@ -85,22 +85,21 @@ Enacted age verification laws requiring platforms to verify users are over 15.
 # India
 > Tour: lat 20, lng 78, zoom 2.0
 
-## Social Media Ban for Kids Under 16
-- Date: Feb 2026
-- URL: https://techcrunch.com/2026/01/27/indian-states-weigh-australia-style-ban-on-social-media-for-children/
+## Social Media Restrictions for Teens
+- Date: 2026
 
-Combined with Indonesia, social media bans now cover 21% of world population.
+The Indian Parliament is in discussions on a bill to restrict social media for teens. If it passes, more than 25% of the world's population will live in a country where their kids are protected from social media!
 
 ---
 
 # Australia
 > Tour: lat -25, lng 134, zoom 2.0
 
-## Social Media Ban for Kinds Under 16
+## Social Media Ban for Kids Under 16
 - Date: December 2025
 - URL: https://www.theguardian.com/australia-news/2026/mar/04/australia-social-media-ban-under-16s-three-month-review
 
-First nation to ban social media for children under 16, sparking a global wave of similar action.
+First nation to ban social media for children under 16, sparking a global wave of similar action: France, Denmark, Spain, Indonesia, ...
 
 ---
 
@@ -130,10 +129,10 @@ Requires age verification, parental account linking, and safety-by-design obliga
 > Tour: lat 35, lng 105, zoom 2.0
 
 ## Anthropomorphic AI Regulation
-- Date: December 2025
+- Date: December 27, 2025
 - URL: https://lawwwing.com/en/blog-anthropomorphic-artificial-intelligence-and-regulation-can-china-lead-the-way/
 
-Draft rules requiring minor mode, addiction intervention, and prohibiting chatbots from encouraging self-harm.
+China becomes the first nation to issue detailed draft rules for keeping their citizens safe from manipulative human-like AIs.
 
 ## Social Media Curfews for Minors
 - Date: December 2025
