@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import { isValidLang, LANGUAGES, t, type Lang } from '@/lib/i18n'
-import { useAbVariant } from '@/lib/useAbVariant'
 import LanguageSelector from './components/LanguageSelector'
 import VideoHero from './components/VideoHero'
 import SignupForm, { type SignupFormHandle } from './components/SignupForm'
@@ -17,7 +16,6 @@ export default function Home() {
   const [lang, setLang] = useState<Lang>('en')
   const [mounted, setMounted] = useState(false)
   const formRef = useRef<SignupFormHandle>(null)
-  const abVariant = useAbVariant()
 
   useEffect(() => {
     const saved = localStorage.getItem('lang')
@@ -40,7 +38,7 @@ export default function Home() {
     <>
       <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} />
       <VideoHero lang={lang} onJoinClick={() => formRef.current?.scrollToForm()} />
-      <SignupForm ref={formRef} lang={lang} variant="after-globe" abVariant={abVariant} />
+      <SignupForm ref={formRef} lang={lang} variant="after-globe" />
       <GlobeSection lang={lang} />
       {/* <SignupForm ref={formRef} lang={lang} variant="after-globe" /> */}
 
@@ -54,8 +52,9 @@ export default function Home() {
       </section> */}
 
       {/* <ProtectOurScroll lang={lang} /> */}
-      <SignupForm lang={lang} variant="after-protect" abVariant={abVariant} />
       <GetInformed lang={lang} />
+
+      <SignupForm lang={lang} variant="after-protect" />
 
       {/* In Alliance With */}
       <section className="px-6 pt-40 pb-44 sm:pt-52 sm:pb-56 bg-[#111]">
@@ -85,8 +84,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <SignupForm lang={lang} abVariant={abVariant} />
 
       {/* Press Carousel */}
       <section className="py-6 sm:py-8 overflow-hidden bg-white">
@@ -123,6 +120,8 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      <SignupForm lang={lang} variant="final" />
 
     </>
   )

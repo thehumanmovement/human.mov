@@ -2,11 +2,9 @@
 
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle, type FormEvent } from 'react'
 import { t, type Lang } from '@/lib/i18n'
-import type { AbVariant } from '@/lib/useAbVariant'
 import SenatorLookup from './SenatorLookup'
-import PhoneInput from './PhoneInput'
 
-type Step = 'email' | 'details' | 'verify-email' | 'phone' | 'verify-phone' | 'welcome'
+type Step = 'email' | 'details' | 'verify-email' | 'welcome'
 
 function headingClass(lang: Lang): string {
   const base = 'font-serif leading-[1.1] tracking-tight text-white [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]'
@@ -55,48 +53,52 @@ function getVariantCopy(lang: Lang, variant: Variant) {
 interface SignupFormProps {
   lang: Lang
   variant?: Variant
-  abVariant?: AbVariant
 }
 
-const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default', abVariant = 'A' }, ref) {
-  const isPhoneFirst = abVariant === 'B'
-  const [step, setStep] = useState<Step>(isPhoneFirst ? 'phone' : 'email')
+const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default' }, ref) {
+  const [step, setStep] = useState<Step>('email')
   const [signupId, setSignupId] = useState('')
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [zipCode, setZipCode] = useState('')
-  const [phone, setPhone] = useState('')
   const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [openAction, setOpenAction] = useState<number | null>(0)
+  const [alreadySignedUp, setAlreadySignedUp] = useState(false)
 
-  // Sync step when abVariant changes after mount (cookie read is async)
   useEffect(() => {
-    if (step === 'email' && isPhoneFirst) setStep('phone')
-    else if (step === 'phone' && !isPhoneFirst) setStep('email')
-  }, [isPhoneFirst]) // eslint-disable-line react-hooks/exhaustive-deps
+    const saved = localStorage.getItem('thm-signed-up')
+    if (saved) {
+      setAlreadySignedUp(true)
+      setFullName(localStorage.getItem('thm-name') || '')
+      setZipCode(localStorage.getItem('thm-zip') || '')
+      setSignupId(localStorage.getItem('thm-signup-id') || '')
+      setStep('welcome')
+    }
+  }, [])
+
+  function goToWelcome() {
+    localStorage.setItem('thm-signed-up', '1')
+    localStorage.setItem('thm-name', fullName)
+    localStorage.setItem('thm-zip', zipCode)
+    localStorage.setItem('thm-signup-id', signupId)
+    setStep('welcome')
+  }
 
   const formSectionRef = useRef<HTMLElement>(null)
   const emailInputRef = useRef<HTMLInputElement>(null)
-  const phoneInputRef = useRef<HTMLInputElement>(null)
 
   useImperativeHandle(ref, () => ({
     scrollToForm() {
       formSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
-      setTimeout(() => (isPhoneFirst ? phoneInputRef : emailInputRef).current?.focus(), 600)
+      setTimeout(() => emailInputRef.current?.focus(), 600)
     },
   }))
 
   function handleEmailNext(e: FormEvent) {
     e.preventDefault()
     if (!email.trim()) return
-    setStep('details')
-  }
-
-  function handlePhoneNext(e: FormEvent) {
-    e.preventDefault()
-    if (!phone.trim()) return
     setStep('details')
   }
 
@@ -110,11 +112,9 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         fullName,
-        email: email || undefined,
-        phone: isPhoneFirst ? phone : undefined,
+        email,
         zipCode,
         lang,
-        abVariant,
       }),
     })
     const data = await res.json()
@@ -127,7 +127,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
     setSignupId(data.id)
     setLoading(false)
-    setStep(isPhoneFirst ? 'verify-phone' : 'verify-email')
+    setStep('verify-email')
   }
 
   async function handleEmailVerify(e: FormEvent) {
@@ -150,53 +150,12 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
     setLoading(false)
     setCode('')
-    setStep('welcome')
+    goToWelcome()
   }
 
-  async function handlePhoneSend(e: FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
 
-    const res = await fetch('/api/verify-phone/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: signupId, phone, lang }),
-    })
-    const data = await res.json()
-
-    if (!res.ok) {
-      setError(data.error)
-      setLoading(false)
-      return
-    }
-
-    setLoading(false)
-    setCode('')
-    setStep('verify-phone')
-  }
-
-  async function handlePhoneVerify(e: FormEvent) {
-    e.preventDefault()
-    setLoading(true)
-    setError('')
-
-    const res = await fetch('/api/verify-phone/confirm', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: signupId, code }),
-    })
-    const data = await res.json()
-
-    if (!res.ok) {
-      setError(data.error)
-      setLoading(false)
-      return
-    }
-
-    setLoading(false)
-    setStep('welcome')
-  }
+  // If already signed up and this is not the primary form, hide completely
+  if (alreadySignedUp && !ref) return null
 
   return (
     <section ref={formSectionRef} className="min-h-screen flex items-center justify-center bg-[#111] px-6 py-20">
@@ -239,7 +198,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               {t(lang, 'headingLine1')} {t(lang, 'headingLine2')}
             </p>
             <p className="text-white/50 text-sm font-body mb-8 text-center">
-              {isPhoneFirst ? phone : email}
+              {email}
             </p>
             <input
               type="text"
@@ -250,15 +209,6 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               autoFocus
               className={INPUT_CLASS}
             />
-            {isPhoneFirst && (
-              <input
-                type="email"
-                placeholder={t(lang, 'placeholderEmailOptional')}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={INPUT_CLASS}
-              />
-            )}
             <input
               type="text"
               inputMode="numeric"
@@ -276,7 +226,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             </button>
             <button
               type="button"
-              onClick={() => setStep(isPhoneFirst ? 'phone' : 'email')}
+              onClick={() => setStep('email')}
               className="mt-2 w-full text-center text-sm text-white/30 hover:text-white/50 transition-colors font-body"
             >
               {t(lang, 'goBack')}
@@ -316,103 +266,11 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             </button>
             <button
               type="button"
-              onClick={() => setStep('welcome')}
+              onClick={() => goToWelcome()}
               className="mt-3 w-full text-center text-sm text-white/20 hover:text-white/40 transition-colors font-body"
             >
               {t(lang, 'skipVerification')}
             </button>
-          </form>
-        )}
-
-        {step === 'phone' && isPhoneFirst && (
-          <div className="step-enter">
-            <div className="mb-12 text-center">
-              <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
-                {getVariantCopy(lang, variant).line1}
-              </p>
-              <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
-                {getVariantCopy(lang, variant).line2}
-              </p>
-            </div>
-            <form onSubmit={handlePhoneNext} className="space-y-4">
-              <PhoneInput
-                ref={phoneInputRef}
-                placeholder={t(lang, 'phoneOnlyPlaceholder')}
-                value={phone}
-                onChange={setPhone}
-                className={INPUT_CLASS}
-              />
-              <button
-                type="submit"
-                disabled={!phone.trim()}
-                className={BUTTON_CLASS}
-              >
-                {getVariantCopy(lang, variant).button}
-              </button>
-            </form>
-          </div>
-        )}
-
-        {step === 'phone' && !isPhoneFirst && (
-          <form onSubmit={handlePhoneSend} className="step-enter">
-            <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white">
-              {t(lang, 'emailVerified')}
-            </p>
-            <p className="font-serif uppercase text-2xl sm:text-3xl mb-8 leading-snug text-sunrise">
-              {t(lang, 'nowPhone')}
-            </p>
-            <PhoneInput
-              placeholder={t(lang, 'phonePlaceholder')}
-              value={phone}
-              onChange={setPhone}
-              autoFocus
-              className={INPUT_CLASS}
-            />
-            <button type="submit" disabled={loading || !phone.trim()} className={BUTTON_CLASS}>
-              {loading ? t(lang, 'sendingCode') : t(lang, 'sendCode')}
-            </button>
-          </form>
-        )}
-
-        {step === 'verify-phone' && (
-          <form onSubmit={handlePhoneVerify} className="step-enter">
-            <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white">
-              {isPhoneFirst ? t(lang, 'checkPhone') : t(lang, 'almostThere')}
-            </p>
-            <p className="text-white/50 text-sm font-body mb-8">
-              {t(lang, isPhoneFirst ? 'sentSmsCode' : 'textedCode')} <span className="text-white">{phone}</span>
-            </p>
-            <input
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              maxLength={6}
-              placeholder="000000"
-              value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))}
-              required
-              autoFocus
-              className={`${INPUT_CLASS} text-center text-3xl tracking-[0.5em] font-serif`}
-            />
-            <button type="submit" disabled={loading || code.length !== 6} className={BUTTON_CLASS}>
-              {loading ? t(lang, 'verifying') : t(lang, 'verifyPhone')}
-            </button>
-            <button
-              type="button"
-              onClick={() => { setCode(''); setStep(isPhoneFirst ? 'details' : 'phone') }}
-              className="mt-4 w-full text-center text-sm text-white/30 hover:text-white/50 transition-colors font-body"
-            >
-              {t(lang, 'goBack')}
-            </button>
-            {isPhoneFirst && (
-              <button
-                type="button"
-                onClick={() => setStep('welcome')}
-                className="mt-3 w-full text-center text-sm text-white/20 hover:text-white/40 transition-colors font-body"
-              >
-                {t(lang, 'skipVerification')}
-              </button>
-            )}
           </form>
         )}
 

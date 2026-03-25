@@ -24,7 +24,6 @@
     "tailwindcss": "^3.4.19",
     "three": "^0.183.2",
     "topojson-client": "^3.1.0",
-    "twilio": "^5.12.2",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
