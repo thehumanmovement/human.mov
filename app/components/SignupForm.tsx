@@ -138,8 +138,27 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   }
 
 
-  // If already signed up, hide all forms (welcome is at /share now)
-  if (alreadySignedUp) return null
+  // If already signed up, show grayed-out "You're in!" state
+  if (alreadySignedUp) return (
+    <section ref={formSectionRef} className="flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32">
+      <div className="w-full max-w-md opacity-50">
+        <div className="mb-12 text-center">
+          <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
+            {getVariantCopy(lang, variant).line1}
+          </p>
+          <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
+            {getVariantCopy(lang, variant).line2}
+          </p>
+        </div>
+        <div className="w-full bg-white/[0.07] border border-white/[0.12] rounded-lg px-5 py-4 text-base font-body text-white/40 text-center">
+          {t(lang, 'youreIn')}
+        </div>
+        <div className="mt-6 w-full bg-sunrise/40 text-black/40 rounded-full py-4 text-base font-body font-bold uppercase tracking-widest text-center cursor-default">
+          ✓ {t(lang, 'youreIn')}
+        </div>
+      </div>
+    </section>
+  )
 
   return (
     <section ref={formSectionRef} className="flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32">

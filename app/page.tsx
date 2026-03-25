@@ -67,28 +67,20 @@ export default function Home() {
       <SignupForm lang={lang} variant="after-protect" />
 
       {/* In Alliance With */}
-      <section className="px-6 pt-40 pb-44 sm:pt-52 sm:pb-56 bg-[#111]">
-        <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-28">
+      <section className="px-6 pt-32 pb-36 sm:pt-44 sm:pb-48 bg-[#111]">
+        <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-16 sm:mb-20">
           {t(lang, 'partnersTitle')}
         </p>
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36 mb-20 sm:mb-24">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between gap-8 sm:gap-12 overflow-x-auto px-4">
             {[
-              { src: '/images/partners/CHT_logo.svg', alt: 'Center for Humane Technology', h: 'h-20 sm:h-28', href: 'https://www.humanetech.com/' },
-              { src: '/images/partners/FLI_logo.webp', alt: 'Future of Life Institute', h: 'h-24 sm:h-32', href: 'https://futureoflife.org/' },
+              { src: '/images/partners/CHT_logo.svg', alt: 'Center for Humane Technology', h: 'h-14 sm:h-20', href: 'https://www.humanetech.com/' },
+              { src: '/images/partners/FLI_logo.webp', alt: 'Future of Life Institute', h: 'h-16 sm:h-22', href: 'https://futureoflife.org/' },
+              { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-10 sm:h-14', href: 'https://aiphrc.org/' },
+              { src: '/images/partners/humanchange_logo.svg', alt: 'Human Change', h: 'h-12 sm:h-16', href: 'https://humanchange.com/' },
+              { src: '/images/partners/humansfirst_logo.webp', alt: 'Humans First', h: 'h-14 sm:h-20', href: 'https://www.humansfirst.ai/', detailed: true },
             ].map((logo) => (
-              <a key={logo.alt} href={logo.href} target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity">
-                <img src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto brightness-0 invert opacity-70`} />
-              </a>
-            ))}
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36">
-            {[
-              { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-12 sm:h-16', href: 'https://aiphrc.org/' },
-              { src: '/images/partners/humanchange_logo.svg', alt: 'Human Change', h: 'h-18 sm:h-24', href: 'https://humanchange.com/' },
-              { src: '/images/partners/humansfirst_logo.webp', alt: 'Humans First', h: 'h-20 sm:h-28', href: 'https://www.humansfirst.ai/', detailed: true },
-            ].map((logo) => (
-              <a key={logo.alt} href={logo.href} target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity">
+              <a key={logo.alt} href={logo.href} target="_blank" rel="noopener noreferrer" className="shrink-0 hover:opacity-100 transition-opacity">
                 <img src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto ${(logo as any).detailed ? 'grayscale invert brightness-[1.8] opacity-70' : 'brightness-0 invert opacity-70'}`} />
               </a>
             ))}
@@ -98,6 +90,27 @@ export default function Home() {
 
       <SignupForm lang={lang} variant="final" />
 
+      {/* Contact / Submit Your Solutions */}
+      <section className="bg-[#111] px-6 py-24 sm:py-32 border-t border-white/[0.06]">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-white leading-tight mb-4">
+            {t(lang, 'contactTitle1')}
+            <br />
+            <span className="text-sunrise">{t(lang, 'contactTitle2')}</span>
+          </h2>
+          <p className="font-body text-base sm:text-lg text-white/60 mb-10 max-w-lg mx-auto">
+            {t(lang, 'contactDesc')}
+          </p>
+          <a
+            href="mailto:hello@human.mov"
+            className="inline-block px-10 py-4 border-2 border-sunrise text-sunrise rounded-full font-body font-bold text-base uppercase tracking-widest hover:bg-sunrise hover:text-black transition-all duration-300"
+          >
+            {t(lang, 'contactButton')}
+          </a>
+        </div>
+      </section>
+
+      <Footer lang={lang} />
     </>
   )
 }
