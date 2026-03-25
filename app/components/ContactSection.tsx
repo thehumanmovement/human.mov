@@ -4,8 +4,11 @@ import { useState, type FormEvent } from 'react'
 import { t, type Lang } from '@/lib/i18n'
 
 export default function ContactSection({ lang, overrideHeading, hideDesc, emailPlaceholder, messagePlaceholder }: { lang: Lang; overrideHeading?: React.ReactNode; hideDesc?: boolean; emailPlaceholder?: string; messagePlaceholder?: string }) {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
+  const [zipCode, setZipCode] = useState('')
+  const [contactable, setContactable] = useState(true)
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
@@ -20,7 +23,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, message }),
+        body: JSON.stringify({ name, email, message, zipCode, contactable }),
       })
       const data = await res.json()
 
@@ -37,6 +40,8 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
       setLoading(false)
     }
   }
+
+  const inputClass = "w-full bg-white/[0.07] border border-white/[0.12] focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/40 text-white focus:bg-white/10 focus:ring-1 focus:ring-sunrise/30"
 
   return (
     <section className="bg-[#111] px-6 py-24 sm:py-32 border-t border-white/[0.06]">
@@ -69,22 +74,72 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="email"
-              placeholder={emailPlaceholder || "Your email"}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="w-full bg-white/[0.07] border border-white/[0.12] focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/40 text-white focus:bg-white/10 focus:ring-1 focus:ring-sunrise/30"
-            />
+            <div className="flex gap-4">
+              <input
+                type="email"
+                placeholder={emailPlaceholder || "My email"}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className={`${inputClass} flex-1`}
+              />
+              <input
+                type="text"
+                placeholder="My name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className={`${inputClass} flex-1`}
+              />
+            </div>
             <textarea
               placeholder={messagePlaceholder || t(lang, 'contactMessagePlaceholder')}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               required
               rows={4}
-              className="w-full bg-white/[0.07] border border-white/[0.12] focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/40 text-white focus:bg-white/10 focus:ring-1 focus:ring-sunrise/30 resize-none"
+              className={`${inputClass} resize-none`}
             />
+
+            <div
+              className="flex items-center gap-4 overflow-hidden transition-all duration-500 ease-out"
+              style={{
+                maxHeight: message.trim() ? '80px' : '0px',
+                opacity: message.trim() ? 1 : 0,
+                marginTop: message.trim() ? undefined : '0px',
+              }}
+            >
+              <input
+                type="text"
+                placeholder="Zip code (optional)"
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+                className={`${inputClass} flex-1`}
+              />
+
+              {/* Contactable checkbox */}
+              <label className="flex items-center gap-3 cursor-pointer group py-1 shrink-0">
+                <div className="relative flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    checked={contactable}
+                    onChange={(e) => setContactable(e.target.checked)}
+                    className="peer sr-only"
+                  />
+                  <div className="w-5 h-5 rounded border border-white/30 bg-white/[0.07] peer-checked:bg-sunrise peer-checked:border-sunrise transition-all flex items-center justify-center">
+                    {contactable && (
+                      <svg className="w-3.5 h-3.5 text-black" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    )}
+                  </div>
+                </div>
+                <span className="font-body text-sm text-white/60 group-hover:text-white/80 transition-colors select-none">
+                  Can we contact you?
+                </span>
+              </label>
+            </div>
+
             <button
               type="submit"
               disabled={loading || !message.trim()}

@@ -15,30 +15,23 @@ const VIMEO_HASH = '65046f9d31'
 const LOOP_START = 82   // 1:22
 const LOOP_END = 139    // 2:19
 
-/** Pick background video quality based on connection speed */
+/** Pick background video quality — default 540p, upgrade to 720p on fast connections */
 function getBgQuality(): string {
   if (typeof navigator !== 'undefined' && 'connection' in navigator) {
     const conn = (navigator as unknown as { connection: { effectiveType?: string; downlink?: number } }).connection
-    // effectiveType: 'slow-2g', '2g', '3g', '4g'
-    if (conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g' || conn.effectiveType === '3g') {
-      return '540p'
-    }
-    // downlink is Mbps estimate
-    if (typeof conn.downlink === 'number' && conn.downlink < 5) {
-      return '540p'
-    }
-    if (typeof conn.downlink === 'number' && conn.downlink < 10) {
+    // Upgrade to 720p only on fast 4G+ connections with good bandwidth
+    if (conn.effectiveType === '4g' && typeof conn.downlink === 'number' && conn.downlink >= 10) {
       return '720p'
     }
   }
-  return '720p'
+  return '540p'
 }
 
 export default function WatchPage() {
   const [lang, setLang] = useState<Lang>('en')
   const [mounted, setMounted] = useState(false)
   const [isFullscreen, setIsFullscreen] = useState(false)
-  const [bgQuality, setBgQuality] = useState('720p')
+  const [bgQuality, setBgQuality] = useState('540p')
   const formRef = useRef<SignupFormHandle>(null)
   const bgIframeRef = useRef<HTMLIFrameElement>(null)
   const fullscreenIframeRef = useRef<HTMLIFrameElement>(null)
@@ -63,9 +56,9 @@ export default function WatchPage() {
       if (typeof e.data !== 'string') return
       try {
         const data = JSON.parse(e.data)
-        // Handle timeupdate for background loop
-        if (data.event === 'timeupdate' && !isFullscreen) {
-          const seconds = data.data?.seconds ?? 0
+        // Handle timeupdate / playProgress for background loop
+        if ((data.event === 'timeupdate' || data.event === 'playProgress') && !isFullscreen) {
+          const seconds = data.data?.seconds ?? data.data?.playProgress ?? 0
           if (seconds >= LOOP_END || seconds < LOOP_START) {
             bgIframeRef.current?.contentWindow?.postMessage(
               JSON.stringify({ method: 'setCurrentTime', value: LOOP_START }),
@@ -84,11 +77,18 @@ export default function WatchPage() {
     const iframe = bgIframeRef.current
     if (!iframe?.contentWindow) return
     const post = (msg: object) => iframe.contentWindow!.postMessage(JSON.stringify(msg), '*')
-    // Seek to loop start
-    post({ method: 'setCurrentTime', value: LOOP_START })
-    post({ method: 'play' })
-    // Listen for timeupdate
-    post({ method: 'addEventListener', value: 'timeupdate' })
+    // Subscribe to events and start playback — retry a few times to handle race conditions
+    function init() {
+      post({ method: 'addEventListener', value: 'timeupdate' })
+      post({ method: 'addEventListener', value: 'playProgress' })
+      post({ method: 'setCurrentTime', value: LOOP_START })
+      post({ method: 'setVolume', value: 0 })
+      post({ method: 'play' })
+    }
+    init()
+    // Retry after short delays to ensure the player is ready
+    setTimeout(init, 500)
+    setTimeout(init, 1500)
   }, [])
 
   function handlePlay() {
@@ -123,7 +123,7 @@ export default function WatchPage() {
         {/* Background looping video (muted) */}
         <iframe
           ref={bgIframeRef}
-          src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=1&loop=0&background=1&quality=${bgQuality}&api=1#t=${LOOP_START}s`}
+          src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=1&loop=0&background=0&controls=0&title=0&byline=0&portrait=0&quality=${bgQuality}&api=1&player_id=bg#t=${LOOP_START}s`}
           allow="autoplay; fullscreen"
           onLoad={onBgIframeLoad}
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[177.78vh] min-w-full min-h-full pointer-events-none"
