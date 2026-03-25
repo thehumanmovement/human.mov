@@ -45,8 +45,8 @@ export async function POST(req: Request) {
     if (process.env.RESEND_API_KEY) {
       try {
         const resend = new Resend(process.env.RESEND_API_KEY)
-        await resend.emails.send({
-          from: `${t(l, 'emailHeading')} <onboarding@resend.dev>`,
+        const emailResult = await resend.emails.send({
+          from: `${t(l, 'emailHeading')} <noreply@contact.human.mov>`,
           to: email.trim(),
           subject: t(l, 'emailSubject'),
           html: `
@@ -58,8 +58,9 @@ export async function POST(req: Request) {
             </div>
           `,
         })
+        console.log('Resend signup email result:', JSON.stringify(emailResult))
       } catch (emailErr) {
-        console.error('Resend email error:', emailErr)
+        console.error('Resend signup email error:', emailErr)
       }
     }
 

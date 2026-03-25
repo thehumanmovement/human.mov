@@ -51,31 +51,11 @@ export async function POST(req: Request) {
     if (process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
 
-      // Send to hello@humanetech.com with reply-to set to user's email
-      await resend.emails.send({
-        from: 'The Human Movement <onboarding@resend.dev>',
-        to: 'hello@humanetech.com',
-        replyTo: email.trim(),
-        subject: `New message from ${name.trim()} (${email.trim()})`,
-        html: `
-          <div style="font-family: sans-serif; max-width: 600px;">
-            <h2 style="color: #333;">New Contact Message</h2>
-            <p><strong>Name:</strong> ${name.trim()}</p>
-            <p><strong>Email:</strong> ${email.trim()}</p>
-            ${zipCode?.trim() ? `<p><strong>Zip Code:</strong> ${zipCode.trim()}</p>` : ''}
-            <p><strong>Contactable:</strong> ${contactable ? 'Yes' : 'No'}</p>
-            <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 16px 0;">
-              <p style="white-space: pre-wrap; margin: 0;">${message}</p>
-            </div>
-          </div>
-        `,
-      })
-
       // Send copy to sender
       if (email?.trim()) {
         try {
           await resend.emails.send({
-            from: 'The Human Movement <onboarding@resend.dev>',
+            from: 'The Human Movement <noreply@contact.human.mov>',
             to: email.trim(),
             subject: 'Your message to The Human Movement',
             html: `
