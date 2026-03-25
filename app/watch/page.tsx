@@ -160,7 +160,7 @@ export default function WatchPage() {
         </div>
       )}
 
-      <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">I&apos;d like to <span className="text-sunrise">learn more.</span></p>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" />
+      <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">Learn More <span className="text-sunrise">Now.</span></p>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" />
       <GlobeSection lang={lang} />
 
       <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">An anti-human future with AI is <span className="text-sunrise">not inevitable.</span></p>} overridePlaceholder="Add your email to agree" overrideButton="I Agree" />

@@ -99,7 +99,7 @@ The Indian Parliament is in discussions on a bill to restrict social media for t
 - Date: December 2025
 - URL: https://www.theguardian.com/australia-news/2026/mar/04/australia-social-media-ban-under-16s-three-month-review
 
-First nation to ban social media for children under 16, sparking a global wave of similar action: France, Denmark, Spain, Indonesia, ...
+First nation to ban social media for children under 16, sparking a global wave of similar action and planned action: France, Denmark, Spain, Indonesia, ...
 
 ---
 

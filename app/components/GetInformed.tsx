@@ -48,7 +48,7 @@ export default function GetInformed({ lang }: { lang: Lang }) {
       </div>
 
       <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto text-center px-5 sm:px-8">
-        2.5 years in the making, The AI Doc clarifies the consequences of the default path.
+        2.5 years in the making, <em>The AI Doc</em> clarifies the consequences of the default path.
       </p>
 
     </section>
