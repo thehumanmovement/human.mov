@@ -34,9 +34,14 @@ function getVariantCopy(lang: Lang, variant: Variant) {
 interface SignupFormProps {
   lang: Lang
   variant?: Variant
+  overrideLine1?: string
+  overrideLine2?: string
+  overrideHeading?: React.ReactNode
+  overridePlaceholder?: string
+  overrideButton?: string
 }
 
-const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default' }, ref) {
+const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default', overrideLine1, overrideLine2, overrideHeading, overridePlaceholder, overrideButton }, ref) {
   const [step, setStep] = useState<Step>('email')
   const [signupId, setSignupId] = useState('')
   const [fullName, setFullName] = useState('')
@@ -167,18 +172,24 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
         {step === 'email' && (
           <div className="step-enter">
             <div className="mb-12 text-center">
-              <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
-                {getVariantCopy(lang, variant).line1}
-              </p>
-              <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
-                {getVariantCopy(lang, variant).line2}
-              </p>
+              {overrideHeading ?? (
+                <>
+                  <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">
+                    {overrideLine1 ?? getVariantCopy(lang, variant).line1}
+                  </p>
+                  {(overrideLine2 !== '' && (overrideLine2 || getVariantCopy(lang, variant).line2)) && (
+                    <p className="font-serif uppercase text-3xl sm:text-4xl text-sunrise leading-snug mt-1">
+                      {overrideLine2 ?? getVariantCopy(lang, variant).line2}
+                    </p>
+                  )}
+                </>
+              )}
             </div>
             <form onSubmit={handleEmailNext} className="space-y-4">
               <input
                 ref={emailInputRef}
                 type="email"
-                placeholder={t(lang, 'emailOnlyPlaceholder')}
+                placeholder={overridePlaceholder ?? t(lang, 'emailOnlyPlaceholder')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -189,7 +200,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
                 disabled={!email.trim()}
                 className={BUTTON_CLASS}
               >
-                {getVariantCopy(lang, variant).button}
+                {overrideButton ?? getVariantCopy(lang, variant).button}
               </button>
             </form>
           </div>

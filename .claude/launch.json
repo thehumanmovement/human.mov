@@ -3,7 +3,7 @@
   "configurations": [
     {
       "name": "thm-dev",
-      "runtimeExecutable": "/usr/local/bin/node",
+      "runtimeExecutable": "/Users/aza/.local/nodejs/bin/node",
       "runtimeArgs": ["node_modules/.bin/next", "dev", "--port", "3001"],
       "port": 3001
     }
