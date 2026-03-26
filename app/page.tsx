@@ -261,11 +261,11 @@ export default function WatchPage() {
             {/* Vimeo iframe — no controls, we overlay our own */}
             <iframe
               ref={fullscreenIframeRef}
-              src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=0&loop=0&quality=1080p&controls=0&title=0&byline=0&portrait=0&api=1#t=0s`}
+              src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=0&loop=0&quality=1080p&controls=0&title=0&byline=0&portrait=0&api=1&dnt=1#t=0s`}
               allow="autoplay; fullscreen"
               allowFullScreen
               onLoad={onPlayerIframeLoad}
-              className="w-full max-w-[177.78vh] aspect-video"
+              className="w-full max-w-[177.78vh] aspect-video pointer-events-none"
               style={{ border: 'none' }}
             />
 
