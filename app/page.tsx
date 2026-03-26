@@ -417,7 +417,7 @@ export default function WatchPage() {
           <p>We are growing a human movement to protect our humanity and build a pro-human future with AI.</p>
         </div>
       </div>
-      <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" />
+      <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" className="!pt-8 sm:!pt-10" />
       <GlobeSection lang={lang} />
 
       <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">An anti-human future with AI is <span className="text-sunrise">not inevitable.</span></p>} overridePlaceholder="Add your email to agree" overrideButton="I Agree" />

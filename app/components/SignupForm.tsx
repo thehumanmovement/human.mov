@@ -39,9 +39,10 @@ interface SignupFormProps {
   overrideHeading?: React.ReactNode
   overridePlaceholder?: string
   overrideButton?: string
+  className?: string
 }
 
-const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default', overrideLine1, overrideLine2, overrideHeading, overridePlaceholder, overrideButton }, ref) {
+const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function SignupForm({ lang, variant = 'default', overrideLine1, overrideLine2, overrideHeading, overridePlaceholder, overrideButton, className }, ref) {
   const [step, setStep] = useState<Step>('email')
   const [signupId, setSignupId] = useState('')
   const [fullName, setFullName] = useState('')
@@ -159,7 +160,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
   // If already signed up, show grayed-out "You're in!" state
   if (alreadySignedUp) return (
-    <section ref={formSectionRef} className="flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32">
+    <section ref={formSectionRef} className={`flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32 ${className || ''}`}>
       <div className="w-full max-w-md opacity-50">
         <div className="mb-12 text-center">
           {overrideHeading ?? (
@@ -186,7 +187,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   )
 
   return (
-    <section ref={formSectionRef} className="flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32">
+    <section ref={formSectionRef} className={`flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32 ${className || ''}`}>
       <div className="w-full max-w-md">
 
         {step === 'email' && (
