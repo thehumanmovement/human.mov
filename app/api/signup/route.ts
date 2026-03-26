@@ -79,7 +79,10 @@ export async function POST(req: Request) {
               last_name: '',
               z_i_p: zipCode?.trim() || '',
             },
-            groups: process.env.MAILERLITE_SIGNUP_GROUP_ID ? [process.env.MAILERLITE_SIGNUP_GROUP_ID] : [],
+            groups: [
+            ...(process.env.MAILERLITE_SIGNUP_GROUP_ID ? [process.env.MAILERLITE_SIGNUP_GROUP_ID] : []),
+            ...(process.env.MAILERLITE_NOT_VERIFIED_GROUP_ID ? [process.env.MAILERLITE_NOT_VERIFIED_GROUP_ID] : []),
+          ],
           }),
         })
       } catch (mlErr) {
