@@ -400,18 +400,16 @@ export default function WatchPage() {
                   What&apos;s the human movement?
                 </span>
               </button>
+              <p className="font-body text-base sm:text-lg font-bold text-white max-w-2xl mx-auto text-center mt-6 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
+                A global force fighting to protect our jobs, our kids and our freedom.
+                <br />
+                To keep humans in control and make it safe for all of us.
+              </p>
             </div>
           </>
         )}
       </section>
 
-      <div className="text-center px-6 pt-8 -mb-16 sm:-mb-20 bg-[#111]">
-        <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto">
-          A global force fighting to protect our jobs, our kids and our freedom.
-          <br />
-          To keep humans in control and make it safe for all of us.
-        </p>
-      </div>
       <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">Learn More <span className="text-sunrise">Now.</span></p>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" />
       <GlobeSection lang={lang} />
 
