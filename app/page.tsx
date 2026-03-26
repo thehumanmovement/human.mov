@@ -424,6 +424,8 @@ export default function WatchPage() {
 
       <GetInformed lang={lang} />
 
+      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'joinTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span></p>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} />
+
       {/* In Alliance With */}
       <section className="px-6 pt-40 pb-44 sm:pt-52 sm:pb-56 bg-[#111]">
         <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-28">
