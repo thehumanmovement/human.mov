@@ -137,6 +137,12 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     if (typeof window !== 'undefined' && (window as any).fbq) {
       (window as any).fbq('track', 'Lead')
     }
+    // Fire Google Ads conversion event on successful signup
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'conversion', {
+        send_to: 'AW-18023035723/kM2vCPrY1oocEMvmhpJD',
+      })
+    }
   }
 
   async function handleEmailVerify(e: FormEvent) {
