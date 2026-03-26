@@ -37,6 +37,7 @@ export default function WatchPage() {
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
   const [showControls, setShowControls] = useState(true)
+  const [bgLoaded, setBgLoaded] = useState(false)
   const formRef = useRef<SignupFormHandle>(null)
   const bgIframeRef = useRef<HTMLIFrameElement>(null)
   const fullscreenIframeRef = useRef<HTMLIFrameElement>(null)
@@ -102,6 +103,7 @@ export default function WatchPage() {
     init()
     bgInitTimers.current.push(setTimeout(init, 500))
     bgInitTimers.current.push(setTimeout(init, 1500))
+    bgInitTimers.current.push(setTimeout(() => setBgLoaded(true), 2500))
   }, [])
 
   function handlePlay() {
@@ -140,10 +142,12 @@ export default function WatchPage() {
     if (!progressBarRef.current || !duration) return
     const rect = progressBarRef.current.getBoundingClientRect()
     const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-    const time = pct * duration
+    const maxTime = duration > 1 ? duration - 1 : duration
+    const time = Math.min(pct * duration, maxTime)
+    const clampedPct = time / duration
     postToPlayer({ method: 'setCurrentTime', value: time })
     setCurrentTime(time)
-    setProgress(pct)
+    setProgress(clampedPct)
   }
 
   function formatTime(s: number) {
@@ -170,10 +174,24 @@ export default function WatchPage() {
         if (data.event === 'timeupdate' || data.event === 'playProgress') {
           const s = data.data?.seconds ?? 0
           const d = data.data?.duration ?? 0
-          const pct = data.data?.percent ?? (d > 0 ? s / d : 0)
-          if (s > 0) setCurrentTime(s)
-          if (d > 0) setDuration(d)
-          if (pct > 0) setProgress(typeof pct === 'number' ? pct : 0)
+          const maxTime = d > 1 ? d - 1 : d
+          // Stop 1 second before the end
+          if (d > 0 && s >= maxTime) {
+            fullscreenIframeRef.current?.contentWindow?.postMessage(
+              JSON.stringify({ method: 'pause' }), '*'
+            )
+            fullscreenIframeRef.current?.contentWindow?.postMessage(
+              JSON.stringify({ method: 'setCurrentTime', value: maxTime }), '*'
+            )
+            setIsPlaying(false)
+            setCurrentTime(maxTime)
+            setProgress(maxTime / d)
+          } else {
+            const pct = data.data?.percent ?? (d > 0 ? s / d : 0)
+            if (s > 0) setCurrentTime(s)
+            if (d > 0) setDuration(d)
+            if (pct > 0) setProgress(typeof pct === 'number' ? pct : 0)
+          }
         }
         // getDuration response
         if (data.method === 'getDuration' && data.value) {
@@ -305,12 +323,41 @@ export default function WatchPage() {
                   <span className="text-white/90 text-sm font-body tracking-wide">
                     {formatTime(currentTime)} <span className="text-white/40 mx-1">/</span> {duration > 0 ? formatTime(duration) : '—:——'}
                   </span>
+
+                  <div className="flex-1" />
+
+                  {/* Fullscreen button */}
+                  <button
+                    onClick={() => {
+                      const el = sectionRef.current
+                      if (!el) return
+                      if (document.fullscreenElement) {
+                        document.exitFullscreen()
+                      } else {
+                        el.requestFullscreen().catch(() => {})
+                      }
+                    }}
+                    className="text-white hover:text-sunrise transition-colors cursor-pointer"
+                  >
+                    <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v5.25m0-5.25h5.25m-5.25 0L9 9m11.25-5.25v5.25m0-5.25h-5.25m5.25 0L15 9m-11.25 11.25v-5.25m0 5.25h5.25m-5.25 0L9 15m11.25 5.25v-5.25m0 5.25h-5.25m5.25 0L15 15" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         ) : (
           <>
+            {/* Cover image until video loads */}
+            <img
+              src="/images/video-cover.jpg"
+              alt=""
+              aria-hidden="true"
+              fetchPriority="high"
+              className="absolute inset-0 w-full h-full object-cover z-[1] transition-opacity duration-1000 pointer-events-none"
+              style={{ opacity: bgLoaded ? 0 : 1 }}
+            />
             {/* Background looping video (muted) */}
             <iframe
               ref={bgIframeRef}
@@ -343,7 +390,7 @@ export default function WatchPage() {
                     <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
-                <span className="font-serif uppercase text-xl sm:text-2xl text-white tracking-wide [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] group-hover:text-sunrise transition-colors duration-300">
+                <span className="font-serif uppercase text-2xl sm:text-3xl text-white tracking-wide [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] group-hover:text-sunrise transition-colors duration-300">
                   What&apos;s the human movement?
                 </span>
               </button>
@@ -352,6 +399,13 @@ export default function WatchPage() {
         )}
       </section>
 
+      <div className="text-center px-6 pt-8 -mb-16 sm:-mb-20 bg-[#111]">
+        <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto">
+          A global force is growing to protect our jobs, our kids and our freedom.
+          <br />
+          To keep humans in control and make it safe for all of us.
+        </p>
+      </div>
       <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">Learn More <span className="text-sunrise">Now.</span></p>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" />
       <GlobeSection lang={lang} />
 

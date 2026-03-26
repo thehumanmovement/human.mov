@@ -98,11 +98,6 @@ export default function WatchGlobeScroll({ lang }: Props) {
           <br />
           <span className="text-sunrise">Gaining Speed.</span>
         </h2>
-        <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto">
-          A global force is growing to protect our jobs, our kids and our freedom.
-          <br />
-          To keep humans in control and make it safe for all of us.
-        </p>
       </div>
 
       {/* Stacked news cards */}
