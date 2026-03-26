@@ -38,6 +38,7 @@ export default function WatchPage() {
   const [currentTime, setCurrentTime] = useState(0)
   const [showControls, setShowControls] = useState(true)
   const [bgLoaded, setBgLoaded] = useState(false)
+  const bgLoadedRef = useRef(false)
   const formRef = useRef<SignupFormHandle>(null)
   const bgIframeRef = useRef<HTMLIFrameElement>(null)
   const fullscreenIframeRef = useRef<HTMLIFrameElement>(null)
@@ -60,6 +61,7 @@ export default function WatchPage() {
   }, [lang])
 
   // Background video loop: seek back to LOOP_START when reaching LOOP_END
+  // Also detect when video actually starts playing to fade out poster
   useEffect(() => {
     function onMessage(e: MessageEvent) {
       if (typeof e.data !== 'string') return
@@ -68,6 +70,11 @@ export default function WatchPage() {
         // Handle timeupdate / playProgress for background loop
         if ((data.event === 'timeupdate' || data.event === 'playProgress') && !isFullscreen) {
           const seconds = data.data?.seconds ?? data.data?.playProgress ?? 0
+          // Fade out poster once video is actually playing
+          if (seconds >= LOOP_START && !bgLoadedRef.current) {
+            bgLoadedRef.current = true
+            setBgLoaded(true)
+          }
           if (seconds >= LOOP_END || seconds < LOOP_START) {
             bgIframeRef.current?.contentWindow?.postMessage(
               JSON.stringify({ method: 'setCurrentTime', value: LOOP_START }),
@@ -103,7 +110,6 @@ export default function WatchPage() {
     init()
     bgInitTimers.current.push(setTimeout(init, 500))
     bgInitTimers.current.push(setTimeout(init, 1500))
-    bgInitTimers.current.push(setTimeout(() => setBgLoaded(true), 2500))
   }, [])
 
   function handlePlay() {
