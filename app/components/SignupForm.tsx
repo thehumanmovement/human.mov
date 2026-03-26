@@ -132,6 +132,11 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     setSignupId(data.id)
     setLoading(false)
     setStep('verify-email')
+
+    // Fire Meta Lead event on successful signup
+    if (typeof window !== 'undefined' && (window as any).fbq) {
+      (window as any).fbq('track', 'Lead')
+    }
   }
 
   async function handleEmailVerify(e: FormEvent) {

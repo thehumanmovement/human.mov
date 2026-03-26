@@ -35,6 +35,11 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
 
       setSent(true)
       setLoading(false)
+
+      // Fire Meta Lead event on successful contact form submission
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        (window as any).fbq('track', 'Lead')
+      }
     } catch {
       setError(t(lang, 'failedToSend'))
       setLoading(false)
