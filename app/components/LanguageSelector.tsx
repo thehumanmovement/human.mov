@@ -31,7 +31,7 @@ export default function LanguageSelector({ lang, mounted, onSelect }: LanguageSe
   }
 
   return (
-    <div ref={menuRef} className="absolute top-6 right-6 z-20">
+    <div ref={menuRef} className="absolute top-6 right-6 z-30">
       <button
         onClick={() => setOpen(!open)}
         aria-label="Select language"

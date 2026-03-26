@@ -249,10 +249,9 @@ export default function WatchPage() {
 
   return (
     <>
-      {!isFullscreen && <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} />}
-
       {/* Vimeo Hero */}
       <section ref={sectionRef} className="relative w-full h-screen overflow-hidden bg-black">
+        {!isFullscreen && <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} />}
         {isFullscreen ? (
           <div
             className="absolute inset-0 flex items-center justify-center"
@@ -437,7 +436,7 @@ export default function WatchPage() {
             {[
               { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-8 sm:h-10', href: 'https://aiphrc.org/' },
               { src: '/images/partners/humanchange_logo.svg', alt: 'Human Change', h: 'h-18 sm:h-24', href: 'https://humanchange.com/' },
-              { src: '/images/partners/humansfirst_logo.webp', alt: 'Humans First', h: 'h-20 sm:h-28', href: 'https://www.humansfirst.ai/', detailed: true },
+              { src: '/images/partners/humansfirst_logo.webp', alt: 'Humans First', h: 'h-20 sm:h-28', href: 'https://www.humansfirst.com/', detailed: true },
             ].map((logo) => (
               <a key={logo.alt} href={logo.href} target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity">
                 <img src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto ${(logo as any).detailed ? 'grayscale invert brightness-[1.8] opacity-70' : 'brightness-0 invert opacity-70'}`} />
