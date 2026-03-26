@@ -45,7 +45,7 @@ export async function POST(req: Request) {
     if (process.env.RESEND_API_KEY) {
       try {
         const resend = new Resend(process.env.RESEND_API_KEY)
-        const emailResult = await resend.emails.send({
+        await resend.emails.send({
           from: `${t(l, 'emailHeading')} <noreply@contact.human.mov>`,
           to: email.trim(),
           subject: t(l, 'emailSubject'),
@@ -58,9 +58,8 @@ export async function POST(req: Request) {
             </div>
           `,
         })
-        console.log('Resend signup email result:', JSON.stringify(emailResult))
       } catch (emailErr) {
-        console.error('Resend signup email error:', emailErr)
+        console.error('Resend email error:', emailErr)
       }
     }
 
@@ -80,6 +79,7 @@ export async function POST(req: Request) {
               last_name: '',
               z_i_p: zipCode?.trim() || '',
             },
+            groups: process.env.MAILERLITE_SIGNUP_GROUP_ID ? [process.env.MAILERLITE_SIGNUP_GROUP_ID] : [],
           }),
         })
       } catch (mlErr) {

@@ -401,7 +401,7 @@ export default function WatchPage() {
 
       <div className="text-center px-6 pt-8 -mb-16 sm:-mb-20 bg-[#111]">
         <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto">
-          A global force is growing to protect our jobs, our kids and our freedom.
+          A global force fighting to protect our jobs, our kids and our freedom.
           <br />
           To keep humans in control and make it safe for all of us.
         </p>
@@ -431,11 +431,12 @@ export default function WatchPage() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36">
             {[
-              { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-20 sm:h-28', href: 'https://aiphrc.org/' },
+              { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-8 sm:h-10', href: 'https://aiphrc.org/' },
               { src: '/images/partners/humanchange_logo.svg', alt: 'Human Change', h: 'h-18 sm:h-24', href: 'https://humanchange.com/' },
+              { src: '/images/partners/humansfirst_logo.webp', alt: 'Humans First', h: 'h-20 sm:h-28', href: 'https://www.humansfirst.ai/', detailed: true },
             ].map((logo) => (
               <a key={logo.alt} href={logo.href} target="_blank" rel="noopener noreferrer" className="hover:opacity-100 transition-opacity">
-                <img src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto brightness-0 invert opacity-70`} />
+                <img src={logo.src} alt={logo.alt} loading="lazy" className={`${logo.h} w-auto ${(logo as any).detailed ? 'grayscale invert brightness-[1.8] opacity-70' : 'brightness-0 invert opacity-70'}`} />
               </a>
             ))}
           </div>
