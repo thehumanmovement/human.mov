@@ -396,13 +396,13 @@ export default function WatchPage() {
                   </svg>
                 </div>
                 <span className="font-serif uppercase text-2xl sm:text-3xl text-white tracking-wide [text-shadow:_0_2px_20px_rgba(0,0,0,0.8)] group-hover:text-sunrise transition-colors duration-300">
-                  What&apos;s the human movement?
+                  {t(lang, 'heroPlayButton')}
                 </span>
               </button>
               <p className="font-body text-base sm:text-lg font-bold text-white max-w-2xl mx-auto text-center mt-6 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
-                A global force fighting to protect our jobs, our kids and our freedom.
+                {t(lang, 'heroTagline1')}
                 <br />
-                To keep humans in control and make AI safe for all of us.
+                {t(lang, 'heroTagline2')}
               </p>
             </div>
           </>
@@ -410,17 +410,17 @@ export default function WatchPage() {
       </section>
 
       <div className="text-center px-6 pt-16 pb-0 bg-[#111]">
-        <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">Learn More <span className="text-sunrise">Now.</span></p>
+        <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'learnMore')} <span className="text-sunrise">{t(lang, 'learnMoreNow')}</span></p>
         <div className="max-w-2xl mx-auto mt-8 space-y-4 font-body text-base sm:text-lg text-white/80 leading-relaxed">
-          <p>Social media&apos;s race for attention took over our children.</p>
-          <p>Now, trillion-dollar AI companies are locked in a race to take over billions of people&apos;s livelihoods, agency, and future.</p>
-          <p>We are growing a human movement to protect our humanity and build a pro-human future with AI.</p>
+          <p>{t(lang, 'heroLine1')}</p>
+          <p>{t(lang, 'heroLine2')}</p>
+          <p>{t(lang, 'heroLine3')}</p>
         </div>
       </div>
-      <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" className="!pt-8 sm:!pt-10" />
+      <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} className="!pt-8 sm:!pt-10" />
       <GlobeSection lang={lang} />
 
-      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">An anti-human future with AI is <span className="text-sunrise">not inevitable.</span></p>} overridePlaceholder="Add your email to agree" overrideButton="I Agree" />
+      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton={t(lang, 'iAgree')} />
 
       <GetInformed lang={lang} />
 
@@ -456,10 +456,10 @@ export default function WatchPage() {
 
       <ContactSection lang={lang} overrideHeading={
         <h2 className="font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
-          WE&apos;D LOVE TO HEAR{' '}
-          <span className="text-sunrise">FROM YOU</span>
+          {t(lang, 'contactOverrideTitle1')}{' '}
+          <span className="text-sunrise">{t(lang, 'contactOverrideTitle2')}</span>
         </h2>
-      } hideDesc emailPlaceholder="My email" messagePlaceholder="My idea, solution, or message..." />
+      } hideDesc emailPlaceholder={t(lang, 'myEmail')} messagePlaceholder={t(lang, 'myIdeaMessage')} />
 
     </>
   )

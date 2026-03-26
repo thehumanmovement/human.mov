@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { WINS, type WinInfo } from '../../lib/wins-data'
+import { t, type Lang } from '@/lib/i18n'
 
 interface CardRegion {
   names: { name: string; label: string }[]
@@ -28,7 +29,7 @@ function getCardWins(region: CardRegion): CardWin[] {
 }
 
 interface Props {
-  lang: string
+  lang: Lang
 }
 
 export default function WatchGlobeScroll({ lang }: Props) {
@@ -94,9 +95,9 @@ export default function WatchGlobeScroll({ lang }: Props) {
       {/* Heading */}
       <div className={`text-center mb-16 sm:mb-20 transition-all duration-1000 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight">
-          The Human Movement Is
+          {t(lang, 'theHumanMovementIs')}
           <br />
-          <span className="text-sunrise">Gaining Speed.</span>
+          <span className="text-sunrise">{t(lang, 'gainingSpeed')}</span>
         </h2>
       </div>
 

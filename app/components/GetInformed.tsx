@@ -1,6 +1,6 @@
 'use client'
 
-import { type Lang } from '@/lib/i18n'
+import { t, type Lang } from '@/lib/i18n'
 
 const VIDEOS = [
   {
@@ -26,9 +26,9 @@ export default function GetInformed({ lang }: { lang: Lang }) {
     <section className="bg-[#0a0a0a] py-20 sm:py-28 overflow-hidden">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
         <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight text-center">
-          Out Now
+          {t(lang, 'outNow')}
           <br />
-          <span className="text-sunrise">In Theaters Only.</span>
+          <span className="text-sunrise">{t(lang, 'inTheatersOnly')}</span>
         </h2>
       </div>
 
@@ -48,7 +48,7 @@ export default function GetInformed({ lang }: { lang: Lang }) {
       </div>
 
       <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto text-center px-5 sm:px-8">
-        <em>The AI Doc</em> clarifies the consequences of the default future with AI.
+        {t(lang, 'aiDocDesc')}
       </p>
 
     </section>

@@ -28,7 +28,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || 'Something went wrong')
+        setError(data.error || t(lang, 'somethingWentWrong'))
         setLoading(false)
         return
       }
@@ -36,7 +36,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
       setSent(true)
       setLoading(false)
     } catch {
-      setError('Failed to send. Please try again.')
+      setError(t(lang, 'failedToSend'))
       setLoading(false)
     }
   }
@@ -77,7 +77,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
             <div className="flex gap-4">
               <input
                 type="email"
-                placeholder={emailPlaceholder || "My email"}
+                placeholder={emailPlaceholder || t(lang, 'myEmail')}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -85,7 +85,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
               />
               <input
                 type="text"
-                placeholder="My name"
+                placeholder={t(lang, 'myName')}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -111,7 +111,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
             >
               <input
                 type="text"
-                placeholder="Zip code (optional)"
+                placeholder={t(lang, 'placeholderZip')}
                 value={zipCode}
                 onChange={(e) => setZipCode(e.target.value)}
                 className={`${inputClass} flex-1`}
@@ -135,7 +135,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
                   </div>
                 </div>
                 <span className="font-body text-sm text-white/60 group-hover:text-white/80 transition-colors select-none">
-                  Can we contact you?
+                  {t(lang, 'canWeContact')}
                 </span>
               </label>
             </div>
