@@ -402,14 +402,22 @@ export default function WatchPage() {
               <p className="font-body text-base sm:text-lg font-bold text-white max-w-2xl mx-auto text-center mt-6 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
                 A global force fighting to protect our jobs, our kids and our freedom.
                 <br />
-                To keep humans in control and make it safe for all of us.
+                To keep humans in control and make AI safe for all of us.
               </p>
             </div>
           </>
         )}
       </section>
 
-      <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">Learn More <span className="text-sunrise">Now.</span></p>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" />
+      <div className="text-center px-6 pt-16 pb-0 bg-[#111]">
+        <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">Learn More <span className="text-sunrise">Now.</span></p>
+        <div className="max-w-2xl mx-auto mt-8 space-y-4 font-body text-base sm:text-lg text-white/80 leading-relaxed">
+          <p>Social media&apos;s race for attention took over our children.</p>
+          <p>Now, trillion-dollar AI companies are locked in a race to take over billions of people&apos;s livelihoods, agency, and future.</p>
+          <p>We are growing a human movement to protect our humanity and build a pro-human future with AI.</p>
+        </div>
+      </div>
+      <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder="Enter my email" overrideButton="Get Info Now" />
       <GlobeSection lang={lang} />
 
       <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">An anti-human future with AI is <span className="text-sunrise">not inevitable.</span></p>} overridePlaceholder="Add your email to agree" overrideButton="I Agree" />
