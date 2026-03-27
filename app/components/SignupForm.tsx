@@ -273,7 +273,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   // If already signed up, show grayed-out "You're in!" state
   if (alreadySignedUp) return (
     <section ref={formSectionRef} className={`flex items-center justify-center bg-[#111] px-6 py-24 sm:py-32 ${className || ''}`}>
-      <div className="w-full max-w-md opacity-50">
+      <div className="w-full max-w-md">
         <div className="mb-12 text-center">
           {overrideHeading ?? (
             <>
@@ -288,15 +288,15 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             </>
           )}
         </div>
-        <div
-          onClick={handleSignOut}
-          className="w-full bg-white/[0.07] border border-white/[0.12] rounded-lg px-5 py-4 text-base font-body text-white/40 text-center cursor-pointer hover:border-white/25 transition-all"
+        <a
+          href="/share"
+          className="block w-full bg-white/[0.07] border border-white/[0.12] rounded-lg px-5 py-4 text-base font-body text-white/60 text-center cursor-pointer hover:border-white/25 transition-all"
         >
-          {t(lang, 'youreIn')}
-        </div>
-        <div onDoubleClick={handleSignOut} className="mt-6 w-full bg-sunrise/40 text-black/40 rounded-full py-4 text-base font-body font-bold uppercase tracking-widest text-center cursor-default select-none">
           ✓ {t(lang, 'youreIn')}
-        </div>
+        </a>
+        <a href="/share" onDoubleClick={handleSignOut} className="block mt-6 w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest text-center cursor-pointer select-none hover:bg-sunrise/90 transition-all">
+          Take Action →
+        </a>
       </div>
     </section>
   )

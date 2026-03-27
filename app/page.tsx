@@ -38,6 +38,7 @@ export default function WatchPage() {
   const [currentTime, setCurrentTime] = useState(0)
   const [showControls, setShowControls] = useState(true)
   const [bgLoaded, setBgLoaded] = useState(false)
+  const [isSignedUp, setIsSignedUp] = useState(false)
   const bgLoadedRef = useRef(false)
   const formRef = useRef<SignupFormHandle>(null)
   const bgIframeRef = useRef<HTMLIFrameElement>(null)
@@ -51,7 +52,11 @@ export default function WatchPage() {
     const saved = localStorage.getItem('lang')
     if (saved && isValidLang(saved)) setLang(saved)
     setBgQuality(getBgQuality())
+    setIsSignedUp(!!localStorage.getItem('thm-signed-up'))
+    const handler = () => setIsSignedUp(!!localStorage.getItem('thm-signed-up'))
+    window.addEventListener('thm-signed-up', handler)
     setMounted(true)
+    return () => window.removeEventListener('thm-signed-up', handler)
   }, [])
 
   useEffect(() => {
@@ -251,7 +256,16 @@ export default function WatchPage() {
     <>
       {/* Vimeo Hero */}
       <section ref={sectionRef} className="relative w-full h-screen overflow-hidden bg-black">
-        {!isFullscreen && <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} />}
+        {!isFullscreen && (
+          <div className="absolute top-0 right-0 z-50 flex items-center gap-3 p-4">
+            {isSignedUp && (
+              <a href="/share" className="bg-sunrise text-black text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full hover:bg-sunrise/90 transition-all">
+                Take Action
+              </a>
+            )}
+            <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} inline />
+          </div>
+        )}
         {isFullscreen ? (
           <div
             className="absolute inset-0 flex items-center justify-center"

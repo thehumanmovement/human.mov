@@ -7,9 +7,10 @@ interface LanguageSelectorProps {
   lang: Lang
   mounted: boolean
   onSelect: (code: Lang) => void
+  inline?: boolean
 }
 
-export default function LanguageSelector({ lang, mounted, onSelect }: LanguageSelectorProps) {
+export default function LanguageSelector({ lang, mounted, onSelect, inline }: LanguageSelectorProps) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -31,7 +32,7 @@ export default function LanguageSelector({ lang, mounted, onSelect }: LanguageSe
   }
 
   return (
-    <div ref={menuRef} className="absolute top-6 right-6 z-30">
+    <div ref={menuRef} className={inline ? "relative z-30" : "absolute top-6 right-6 z-30"}>
       <button
         onClick={() => setOpen(!open)}
         aria-label="Select language"
