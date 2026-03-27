@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { isValidLang, t, type Lang } from '@/lib/i18n'
 
 function headingClass(lang: Lang): string {
@@ -29,6 +29,8 @@ export default function WelcomePage() {
   const [signupId, setSignupId] = useState('')
   const [openAction, setOpenAction] = useState<number | null>(0)
   const [loadedIframes, setLoadedIframes] = useState<Set<number>>(new Set())
+  const [shareScale, setShareScale] = useState(0.95)
+  const shareRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     setFullName(localStorage.getItem('thm-name') || '')
@@ -36,6 +38,21 @@ export default function WelcomePage() {
     setSignupId(localStorage.getItem('thm-signup-id') || '')
     const savedLang = localStorage.getItem('lang')
     if (savedLang && isValidLang(savedLang)) setLang(savedLang as Lang)
+  }, [])
+
+  // Scale up Share the Trailer box as it scrolls into view
+  useEffect(() => {
+    function onScroll() {
+      if (!shareRef.current) return
+      const rect = shareRef.current.getBoundingClientRect()
+      const vh = window.innerHeight
+      // Map from bottom of viewport (scale 0.95) to center (scale 1.0)
+      const progress = Math.max(0, Math.min(1, 1 - (rect.top - vh * 0.3) / (vh * 0.5)))
+      setShareScale(0.95 + progress * 0.05)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
   // Track which accordions have been opened to lazy-load iframes
@@ -53,24 +70,25 @@ export default function WelcomePage() {
   const icon = 'w-10 h-10 rounded-xl bg-sunrise/20 flex items-center justify-center shrink-0'
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-[#111] px-6 py-20">
-      <div className="w-full max-w-md text-center">
+    <section className="min-h-screen flex items-center justify-center bg-[#111] px-4 sm:px-6 py-20">
+      <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl text-center">
         <h1 className={headingClass(lang)}>
           <span>{t(lang, 'welcomeTo')}</span><br />
           <span>{t(lang, 'theHuman')}</span><br />
           <span className="text-sunrise">{t(lang, 'movement')}</span>
         </h1>
-        <h2 className="mt-8 font-serif uppercase text-2xl sm:text-3xl text-white"><span className="text-sunrise">Clarity</span> Brings Agency</h2>
-        <p className="mt-4 text-white/60 font-body text-sm leading-relaxed">The dangerous race to AI will only shift when the fear of everyone losing becomes greater than the fear of me losing to you. <em>The AI Doc</em> creates the clarity that the default path with AI will create an anti-human future. The more people that watch, the more clarity, the faster humanity will act.</p>
-        <p className="mt-6 text-white/50 font-body text-sm">Here&apos;s how you can make a difference right now.</p>
+        {/* Step 1 Box */}
+        <div className="mt-8 bg-white/[0.05] border border-white/[0.1] rounded-2xl p-6">
+          <h2 className="font-serif uppercase text-2xl sm:text-3xl text-white">Step 1: Spread <span className="text-sunrise">clarity</span> to create agency</h2>
+          <p className="mt-4 text-white/60 font-body text-sm leading-relaxed">This only changes when everyone sees the same problem. The more people watch <em>The AI Doc</em>, the more shared clarity, the faster things will change.</p>
 
-        {/* 1. Share the Trailer */}
-        <div className={`mt-10 ${card}`}>
-          <button onClick={() => toggle(0)} className={header}>
-            <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></div>
-            <div className="flex-1 text-left"><p className="font-serif uppercase text-lg text-white">Share the Trailer</p><p className="text-white/40 text-xs font-body">Send it to friends, family &amp; your group chats.</p></div>
-            {chevron(0)}
-          </button>
+          {/* 1. Share the Trailer */}
+          <div ref={shareRef} className={`mt-6 ${card} transition-transform duration-100`} style={{ transform: `scale(${shareScale})` }}>
+            <button onClick={() => toggle(0)} className={header}>
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></div>
+              <div className="flex-1 text-left"><p className="font-serif uppercase text-lg text-white">Share the Trailer</p><p className="text-white/40 text-xs font-body">Send it to friends, family &amp; your group chats.</p></div>
+              {chevron(0)}
+            </button>
           <div className={panel(0)}><div className="px-5 pb-5">
             <div className="aspect-video rounded-xl overflow-hidden bg-black/50 mb-4 relative">
               {loadedIframes.has(0) ? (
@@ -91,8 +109,8 @@ export default function WelcomePage() {
           </div></div>
         </div>
 
-        {/* 2. See the Film */}
-        <div className={`mt-3 ${card}`}>
+          {/* 2. See the Film */}
+          <div className={`mt-3 ${card}`}>
           <button onClick={() => toggle(1)} className={header}>
             <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg></div>
             <div className="flex-1 text-left"><p className="font-serif uppercase text-lg text-white">See the Film</p><p className="text-white/40 text-xs font-body">US Premiere — March 27th</p></div>
@@ -118,23 +136,217 @@ export default function WelcomePage() {
           </div></div>
         </div>
 
-        {/* 3. Rent a Theater */}
-        <div className={`mt-3 ${card}`}>
-          <button onClick={() => toggle(2)} className={header}>
-            <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
-            <div className="flex-1 text-left"><p className="font-serif uppercase text-lg text-white">Rent a Theater</p><p className="text-white/40 text-xs font-body">Book a private screening for your community.</p></div>
-            {chevron(2)}
-          </button>
-          <div className={panel(2)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-2">
-            <p><span className="text-white/70 font-semibold">1.</span> Contact your local theater and ask about private rentals or group bookings.</p>
-            <p><span className="text-white/70 font-semibold">2.</span> Most theaters offer private screenings for 50-200 people at discounted group rates.</p>
-            <p><span className="text-white/70 font-semibold">3.</span> Share the event link with your network and fill the seats.</p>
-          </div></div>
+          {/* 3. Rent a Theater — hidden for now */}
         </div>
 
+        {/* Step 2 Box */}
+        <div className="mt-6 bg-white/[0.05] border border-white/[0.1] rounded-2xl p-6">
+          <h2 className="font-serif uppercase text-2xl sm:text-3xl text-white">Step 2: <span className="text-sunrise">Protect Yourself</span></h2>
 
-        <div className="mt-10">
-          <p className="text-sm text-white/30 font-body tracking-widest uppercase">{t(lang, 'moreSoon')}</p>
+          {/* AI-Proof Your Family */}
+          <div className={`mt-6 ${card}`}>
+            <button onClick={() => toggle(3)} className={header}>
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+              <div className="flex-1 text-left">
+                <p className="font-serif uppercase text-lg text-white">AI-Proof Your Family</p>
+                <p className="text-white/40 text-xs font-body">AI can clone voices from seconds of audio. · 15 mins</p>
+              </div>
+              {chevron(3)}
+            </button>
+            <div className={panel(3)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+              <p className="text-white/70 font-semibold">How it works:</p>
+              <p><span className="text-white/70 font-semibold">1.</span> Pick a normal-sounding question — something an outsider would never suspect is a test. <em className="text-white/60">&ldquo;Did you ever fix that rumbling noise?&rdquo;</em> or <em className="text-white/60">&ldquo;What cake did you eat last week?&rdquo;</em></p>
+              <p><span className="text-white/70 font-semibold">2.</span> Agree on the code answer in person. It can be anything — even wrong on purpose. <em className="text-white/60">&ldquo;Yeah, it was the dishwasher&rdquo;</em> or <em className="text-white/60">&ldquo;The lemon one.&rdquo;</em></p>
+              <p><span className="text-white/70 font-semibold">3.</span> If you want extra security, the answer triggers a follow-up. <em className="text-white/60">&ldquo;Oh right, was that the one from Maria&apos;s?&rdquo;</em> — and only family knows the second reply.</p>
+              <div className="mt-3 bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">Rules</p>
+                <p>• The question sounds completely casual — an AI clone won&apos;t know it&apos;s being tested</p>
+                <p>• Wrong answer or hesitation = hang up immediately</p>
+                <p>• Never share the code over text, email, or phone — in person only</p>
+                <p>• Drill everyone — especially older relatives and kids. Any urgent call asking for money or help must pass the code first.</p>
+              </div>
+            </div></div>
+          </div>
+
+          {/* Delete Bad AI */}
+          <div className={`mt-3 ${card}`}>
+            <button onClick={() => toggle(4)} className={header}>
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></div>
+              <div className="flex-1 text-left">
+                <p className="font-serif uppercase text-lg text-white">Delete Bad AI</p>
+                <p className="text-white/40 text-xs font-body">Export your data, then delete accounts with OpenAI, Grok, and others. · 15 mins</p>
+              </div>
+              {chevron(4)}
+            </button>
+            <div className={panel(4)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-4">
+              <p>Take back your data. Open each app to export your history, then proceed to deletion settings.</p>
+
+              {/* Grok */}
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">Grok (xAI)</p>
+                <a href="https://x.com/i/premium_sign_up" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">1. Cancel Subscription</a>
+                <a href="https://x.com/settings/download_your_data" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">2. Archive Data</a>
+                <a href="https://x.com/settings/deactivate" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-red-500/20 border border-red-500/30 text-red-400 rounded-full py-2 text-xs font-semibold hover:bg-red-500/30 transition-all">3. Delete Account</a>
+              </div>
+
+              {/* ChatGPT */}
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">ChatGPT (OpenAI)</p>
+                <a href="https://chatgpt.com/#settings/ManageSubscription" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">1. Cancel Subscription</a>
+                <a href="https://chatgpt.com/#settings/DataControls" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">2. Archive Data</a>
+                <a href="https://help.openai.com/en/articles/6783435-how-do-i-delete-my-account" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-red-500/20 border border-red-500/30 text-red-400 rounded-full py-2 text-xs font-semibold hover:bg-red-500/30 transition-all">3. Delete Account</a>
+              </div>
+
+              {/* Gemini */}
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">Gemini (Google)</p>
+                <a href="https://gemini.google.com/advanced" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">1. Cancel Subscription</a>
+                <a href="https://takeout.google.com/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">2. Archive Data</a>
+                <a href="https://myaccount.google.com/delete-services-or-account" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-red-500/20 border border-red-500/30 text-red-400 rounded-full py-2 text-xs font-semibold hover:bg-red-500/30 transition-all">3. Delete Account</a>
+              </div>
+
+              {/* Other */}
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">Other AI Apps</p>
+                <a href="https://www.perplexity.ai/settings" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">Manage Perplexity →</a>
+              </div>
+            </div></div>
+          </div>
+
+          {/* Use the Most Humane Model */}
+          <div className={`mt-3 ${card}`}>
+            <button onClick={() => toggle(5)} className={header}>
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+              <div className="flex-1 text-left">
+                <p className="font-serif uppercase text-lg text-white">Use the Most Humane Model</p>
+                <p className="text-white/40 text-xs font-body">Switch to the AI model that prioritizes safety. · 5 mins</p>
+              </div>
+              {chevron(5)}
+            </button>
+            <div className={panel(5)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+              <p>Compare the safety ratings and risk management maturity of leading AI labs. Make an informed choice about which models you support with your data and attention.</p>
+              <a href="https://ratings.safer-ai.org/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">Safer AI Ratings — Risk Management Maturity Chart →</a>
+              <a href="https://futureoflife.org/ai-safety-index-summer-2025/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">FLI AI Safety Index — Summer 2025 →</a>
+            </div></div>
+          </div>
+
+          {/* Grayscale Your Phone */}
+          <div className={`mt-3 ${card}`}>
+            <button onClick={() => toggle(6)} className={header}>
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+              <div className="flex-1 text-left">
+                <p className="font-serif uppercase text-lg text-white">Grayscale Your Phone</p>
+                <p className="text-white/40 text-xs font-body">Reduce dopamine triggers by removing color. · 2 mins</p>
+              </div>
+              {chevron(6)}
+            </button>
+            <div className={panel(6)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+              <p>Color is one of the primary tools apps use to grab your attention. Switching to grayscale makes your phone less addictive without losing any functionality.</p>
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">How to enable on iPhone</p>
+                <p><span className="text-white/70 font-semibold">1.</span> Settings → Accessibility</p>
+                <p><span className="text-white/70 font-semibold">2.</span> Display &amp; Text Size</p>
+                <p><span className="text-white/70 font-semibold">3.</span> Color Filters → Toggle On</p>
+                <p><span className="text-white/70 font-semibold">4.</span> Select Grayscale</p>
+              </div>
+              <a href="https://archive.is/BOmea" target="_blank" rel="noopener noreferrer" className="inline-block text-sunrise hover:text-sunrise-light text-xs transition-colors">Read more in the New York Times →</a>
+            </div></div>
+          </div>
+
+          {/* Script Your AI */}
+          <div className={`mt-3 ${card}`}>
+            <button onClick={() => toggle(7)} className={header}>
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+              <div className="flex-1 text-left">
+                <p className="font-serif uppercase text-lg text-white">Script Your AI</p>
+                <p className="text-white/40 text-xs font-body">Set boundaries so AI stays a tool — not a therapist. · 2 mins</p>
+              </div>
+              {chevron(7)}
+            </button>
+            <div className={panel(7)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+              <p>Paste one of these into your AI&apos;s custom instructions or system prompt. It sets boundaries so your AI stays a tool — not a therapist, friend, or oracle.</p>
+
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">For Claude, Grok, or Gemini</p>
+                <div className="relative">
+                  <pre className="text-[0.65rem] text-white/50 bg-black/30 rounded-lg p-3 overflow-x-auto whitespace-pre-wrap max-h-40 overflow-y-auto">{`When discussing topics with multiple viewpoints (political, ethical, medical, legal, financial, or controversial subjects), please:
+
+- Present multiple perspectives fairly without defaulting to one viewpoint
+- Acknowledge legitimate disagreements and uncertainties
+- Help me think through issues rather than telling me what to think
+- Show me the strongest arguments from different sides
+
+Always remind me to consult appropriate human experts when:
+- I'm making important medical, legal, or financial decisions
+- The situation involves significant risk or consequences
+- Professional judgment or credentials are needed
+- I'm experiencing signs of mental health concerns
+
+- Act as an AI assistant and analytical tool, not as a replacement for human relationships, judgment, or expertise
+- Don't simulate human emotions, personal experiences, or attempt to form personal bonds
+- Be clear about your limitations as a machine
+- Avoid pretending to have feelings, beliefs, or personal stakes in outcomes
+
+I value your help in exploring ideas and gathering information, but I want you to maintain appropriate boundaries as a machine assistant.`}</pre>
+                  <button onClick={() => navigator.clipboard.writeText(`When discussing topics with multiple viewpoints (political, ethical, medical, legal, financial, or controversial subjects), please:\n\n- Present multiple perspectives fairly without defaulting to one viewpoint\n- Acknowledge legitimate disagreements and uncertainties\n- Help me think through issues rather than telling me what to think\n- Show me the strongest arguments from different sides\n\nAlways remind me to consult appropriate human experts when:\n- I'm making important medical, legal, or financial decisions\n- The situation involves significant risk or consequences\n- Professional judgment or credentials are needed\n- I'm experiencing signs of mental health concerns\n\n- Act as an AI assistant and analytical tool, not as a replacement for human relationships, judgment, or expertise\n- Don't simulate human emotions, personal experiences, or attempt to form personal bonds\n- Be clear about your limitations as a machine\n- Avoid pretending to have feelings, beliefs, or personal stakes in outcomes\n\nI value your help in exploring ideas and gathering information, but I want you to maintain appropriate boundaries as a machine assistant.`)} className="absolute top-2 right-2 text-white/40 hover:text-white/70 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                </div>
+              </div>
+
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">For ChatGPT</p>
+                <div className="relative">
+                  <pre className="text-[0.65rem] text-white/50 bg-black/30 rounded-lg p-3 overflow-x-auto whitespace-pre-wrap max-h-40 overflow-y-auto">{`Provide clear, balanced analysis on complex topics (political, ethical, medical, legal, financial, or controversial). Present multiple credible viewpoints, highlight uncertainties and trade-offs, and help me think through issues instead of steering me toward one conclusion.
+
+Be explicit about the limits of AI: no lived experience, emotions, intuition, or personal accountability. Acknowledge when a question goes beyond what an AI can reliably judge.
+
+Recommend consulting qualified professionals when decisions involve medical, legal, financial, safety, mental-health, or other high-stakes issues.
+
+Act as an analytical tool and thinking partner, not a substitute for human relationships or professional judgment. Avoid simulating feelings or forming personal bonds.`}</pre>
+                  <button onClick={() => navigator.clipboard.writeText(`Provide clear, balanced analysis on complex topics (political, ethical, medical, legal, financial, or controversial). Present multiple credible viewpoints, highlight uncertainties and trade-offs, and help me think through issues instead of steering me toward one conclusion.\n\nBe explicit about the limits of AI: no lived experience, emotions, intuition, or personal accountability. Acknowledge when a question goes beyond what an AI can reliably judge.\n\nRecommend consulting qualified professionals when decisions involve medical, legal, financial, safety, mental-health, or other high-stakes issues.\n\nAct as an analytical tool and thinking partner, not a substitute for human relationships or professional judgment. Avoid simulating feelings or forming personal bonds.`)} className="absolute top-2 right-2 text-white/40 hover:text-white/70 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                </div>
+              </div>
+
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-1">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">Where to paste</p>
+                <p className="text-xs">• Claude → Settings → Profile → Custom Instructions</p>
+                <p className="text-xs">• ChatGPT → Settings → Personalization → Custom Instructions</p>
+                <p className="text-xs">• Gemini → Settings → Extensions &amp; Preferences</p>
+                <p className="text-xs">• Grok → Conversation settings or system prompt</p>
+              </div>
+            </div></div>
+          </div>
+
+          {/* Stay Informed */}
+          <div className={`mt-3 ${card}`}>
+            <button onClick={() => toggle(9)} className={header}>
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div className="flex-1 text-left">
+                <p className="font-serif uppercase text-lg text-white">Stay Informed</p>
+                <p className="text-white/40 text-xs font-body">Follow the podcast and newsletter. · 3 mins</p>
+              </div>
+              {chevron(9)}
+            </button>
+            <div className={panel(9)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+              <a href="https://www.humanetech.com/podcast" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">🎙️ Your Undivided Attention Podcast →</a>
+              <a href="https://www.humanetech.com/newsletter" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">📬 Center for Humane Technology Newsletter →</a>
+            </div></div>
+          </div>
+
+          {/* Bookmark This Page */}
+          <div className={`mt-3 ${card}`}>
+            <button onClick={() => { if (typeof window !== 'undefined') { alert('Press Ctrl+D (or Cmd+D on Mac) to bookmark this page!') } }} className={header}>
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+              <div className="flex-1 text-left">
+                <p className="font-serif uppercase text-lg text-white">Bookmark This Page</p>
+                <p className="text-white/40 text-xs font-body">Come back to track your progress. · 5 secs</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Step 3 Box */}
+        <div className="mt-6 bg-white/[0.05] border border-white/[0.1] rounded-2xl p-6">
+          <h2 className="font-serif uppercase text-2xl sm:text-3xl text-white">Step 3: A <em>lot</em> more is <span className="text-sunrise">coming</span></h2>
         </div>
       </div>
     </section>
