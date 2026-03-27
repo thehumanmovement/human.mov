@@ -68,6 +68,7 @@ export default function WatchPage() {
   const [duration, setDuration] = useState(0)
   const [currentTime, setCurrentTime] = useState(0)
   const [showControls, setShowControls] = useState(true)
+  const [showRoadmap, setShowRoadmap] = useState(false)
   const [bgLoaded, setBgLoaded] = useState(false)
   const [isSignedUp, setIsSignedUp] = useState(false)
   const bgLoadedRef = useRef(false)
@@ -462,7 +463,7 @@ export default function WatchPage() {
       </section>
 
       <div className="text-center px-6 pt-16 pb-0 bg-[#111]">
-        <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">IT&apos;S <span className="text-sunrise">ALL HANDS</span> ON DECK</p>
+        <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'itsPrefix')} <span className="text-sunrise">{t(lang, 'allHands')}</span> {t(lang, 'onDeck')}</p>
         <div className="max-w-2xl mx-auto mt-8 space-y-4 font-body text-base sm:text-lg text-white/80 leading-relaxed">
           <p>{t(lang, 'heroLine1')}</p>
           <p>{t(lang, 'heroLine2')}</p>
@@ -472,7 +473,7 @@ export default function WatchPage() {
       <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} className="!pt-8 sm:!pt-10" />
       {/* What We Can Do Section */}
       <section className="relative z-10 py-20 px-6">
-        <h2 className="font-serif uppercase text-4xl sm:text-5xl text-white text-center mb-12">What We Can Do</h2>
+        <h2 className="font-serif uppercase text-4xl sm:text-5xl text-white text-center mb-12">{t(lang, 'whatWeCanDo')}</h2>
         <div className="max-w-3xl mx-auto space-y-4">
           {[
             {
@@ -481,10 +482,10 @@ export default function WatchPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                 </svg>
               ),
-              title: 'End the AI arms race, before it ends us',
+              title: t(lang, 'endAIArmsRace'),
               details: [
-                'International coordination based on preventing mutually assured catastrophes.',
-                'Mandate the safety and transparency of AI systems.',
+                t(lang, 'endAIArmsRaceDetail1'),
+                t(lang, 'endAIArmsRaceDetail2'),
               ],
             },
             {
@@ -493,10 +494,10 @@ export default function WatchPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 0 0 .75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 0 0-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0 1 12 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 0 1-.673-.38m0 0A2.18 2.18 0 0 1 3 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 0 1 3.413-.387m7.5 0V5.25A2.25 2.25 0 0 0 13.5 3h-3a2.25 2.25 0 0 0-2.25 2.25v.894m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                 </svg>
               ),
-              title: 'Stop AI replacing us economically',
+              title: t(lang, 'stopAIEconomically'),
               details: [
-                'Make AI subject to the same liability and safety standards as any other consumer product.',
-                'Build AI that supports human work, not replaces human judgment, dignity, and livelihood. Tax companies creating floods of digital immigrants. Tax human labor hours done in silicon.',
+                t(lang, 'stopAIEconomicallyDetail1'),
+                t(lang, 'stopAIEconomicallyDetail2'),
               ],
             },
             {
@@ -505,11 +506,11 @@ export default function WatchPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
                 </svg>
               ),
-              title: 'Stop AI replacing us socially',
+              title: t(lang, 'stopAISocially'),
               details: [
-                'Ensure people have rights over their face, voice, identity, and data.',
-                'Avoid humanizing AI, which can simulate empathy, manufacture intimacy, and exploit psychology to drive engagement.',
-                'All AIs must disclose they are non-human.',
+                t(lang, 'stopAISociallyDetail1'),
+                t(lang, 'stopAISociallyDetail2'),
+                t(lang, 'stopAISociallyDetail3'),
               ],
             },
             {
@@ -518,16 +519,48 @@ export default function WatchPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0 0 12 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75Z" />
                 </svg>
               ),
-              title: 'Stop AI replacing us politically',
+              title: t(lang, 'stopAIPolitically'),
               details: [
-                'Prevent power concentration, so the benefits of AI must be shared broadly instead of hoarded at the top: every human gets some ownership of AI companies.',
+                t(lang, 'stopAIPoliticallyDetail1'),
               ],
             },
           ].map((item, i) => (
             <WhatWeCanDoItem key={i} icon={item.icon} title={item.title} details={item.details} />
           ))}
         </div>
+        <div className="flex justify-center mt-10">
+          <button
+            onClick={() => setShowRoadmap(true)}
+            className="font-body text-sm sm:text-base text-white/70 hover:text-white border border-white/20 hover:border-white/40 rounded-full px-6 py-3 transition-all"
+          >
+{t(lang, 'seeAIRoadmap')}
+          </button>
+        </div>
       </section>
+
+      {/* AI Roadmap iframe overlay */}
+      {showRoadmap && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/95 flex items-center justify-center"
+          onClick={() => setShowRoadmap(false)}
+        >
+          <button
+            onClick={() => setShowRoadmap(false)}
+            className="absolute top-8 right-8 z-10 w-12 h-12 rounded-full bg-black/70 backdrop-blur-sm flex items-center justify-center text-white/80 hover:text-white hover:bg-black/90 transition-all"
+          >
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div className="w-[95vw] h-[90vh]" onClick={(e) => e.stopPropagation()}>
+            <iframe
+              src="https://www.humanetech.com/ai-roadmap"
+              title="AI Roadmap — Center for Humane Technology"
+              className="w-full h-full rounded-xl bg-white"
+            />
+          </div>
+        </div>
+      )}
 
       <GlobeSection lang={lang} />
 
