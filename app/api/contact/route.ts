@@ -4,7 +4,8 @@ import { supabase } from '@/lib/supabase'
 
 export async function POST(req: Request) {
   try {
-    const { name, email, message, zipCode, contactable } = await req.json()
+    const { name, email, message, country, zipCode, contactable } = await req.json()
+    console.log('[contact] Received:', { name, email, message: message?.slice(0, 50), country, zipCode, contactable })
 
     if (!name?.trim()) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 })
@@ -19,6 +20,8 @@ export async function POST(req: Request) {
     // Store in Supabase
     let dbStatus = 'skipped'
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+    console.log('[contact] Supabase URL:', supabaseUrl ? 'set' : 'MISSING', '| Service key:', serviceKey ? 'set' : 'MISSING')
     if (supabaseUrl) {
       try {
         const { data: dbData, error: dbError } = await supabase
@@ -27,6 +30,7 @@ export async function POST(req: Request) {
             name: name.trim(),
             email: email.trim(),
             message: message.trim(),
+            country: country?.trim() || null,
             zip_code: zipCode?.trim() || null,
             contactable: contactable ?? true,
           })

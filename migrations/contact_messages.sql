@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS contact_messages (
   name text NOT NULL,
   email text NOT NULL,
   message text NOT NULL,
+  country text,
   zip_code text,
   contactable boolean NOT NULL DEFAULT true,
   created_at timestamptz NOT NULL DEFAULT now()
