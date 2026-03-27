@@ -47,7 +47,7 @@ export default function WelcomePage() {
 
   const toggle = (i: number) => setOpenAction(openAction === i ? null : i)
   const chevron = (i: number) => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-white/30 shrink-0 transition-transform duration-300 ${openAction === i ? 'rotate-180' : ''}`}><polyline points="6 9 12 15 18 9"/></svg>
-  const panel = (i: number) => `transition-all duration-300 ease-in-out overflow-hidden ${openAction === i ? 'max-h-[1200px] opacity-100' : 'max-h-0 opacity-0'}`
+  const panel = (i: number) => `overflow-hidden ${openAction === i ? '' : 'hidden'}`
   const card = 'bg-white/[0.05] border border-white/[0.1] rounded-2xl overflow-hidden text-left'
   const header = 'w-full flex items-center gap-3 p-5 hover:bg-white/[0.03] transition-colors'
   const icon = 'w-10 h-10 rounded-xl bg-sunrise/20 flex items-center justify-center shrink-0'
