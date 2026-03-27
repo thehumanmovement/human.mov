@@ -399,11 +399,6 @@ export default function WatchPage() {
                   {t(lang, 'heroPlayButton')}
                 </span>
               </button>
-              <p className="font-body text-base sm:text-lg font-bold text-white max-w-2xl mx-auto text-center mt-6 [text-shadow:_0_2px_12px_rgba(0,0,0,0.8)]">
-                {t(lang, 'heroTagline1')}
-                <br />
-                {t(lang, 'heroTagline2')}
-              </p>
             </div>
           </>
         )}

@@ -99,6 +99,11 @@ export default function WatchGlobeScroll({ lang }: Props) {
           <br />
           <span className="text-sunrise">{t(lang, 'gainingSpeed')}</span>
         </h2>
+        <p className="font-body text-base sm:text-lg font-bold text-white/80 max-w-2xl mx-auto text-center mt-4">
+          {t(lang, 'heroTagline1')}
+          <br />
+          {t(lang, 'heroTagline2')}
+        </p>
       </div>
 
       {/* Stacked news cards */}
