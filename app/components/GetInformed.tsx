@@ -63,12 +63,12 @@ export default function GetInformed({ lang }: { lang: Lang }) {
       </div>
 
       <h3 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white text-center px-5 sm:px-8 leading-tight">
-        In US Theaters <span className="text-sunrise">March 27th</span>
+        {t(lang, 'inTheatersPrefix')} <span className="text-sunrise">{t(lang, 'march27th')}</span>
       </h3>
 
       {/* Learn More Now - additional videos */}
       <div className="max-w-4xl mx-auto px-5 sm:px-8 mt-16">
-        <h4 className="font-serif uppercase text-2xl sm:text-3xl text-white text-center mb-8">Learn More Now</h4>
+        <h4 className="font-serif uppercase text-2xl sm:text-3xl text-white text-center mb-8">{t(lang, 'learnMoreNow2')}</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {LEARN_MORE_VIDEOS.map((video) => (
             <button
