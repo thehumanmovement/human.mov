@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter, Oswald } from 'next/font/google'
 import Script from 'next/script'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const oswald = Oswald({
@@ -100,6 +102,8 @@ fbq('track', 'PageView');`}
           <img height="1" width="1" style={{ display: 'none' }} src="https://www.facebook.com/tr?id=1386580280155758&ev=PageView&noscript=1" alt="" />
         </noscript>
         {children}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   )

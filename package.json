@@ -14,6 +14,8 @@
     "@types/node": "^25.4.0",
     "@types/react": "^19.2.14",
     "@types/three": "^0.183.1",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "autoprefixer": "^10.4.27",
     "globe.gl": "^2.45.1",
     "next": "^14.2.35",
