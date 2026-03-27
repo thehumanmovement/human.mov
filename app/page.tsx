@@ -70,6 +70,7 @@ export default function WatchPage() {
   const [currentTime, setCurrentTime] = useState(0)
   const [showControls, setShowControls] = useState(true)
   const [showRoadmap, setShowRoadmap] = useState(false)
+  const [showSignupPopup, setShowSignupPopup] = useState(false)
   const [bgLoaded, setBgLoaded] = useState(false)
   const [isSignedUp, setIsSignedUp] = useState(false)
   const bgLoadedRef = useRef(false)
@@ -460,6 +461,12 @@ export default function WatchPage() {
                   {t(lang, 'heroPlayButton')}
                 </span>
               </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); setShowSignupPopup(true) }}
+                className="mt-6 bg-sunrise text-black rounded-full px-8 py-3 text-sm font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 hover:scale-[1.02]"
+              >
+                Join Now
+              </button>
             </div>
           </>
         )}
@@ -574,9 +581,29 @@ export default function WatchPage() {
         </div>
       )}
 
+      {/* Signup popup overlay */}
+      {showSignupPopup && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center"
+          onClick={() => setShowSignupPopup(false)}
+        >
+          <button
+            onClick={() => setShowSignupPopup(false)}
+            className="absolute top-8 right-8 z-10 w-12 h-12 rounded-full bg-black/70 backdrop-blur-sm flex items-center justify-center text-white/80 hover:text-white hover:bg-black/90 transition-all"
+          >
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div className="w-full max-w-lg rounded-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
+            <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug text-center">{t(lang, 'joinTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span></p>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} />
+          </div>
+        </div>
+      )}
+
       <GlobeSection lang={lang} />
 
-      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton={t(lang, 'getInfoNow')} />
+      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton="I Agree" />
 
       <GetInformed lang={lang} />
 
