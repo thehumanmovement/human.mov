@@ -96,8 +96,8 @@ const translations = {
     senatorGeoAsking: 'Allow location to auto-find your senators',
     senatorGeoLoading: 'Detecting your zip code...',
     // VideoHero
-    heroLine1: "Social media's race for attention took over our children.",
-    heroLine2: "Now, trillion-dollar AI companies are locked in a race to take over billions of people's livelihoods, agency, and future.",
+    heroLine1: "Social media's race for attention took our children.",
+    heroLine2: "Now, trillion-dollar AI companies are locked in a race to take billions of people's livelihoods, agency, and future.",
     heroLine3: "The human movement is about protecting our humanity and building a pro-human future with AI.",
     // SignupForm variants
     variantLine1Globe: 'It starts with',
