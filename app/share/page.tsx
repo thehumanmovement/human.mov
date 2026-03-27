@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { isValidLang, t, type Lang } from '@/lib/i18n'
 
 function headingClass(lang: Lang): string {
@@ -28,23 +28,22 @@ export default function WelcomePage() {
   const [zipCode, setZipCode] = useState('')
   const [signupId, setSignupId] = useState('')
   const [openAction, setOpenAction] = useState<number | null>(0)
-  const [ready, setReady] = useState(false)
+  const [loadedIframes, setLoadedIframes] = useState<Set<number>>(new Set())
 
   useEffect(() => {
-    const signedUp = localStorage.getItem('thm-signed-up')
-    if (!signedUp) {
-      window.location.href = '/'
-      return
-    }
     setFullName(localStorage.getItem('thm-name') || '')
     setZipCode(localStorage.getItem('thm-zip') || '')
     setSignupId(localStorage.getItem('thm-signup-id') || '')
     const savedLang = localStorage.getItem('lang')
     if (savedLang && isValidLang(savedLang)) setLang(savedLang as Lang)
-    setReady(true)
   }, [])
 
-  if (!ready) return null
+  // Track which accordions have been opened to lazy-load iframes
+  useEffect(() => {
+    if (openAction !== null && !loadedIframes.has(openAction)) {
+      setLoadedIframes(prev => new Set(prev).add(openAction))
+    }
+  }, [openAction, loadedIframes])
 
   const toggle = (i: number) => setOpenAction(openAction === i ? null : i)
   const chevron = (i: number) => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-white/30 shrink-0 transition-transform duration-300 ${openAction === i ? 'rotate-180' : ''}`}><polyline points="6 9 12 15 18 9"/></svg>
@@ -61,6 +60,8 @@ export default function WelcomePage() {
           <span>{t(lang, 'theHuman')}</span><br />
           <span className="text-sunrise">{t(lang, 'movement')}</span>
         </h1>
+        <h2 className="mt-8 font-serif uppercase text-2xl sm:text-3xl text-white"><span className="text-sunrise">Clarity</span> Brings Agency</h2>
+        <p className="mt-4 text-white/60 font-body text-sm leading-relaxed">The dangerous race to AI will only shift when the fear of everyone losing becomes greater than the fear of me losing to you. <em>The AI Doc</em> creates the clarity that the default path with AI will create an anti-human future. The more people that watch, the more clarity, the faster humanity will act.</p>
         <p className="mt-6 text-white/50 font-body text-sm">Here&apos;s how you can make a difference right now.</p>
 
         {/* 1. Share the Trailer */}
@@ -71,8 +72,12 @@ export default function WelcomePage() {
             {chevron(0)}
           </button>
           <div className={panel(0)}><div className="px-5 pb-5">
-            <div className="aspect-video rounded-xl overflow-hidden bg-black/50 mb-4">
-              <iframe src="https://www.youtube.com/embed/xkPbV3IRe4Y?rel=0" title="The AI Doc Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="w-full h-full" />
+            <div className="aspect-video rounded-xl overflow-hidden bg-black/50 mb-4 relative">
+              {loadedIframes.has(0) ? (
+                <iframe src="https://www.youtube.com/embed/xkPbV3IRe4Y?rel=0" title="The AI Doc Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="w-full h-full" loading="lazy" />
+              ) : (
+                <img src="https://img.youtube.com/vi/xkPbV3IRe4Y/hqdefault.jpg" alt="The AI Doc Trailer" className="w-full h-full object-cover" />
+              )}
             </div>
             <div className="flex items-center justify-center gap-3">
               <a href="https://wa.me/?text=Watch%20this%20trailer%20%E2%80%94%20The%20AI%20Doc%20https%3A%2F%2Fyoutu.be%2FxkPbV3IRe4Y" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="w-10 h-10 flex items-center justify-center rounded-full bg-[#25D366]/20 text-[#25D366] hover:bg-[#25D366]/30 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.111.546 4.096 1.505 5.826L0 24l6.335-1.652A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.82c-1.87 0-3.633-.5-5.14-1.382l-.37-.22-3.818.997 1.016-3.713-.24-.381A9.81 9.81 0 0 1 2.18 12C2.18 6.58 6.58 2.18 12 2.18S21.82 6.58 21.82 12 17.42 21.82 12 21.82z"/></svg></a>
