@@ -528,15 +528,24 @@ export default function WatchPage() {
             <WhatWeCanDoItem key={i} icon={item.icon} title={item.title} details={item.details} />
           ))}
         </div>
-        <div className="flex justify-center mt-10">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-10">
           <button
             onClick={() => setShowRoadmap(true)}
             className="font-body text-sm sm:text-base text-white/70 hover:text-white border border-white/20 hover:border-white/40 rounded-full px-6 py-3 transition-all"
           >
 {t(lang, 'seeAIRoadmap')}
           </button>
+          <a
+            href="https://humanstatement.org/?utm_source=human.mov"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body text-sm sm:text-base text-white/70 hover:text-white border border-white/20 hover:border-white/40 rounded-full px-6 py-3 transition-all"
+          >
+            See the Pro-Human AI Declaration →
+          </a>
         </div>
       </section>
+
 
       {/* AI Roadmap iframe overlay */}
       {showRoadmap && (
