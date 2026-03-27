@@ -420,7 +420,7 @@ export default function WatchPage() {
       <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} className="!pt-8 sm:!pt-10" />
       <GlobeSection lang={lang} />
 
-      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton={t(lang, 'iAgree')} />
+      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton={t(lang, 'getInfoNow')} />
 
       <GetInformed lang={lang} />
 

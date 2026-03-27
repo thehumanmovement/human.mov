@@ -6,7 +6,7 @@ import { t, isValidLang, type Lang } from '@/lib/i18n'
 
 export async function POST(req: Request) {
   try {
-    const { fullName, email, zipCode, lang = 'en' } = await req.json()
+    const { fullName, email, country, zipCode, lang = 'en' } = await req.json()
     const l: Lang = isValidLang(lang) ? lang : 'en'
 
     if (!fullName || fullName.trim().length < 2) {
@@ -26,6 +26,7 @@ export async function POST(req: Request) {
         email: email.trim(),
         email_code: code,
         email_verified: false,
+        country: country?.trim() || null,
         zip_code: zipCode?.trim() || null,
       })
       .select('id')
@@ -78,6 +79,7 @@ export async function POST(req: Request) {
             fields: {
               name: fullName.trim(),
               last_name: '',
+              country: country?.trim() || '',
               z_i_p: zipCode?.trim() || '',
             },
             groups: [

@@ -5,6 +5,71 @@ import { t, type Lang } from '@/lib/i18n'
 
 type Step = 'email' | 'details' | 'verify-email'
 
+const COUNTRIES = [
+  { code: 'US', name: 'United States' },
+  { code: 'GB', name: 'United Kingdom' },
+  { code: 'CA', name: 'Canada' },
+  { code: 'AU', name: 'Australia' },
+  { code: 'DE', name: 'Germany' },
+  { code: 'FR', name: 'France' },
+  { code: 'IN', name: 'India' },
+  { code: 'JP', name: 'Japan' },
+  { code: 'KR', name: 'South Korea' },
+  { code: 'CN', name: 'China' },
+  { code: 'BR', name: 'Brazil' },
+  { code: 'MX', name: 'Mexico' },
+  { code: 'ES', name: 'Spain' },
+  { code: 'IT', name: 'Italy' },
+  { code: 'NL', name: 'Netherlands' },
+  { code: 'SE', name: 'Sweden' },
+  { code: 'NO', name: 'Norway' },
+  { code: 'DK', name: 'Denmark' },
+  { code: 'FI', name: 'Finland' },
+  { code: 'CH', name: 'Switzerland' },
+  { code: 'AT', name: 'Austria' },
+  { code: 'BE', name: 'Belgium' },
+  { code: 'IE', name: 'Ireland' },
+  { code: 'NZ', name: 'New Zealand' },
+  { code: 'SG', name: 'Singapore' },
+  { code: 'IL', name: 'Israel' },
+  { code: 'AE', name: 'United Arab Emirates' },
+  { code: 'SA', name: 'Saudi Arabia' },
+  { code: 'ZA', name: 'South Africa' },
+  { code: 'NG', name: 'Nigeria' },
+  { code: 'KE', name: 'Kenya' },
+  { code: 'ID', name: 'Indonesia' },
+  { code: 'PH', name: 'Philippines' },
+  { code: 'TH', name: 'Thailand' },
+  { code: 'VN', name: 'Vietnam' },
+  { code: 'MY', name: 'Malaysia' },
+  { code: 'PK', name: 'Pakistan' },
+  { code: 'BD', name: 'Bangladesh' },
+  { code: 'AR', name: 'Argentina' },
+  { code: 'CL', name: 'Chile' },
+  { code: 'CO', name: 'Colombia' },
+  { code: 'PE', name: 'Peru' },
+  { code: 'PL', name: 'Poland' },
+  { code: 'CZ', name: 'Czech Republic' },
+  { code: 'RO', name: 'Romania' },
+  { code: 'HU', name: 'Hungary' },
+  { code: 'PT', name: 'Portugal' },
+  { code: 'GR', name: 'Greece' },
+  { code: 'TR', name: 'Turkey' },
+  { code: 'EG', name: 'Egypt' },
+  { code: 'TW', name: 'Taiwan' },
+  { code: 'HK', name: 'Hong Kong' },
+  { code: 'OTHER', name: 'Other' },
+]
+
+function countryFlag(code: string): string {
+  if (code === 'OTHER') return '🌍'
+  return code
+    .toUpperCase()
+    .split('')
+    .map(c => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65))
+    .join('')
+}
+
 const INPUT_CLASS =
   'w-full bg-white/[0.07] border border-white/[0.12] focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/40 text-white focus:bg-white/10 focus:ring-1 focus:ring-sunrise/30'
 
@@ -47,11 +112,44 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   const [signupId, setSignupId] = useState('')
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
+  const [country, setCountry] = useState('US')
+  const [countryOpen, setCountryOpen] = useState(false)
+  const [countrySearch, setCountrySearch] = useState('')
+  const countryRef = useRef<HTMLDivElement>(null)
+  const countrySearchRef = useRef<HTMLInputElement>(null)
   const [zipCode, setZipCode] = useState('')
   const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [alreadySignedUp, setAlreadySignedUp] = useState(false)
+
+  useEffect(() => {
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(data => {
+        if (data?.country_code && COUNTRIES.some(c => c.code === data.country_code)) {
+          setCountry(data.country_code)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (countryRef.current && !countryRef.current.contains(e.target as Node)) {
+        setCountryOpen(false)
+        setCountrySearch('')
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  useEffect(() => {
+    if (countryOpen && countrySearchRef.current) {
+      countrySearchRef.current.focus()
+    }
+  }, [countryOpen])
 
   useEffect(() => {
     const saved = localStorage.getItem('thm-signed-up')
@@ -66,6 +164,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   function goToWelcome() {
     localStorage.setItem('thm-signed-up', '1')
     localStorage.setItem('thm-name', fullName)
+    localStorage.setItem('thm-country', country)
     localStorage.setItem('thm-zip', zipCode)
     localStorage.setItem('thm-signup-id', signupId)
     window.location.href = '/share'
@@ -74,6 +173,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
   function handleSignOut() {
     localStorage.removeItem('thm-signed-up')
     localStorage.removeItem('thm-name')
+    localStorage.removeItem('thm-country')
     localStorage.removeItem('thm-zip')
     localStorage.removeItem('thm-signup-id')
     setAlreadySignedUp(false)
@@ -117,6 +217,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
       body: JSON.stringify({
         fullName,
         email,
+        country,
         zipCode,
         lang,
       }),
@@ -259,15 +360,54 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               autoFocus
               className={INPUT_CLASS}
             />
-            <input
-              type="text"
-              inputMode="numeric"
-              placeholder={t(lang, 'placeholderZip')}
-              value={zipCode}
-              onChange={(e) => setZipCode(e.target.value)}
-              required
-              className={INPUT_CLASS}
-            />
+            <div className="flex gap-3 items-stretch">
+              <div ref={countryRef} className="relative shrink-0">
+                <button
+                  type="button"
+                  onClick={() => { setCountryOpen(!countryOpen); setCountrySearch('') }}
+                  className="h-full bg-white/[0.07] border border-white/[0.12] hover:border-white/25 rounded-lg px-3 text-2xl transition-all focus:border-sunrise focus:ring-1 focus:ring-sunrise/30 outline-none"
+                  title={COUNTRIES.find(c => c.code === country)?.name}
+                >
+                  {countryFlag(country)}
+                </button>
+                {countryOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-[#1a1a1a] border border-white/20 rounded-lg shadow-xl z-50">
+                    <div className="sticky top-0 bg-[#1a1a1a] p-2 border-b border-white/10">
+                      <input
+                        ref={countrySearchRef}
+                        type="text"
+                        placeholder="Search..."
+                        value={countrySearch}
+                        onChange={(e) => setCountrySearch(e.target.value)}
+                        className="w-full bg-white/[0.07] border border-white/[0.12] rounded px-3 py-2 text-sm text-white outline-none placeholder:text-white/40 focus:border-sunrise"
+                      />
+                    </div>
+                    {COUNTRIES
+                      .filter(c => !countrySearch || c.name.toLowerCase().includes(countrySearch.toLowerCase()))
+                      .map(c => (
+                        <button
+                          key={c.code}
+                          type="button"
+                          onClick={() => { setCountry(c.code); setCountryOpen(false); setCountrySearch('') }}
+                          className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-white/10 transition-colors ${country === c.code ? 'bg-white/[0.07] text-sunrise' : 'text-white'}`}
+                        >
+                          <span className="text-lg">{countryFlag(c.code)}</span>
+                          <span>{c.name}</span>
+                        </button>
+                      ))
+                    }
+                  </div>
+                )}
+              </div>
+              <input
+                type="text"
+                placeholder={t(lang, 'placeholderZip')}
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+                required
+                className={`${INPUT_CLASS} flex-1`}
+              />
+            </div>
             <button
               type="submit"
               disabled={loading || !fullName.trim()}
