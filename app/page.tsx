@@ -393,7 +393,19 @@ export default function WatchPage() {
 
             {/* Top-left logo */}
             <div className="absolute top-6 left-6 z-10">
-              <p className="font-serif uppercase text-lg sm:text-xl text-white/80 [text-shadow:_0_1px_10px_rgba(0,0,0,0.6)]">
+              <p
+                className="font-serif uppercase text-lg sm:text-xl text-white/80 [text-shadow:_0_1px_10px_rgba(0,0,0,0.6)] cursor-default select-none"
+                onDoubleClick={() => {
+                  localStorage.removeItem('thm-signed-up')
+                  localStorage.removeItem('thm-name')
+                  localStorage.removeItem('thm-country')
+                  localStorage.removeItem('thm-zip')
+                  localStorage.removeItem('thm-signup-id')
+                  setIsSignedUp(false)
+                  window.dispatchEvent(new Event('thm-signed-up'))
+                  window.location.reload()
+                }}
+              >
                 {t(lang, 'headingLine1')} {t(lang, 'headingLine2')}
               </p>
             </div>
