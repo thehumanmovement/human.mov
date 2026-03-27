@@ -98,7 +98,7 @@ const translations = {
     // VideoHero
     heroLine1: "Social media's race for attention took over our children.",
     heroLine2: "Now, trillion-dollar AI companies are locked in a race to take over billions of people's livelihoods, agency, and future.",
-    heroLine3: "There's a growing human movement to protect our humanity and build a pro-human future with AI.",
+    heroLine3: "The human movement is about protecting our humanity and building a pro-human future with AI.",
     // SignupForm variants
     variantLine1Globe: 'It starts with',
     variantLine2Globe: 'people like you.',
