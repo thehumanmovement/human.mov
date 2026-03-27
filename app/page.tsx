@@ -10,8 +10,8 @@ import ContactSection from './components/ContactSection'
 const GlobeSection = dynamic(() => import('./components/WatchGlobeScroll'), { ssr: false })
 const GetInformed = dynamic(() => import('./components/GetInformed'), { ssr: false })
 
-const VIMEO_VIDEO_ID = '1176390079'
-const VIMEO_HASH = '65046f9d31'
+const VIMEO_VIDEO_ID = '1177797002'
+const VIMEO_HASH = '09abb31a4f'
 const LOOP_START = 82   // 1:22
 const LOOP_END = 139    // 2:19
 
