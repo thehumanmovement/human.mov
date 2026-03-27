@@ -37,6 +37,7 @@ export async function POST(req: Request) {
         <p style="color: #666; margin-bottom: 32px;">${t(l, 'emailBody')}</p>
         <p style="font-size: 36px; font-weight: 700; letter-spacing: 8px; color: #0A6847; margin-bottom: 32px;">${code}</p>
         <p style="color: #999; font-size: 13px;">${t(l, 'emailExpiry')}</p>
+        <p style="color: #999; font-size: 11px; margin-top: 32px;">By signing up, you agree to receive information and updates from The Human Movement.</p>
       </div>
     `,
   })
