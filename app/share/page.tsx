@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { isValidLang, t, type Lang } from '@/lib/i18n'
-import SenatorLookup from '../components/SenatorLookup'
 
 function headingClass(lang: Lang): string {
   const base = 'font-serif leading-[1.1] tracking-tight text-white [text-shadow:_0_2px_30px_rgba(0,0,0,0.8),_0_0_60px_rgba(0,0,0,0.4)]'
@@ -128,21 +127,6 @@ export default function WelcomePage() {
           </div></div>
         </div>
 
-        {/* 4. Write Your Senator */}
-        <div className={`mt-3 ${card}`}>
-          <button onClick={() => toggle(3)} className={header}>
-            <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21"/></svg></div>
-            <div className="flex-1 text-left"><p className="font-serif uppercase text-lg text-white">Write Your Senator</p><p className="text-white/40 text-xs font-body">Ask them to watch the film and share it with colleagues.</p></div>
-            {chevron(3)}
-          </button>
-          <div className={panel(3)}><div className="px-5 pb-5">
-            {openAction === 3 && <SenatorLookup lang={lang} initialZip={zipCode} signupId={signupId} userName={fullName} userZip={zipCode} />}
-            <div className="mt-5 bg-white/[0.03] border border-white/[0.08] rounded-xl p-4">
-              <p className="text-white/60 text-xs font-body font-semibold uppercase tracking-wide mb-2">If calling, say something like:</p>
-              <p className="text-white/50 text-sm font-body italic leading-relaxed">&ldquo;Hi, my name is <span className="text-white/80">{fullName || '[Your Name]'}</span> and I&apos;m a constituent. I&apos;m calling to ask the Senator to watch the documentary &lsquo;The AI Doc&rsquo; — it covers the urgent risks AI poses to jobs, children, and democracy. I&apos;d appreciate it if the Senator would watch it and share it with colleagues. Thank you.&rdquo;</p>
-            </div>
-          </div></div>
-        </div>
 
         <div className="mt-10">
           <p className="text-sm text-white/30 font-body tracking-widest uppercase">{t(lang, 'moreSoon')}</p>
