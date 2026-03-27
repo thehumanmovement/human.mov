@@ -46,16 +46,16 @@ function WhatWeCanDoItem({ icon, title, details }: { icon: React.ReactNode; titl
   )
 }
 
-/** Pick background video quality — default 540p, upgrade to 720p on fast connections */
+/** Pick background video quality — default 360p, upgrade based on connection speed */
 function getBgQuality(): string {
   if (typeof navigator !== 'undefined' && 'connection' in navigator) {
     const conn = (navigator as unknown as { connection: { effectiveType?: string; downlink?: number } }).connection
-    // Upgrade to 720p only on fast 4G+ connections with good bandwidth
-    if (conn.effectiveType === '4g' && typeof conn.downlink === 'number' && conn.downlink >= 10) {
-      return '720p'
+    if (conn.effectiveType === '4g' && typeof conn.downlink === 'number') {
+      if (conn.downlink >= 10) return '720p'
+      if (conn.downlink >= 5) return '540p'
     }
   }
-  return '540p'
+  return '360p'
 }
 
 export default function WatchPage() {
