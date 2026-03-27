@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle, type FormEvent } from 'react'
+import { track } from '@vercel/analytics'
 import { t, type Lang } from '@/lib/i18n'
 
 type Step = 'email' | 'details' | 'verify-email'
@@ -234,6 +235,9 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     setLoading(false)
     setStep('verify-email')
 
+    // Track signup in Vercel Analytics
+    track('signup_submitted', { variant: variant || 'default' })
+
     // Fire Meta Lead event on successful signup
     if (typeof window !== 'undefined' && (window as any).fbq) {
       (window as any).fbq('track', 'Lead')
@@ -266,6 +270,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
 
     setLoading(false)
     setCode('')
+    track('email_verified', { variant: variant || 'default' })
     goToWelcome()
   }
 

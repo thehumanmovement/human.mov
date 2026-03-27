@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, type MouseEvent as ReactMouseEvent } from 'react'
 import dynamic from 'next/dynamic'
+import { track } from '@vercel/analytics'
 import { isValidLang, LANGUAGES, t, type Lang } from '@/lib/i18n'
 import LanguageSelector from './components/LanguageSelector'
 import SignupForm, { type SignupFormHandle } from './components/SignupForm'
@@ -158,6 +159,7 @@ export default function WatchPage() {
     setProgress(0)
     setCurrentTime(0)
     setShowControls(true)
+    track('video_play')
   }
 
   function handleFullscreenClose() {
@@ -282,6 +284,7 @@ export default function WatchPage() {
   function selectLang(code: Lang) {
     setLang(code)
     localStorage.setItem('lang', code)
+    track('language_changed', { language: code })
   }
 
   return (

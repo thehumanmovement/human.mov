@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, type FormEvent } from 'react'
+import { track } from '@vercel/analytics'
 import { t, type Lang } from '@/lib/i18n'
 
 interface Senator {
@@ -81,6 +82,7 @@ export default function SenatorLookup({ lang, initialZip, signupId, userName, us
       }
 
       setSenators(data.senators || [])
+      track('senator_lookup', { zip })
 
       // Save zip code to signup record if not already stored
       if (signupId) {

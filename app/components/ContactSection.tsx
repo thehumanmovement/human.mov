@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, type FormEvent } from 'react'
+import { track } from '@vercel/analytics'
 import { t, type Lang } from '@/lib/i18n'
 
 const COUNTRIES = [
@@ -127,6 +128,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
 
       setSent(true)
       setLoading(false)
+      track('contact_form_submitted')
 
       // Fire Meta Lead event on successful contact form submission
       if (typeof window !== 'undefined' && (window as any).fbq) {
