@@ -20,14 +20,14 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: 'The Human Movement',
-  description: "What's the human movement?",
+  description: "A global force fighting to protect our jobs, our kids and our freedom in the age of AI.",
   icons: {
     icon: '/favicon.ico?v=2',
     apple: '/apple-touch-icon.png?v=2',
   },
   openGraph: {
     title: 'The Human Movement',
-    description: "What's the human movement?",
+    description: "A global force fighting to protect our jobs, our kids and our freedom in the age of AI.",
     url: 'https://www.human.mov',
     siteName: 'The Human Movement',
     images: [
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'The Human Movement',
-    description: "What's the human movement?",
+    description: "A global force fighting to protect our jobs, our kids and our freedom in the age of AI.",
     images: ['https://www.human.mov/api/og'],
   },
 }

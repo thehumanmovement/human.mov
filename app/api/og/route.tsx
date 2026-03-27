@@ -129,6 +129,20 @@ export async function GET() {
           </span>
         </div>
 
+        {/* Tagline */}
+        <span
+          style={{
+            fontSize: '28px',
+            fontWeight: 400,
+            color: 'rgba(255,255,255,0.7)',
+            fontFamily: 'Inter',
+            marginBottom: '32px',
+            letterSpacing: '0.5px',
+          }}
+        >
+          Protect our jobs. Our kids. Our freedom.
+        </span>
+
         {/* Join Now button */}
         <div
           style={{
