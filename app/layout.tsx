@@ -58,8 +58,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Tag Manager */}
-        <Script id="gtm" strategy="afterInteractive">
+        {/* Google Tag Manager — deferred to reduce INP */}
+        <Script id="gtm" strategy="lazyOnload">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -67,17 +67,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PCWTN2N');`}
         </Script>
 
-        {/* Google Ads (gtag.js) */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18023035723" strategy="afterInteractive" />
-        <Script id="google-ads" strategy="afterInteractive">
+        {/* Google Ads (gtag.js) — deferred to reduce INP */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18023035723" strategy="lazyOnload" />
+        <Script id="google-ads" strategy="lazyOnload">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'AW-18023035723');`}
         </Script>
 
-        {/* Meta Pixel */}
-        <Script id="meta-pixel" strategy="afterInteractive">
+        {/* Meta Pixel — deferred to reduce INP */}
+        <Script id="meta-pixel" strategy="lazyOnload">
           {`!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
