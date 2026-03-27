@@ -431,11 +431,11 @@ export default function WatchPage() {
       </section>
 
       <div className="text-center px-6 pt-16 pb-0 bg-[#111]">
-        <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">IT&apos;S <span className="text-sunrise">URGENT</span></p>
+        <p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">IT&apos;S <span className="text-sunrise">ALL HANDS</span> ON DECK</p>
         <div className="max-w-2xl mx-auto mt-8 space-y-4 font-body text-base sm:text-lg text-white/80 leading-relaxed">
           <p>{t(lang, 'heroLine1')}</p>
           <p>{t(lang, 'heroLine2')}</p>
-          <p>{t(lang, 'heroLine3')}</p>
+          <p dangerouslySetInnerHTML={{ __html: t(lang, 'heroLine3') }} />
         </div>
       </div>
       <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} className="!pt-8 sm:!pt-10" />

@@ -98,7 +98,7 @@ const translations = {
     // VideoHero
     heroLine1: "Social media's race for attention took our children.",
     heroLine2: "Now, trillion-dollar AI companies are locked in a race to take billions of people's livelihoods, agency, and future.",
-    heroLine3: "The human movement is about protecting our humanity and building a pro-human future with AI.",
+    heroLine3: "<strong>The Human Movement</strong> exists to protect our humanity and build a pro-human future with AI.",
     // SignupForm variants
     variantLine1Globe: 'It starts with',
     variantLine2Globe: 'people like you.',
@@ -171,9 +171,10 @@ const translations = {
     somethingWentWrong: 'Something went wrong',
     failedToSend: 'Failed to send. Please try again.',
     // GetInformed
-    outNow: 'Out Now',
-    inTheatersOnly: 'In Theaters Only.',
-    aiDocDesc: 'The AI Doc clarifies the consequences of the default future with AI.',
+    outNow: 'Clarity',
+    inTheatersOnly: 'Brings Agency.',
+    inTheaters: 'In US Theaters March 27th',
+    aiDocDesc: 'Conversations about AI are confusing and aren\'t leading to action.<br/><br/><i>The AI Doc</i> clarifies the consequences of the race to AI, which creates the common ground needed to choose a pro-human future.',
     // Globe
     gainingSpeed: 'Gaining Speed.',
     theHumanMovementIs: 'The Human Movement Is',

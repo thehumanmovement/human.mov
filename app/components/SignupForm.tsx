@@ -339,6 +339,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               >
                 {overrideButton ?? getVariantCopy(lang, variant).button}
               </button>
+              <p className="text-[0.65rem] text-white/40 text-center mt-2 font-body">You&apos;ll get movement updates, opportunities to take action, and tools to defend yourself.</p>
             </form>
           </div>
         )}

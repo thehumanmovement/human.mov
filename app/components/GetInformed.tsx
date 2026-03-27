@@ -26,14 +26,16 @@ export default function GetInformed({ lang }: { lang: Lang }) {
     <section className="bg-[#0a0a0a] py-20 sm:py-28 overflow-hidden">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
         <h2 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white mb-4 leading-tight text-center">
-          {t(lang, 'outNow')}
+          <span className="text-sunrise">{t(lang, 'outNow')}</span>
           <br />
-          <span className="text-sunrise">{t(lang, 'inTheatersOnly')}</span>
+          {t(lang, 'inTheatersOnly')}
         </h2>
       </div>
 
+      <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto text-center px-5 sm:px-8 mb-10" dangerouslySetInnerHTML={{ __html: t(lang, 'aiDocDesc') }} />
+
       {/* Featured video player */}
-      <div className="max-w-4xl mx-auto px-5 sm:px-8 mb-10">
+      <div className="max-w-4xl mx-auto px-5 sm:px-8 mb-6">
         <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black/50 border border-white/10">
           <iframe
             src={`https://www.youtube.com/embed/${VIDEOS[0].id}?rel=0&modestbranding=1`}
@@ -47,9 +49,9 @@ export default function GetInformed({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <p className="font-body text-base sm:text-lg text-white/70 max-w-2xl mx-auto text-center px-5 sm:px-8">
-        {t(lang, 'aiDocDesc')}
-      </p>
+      <h3 className="font-serif uppercase text-4xl sm:text-5xl lg:text-6xl text-white text-center px-5 sm:px-8 leading-tight">
+        In US Theaters <span className="text-sunrise">March 27th</span>
+      </h3>
 
     </section>
   )
