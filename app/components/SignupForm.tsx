@@ -9,7 +9,7 @@ const INPUT_CLASS =
   'w-full bg-white/[0.07] border border-white/[0.12] focus:border-sunrise rounded-lg px-5 py-4 text-base font-body outline-none transition-all placeholder:text-white/40 text-white focus:bg-white/10 focus:ring-1 focus:ring-sunrise/30'
 
 const BUTTON_CLASS =
-  'mt-6 w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:scale-[1.02]'
+  'mt-6 w-full bg-sunrise text-black rounded-full py-4 text-base font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 disabled:opacity-75 disabled:cursor-default hover:scale-[1.02]'
 
 export interface SignupFormHandle {
   scrollToForm: () => void
@@ -187,7 +187,10 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
             </>
           )}
         </div>
-        <div className="w-full bg-white/[0.07] border border-white/[0.12] rounded-lg px-5 py-4 text-base font-body text-white/40 text-center">
+        <div
+          onClick={handleSignOut}
+          className="w-full bg-white/[0.07] border border-white/[0.12] rounded-lg px-5 py-4 text-base font-body text-white/40 text-center cursor-pointer hover:border-white/25 transition-all"
+        >
           {t(lang, 'youreIn')}
         </div>
         <div onDoubleClick={handleSignOut} className="mt-6 w-full bg-sunrise/40 text-black/40 rounded-full py-4 text-base font-body font-bold uppercase tracking-widest text-center cursor-default select-none">
@@ -262,6 +265,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               placeholder={t(lang, 'placeholderZip')}
               value={zipCode}
               onChange={(e) => setZipCode(e.target.value)}
+              required
               className={INPUT_CLASS}
             />
             <button

@@ -119,6 +119,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
                 placeholder={t(lang, 'placeholderZip')}
                 value={zipCode}
                 onChange={(e) => setZipCode(e.target.value)}
+                required
                 className={`${inputClass} flex-1`}
               />
 
