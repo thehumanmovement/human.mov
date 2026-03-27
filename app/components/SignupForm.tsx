@@ -346,10 +346,10 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
         {step === 'details' && (
           <form onSubmit={handleSubmit} className="step-enter space-y-4">
             <p className="font-serif uppercase text-2xl sm:text-3xl mb-2 leading-snug text-white text-center">
-              {t(lang, 'headingLine1')} {t(lang, 'headingLine2')}
+              {t(lang, 'joiningTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span>
             </p>
             <p className="text-white/50 text-sm font-body mb-8 text-center">
-              {email}
+              {t(lang, 'yourEmailIs')} <span className="text-white">{email}</span>
             </p>
             <input
               type="text"
