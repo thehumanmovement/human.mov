@@ -12,7 +12,7 @@ const GetInformed = dynamic(() => import('./components/GetInformed'), { ssr: fal
 
 const VIMEO_VIDEO_ID = '1177797002'
 const VIMEO_HASH = '09abb31a4f'
-const LOOP_START = 82   // 1:22
+const LOOP_START = 83   // 1:23
 const LOOP_END = 139    // 2:19
 
 /** Pick background video quality — default 540p, upgrade to 720p on fast connections */
