@@ -115,7 +115,7 @@ export default function WatchPage() {
             bgLoadedRef.current = true
             setBgLoaded(true)
           }
-          if (seconds >= LOOP_END || seconds < LOOP_START) {
+          if (seconds >= LOOP_END - 0.5 || seconds < LOOP_START) {
             bgIframeRef.current?.contentWindow?.postMessage(
               JSON.stringify({ method: 'setCurrentTime', value: LOOP_START }),
               '*'
