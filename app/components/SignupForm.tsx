@@ -82,7 +82,7 @@ export interface SignupFormHandle {
   startWithEmail: (email: string) => void
 }
 
-type Variant = 'default' | 'after-globe' | 'after-protect' | 'final'
+type Variant = 'default' | 'after-globe' | 'after-protect' | 'final' | 'hero-popup' | 'i-agree' | 'after-videos'
 
 function getVariantCopy(lang: Lang, variant: Variant) {
   switch (variant) {

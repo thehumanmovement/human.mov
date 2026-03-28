@@ -29,6 +29,7 @@ export default function WelcomePage() {
   const [signupId, setSignupId] = useState('')
   const [openAction, setOpenAction] = useState<number | null>(0)
   const [loadedIframes, setLoadedIframes] = useState<Set<number>>(new Set())
+  const [checked, setChecked] = useState<Set<number>>(new Set<number>())
   const [shareScale, setShareScale] = useState(0.95)
   const shareRef = useRef<HTMLDivElement>(null)
 
@@ -38,7 +39,29 @@ export default function WelcomePage() {
     setSignupId(localStorage.getItem('thm-signup-id') || '')
     const savedLang = localStorage.getItem('lang')
     if (savedLang && isValidLang(savedLang)) setLang(savedLang as Lang)
+    try { const arr: number[] = JSON.parse(localStorage.getItem('thm-checked') || '[]'); setChecked(new Set(arr)) } catch { /* ignore */ }
   }, [])
+
+  const toggleCheck = (id: number) => {
+    setChecked(prev => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id); else next.add(id)
+      localStorage.setItem('thm-checked', JSON.stringify(Array.from(next)))
+      return next
+    })
+  }
+
+  const checkbox = (id: number) => (
+    <div onClick={(e) => { e.stopPropagation(); toggleCheck(id) }} className="flex-shrink-0 mr-1 cursor-pointer" role="checkbox" aria-checked={checked.has(id)}>
+      {checked.has(id) ? (
+        <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+      ) : (
+        <div className="w-6 h-6 rounded-full border-2 border-white/20" />
+      )}
+    </div>
+  )
 
   // Scale up Share the Trailer box as it scrolls into view
   useEffect(() => {
@@ -62,9 +85,30 @@ export default function WelcomePage() {
     }
   }, [openAction, loadedIframes])
 
-  const toggle = (i: number) => setOpenAction(openAction === i ? null : i)
+  const cardRefs = useRef<Record<number, HTMLDivElement | null>>({})
+  const panelRefs = useRef<Record<number, HTMLDivElement | null>>({})
+  const toggle = (i: number) => {
+    const opening = openAction !== i
+    setOpenAction(openAction === i ? null : i)
+    if (opening) {
+      // Wait for state update + animation start, then scroll into view
+      setTimeout(() => {
+        const el = cardRefs.current[i]
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }, 50)
+    }
+  }
   const chevron = (i: number) => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`text-white/30 shrink-0 transition-transform duration-300 ${openAction === i ? 'rotate-180' : ''}`}><polyline points="6 9 12 15 18 9"/></svg>
-  const panel = (i: number) => `overflow-hidden ${openAction === i ? '' : 'hidden'}`
+  const panelStyle = (i: number): React.CSSProperties => {
+    const isOpen = openAction === i
+    const el = panelRefs.current[i]
+    return {
+      maxHeight: isOpen ? (el ? `${el.scrollHeight}px` : '2000px') : '0px',
+      opacity: isOpen ? 1 : 0,
+      transition: 'max-height 0.35s ease, opacity 0.25s ease',
+      overflow: 'hidden',
+    }
+  }
   const card = 'bg-white/[0.05] border border-white/[0.1] rounded-2xl overflow-hidden text-left'
   const header = 'w-full flex items-center gap-3 p-5 hover:bg-white/[0.03] transition-colors'
   const icon = 'w-10 h-10 rounded-xl bg-sunrise/20 flex items-center justify-center shrink-0'
@@ -83,13 +127,14 @@ export default function WelcomePage() {
           <p className="mt-4 text-white/60 font-body text-sm leading-relaxed">This only changes when everyone sees the same problem. The more people watch <em>The AI Doc</em>, the more shared clarity, the faster things will change.</p>
 
           {/* 1. Share the Trailer */}
-          <div ref={shareRef} className={`mt-6 ${card} transition-transform duration-100`} style={{ transform: `scale(${shareScale})` }}>
+          <div ref={el => { shareRef.current = el; cardRefs.current[0] = el }} className={`mt-6 ${card} ${checked.has(0) ? 'border-emerald-500/30 bg-emerald-500/[0.03]' : ''} transition-transform duration-100`} style={{ transform: `scale(${shareScale})` }}>
             <button onClick={() => toggle(0)} className={header}>
+              {checkbox(0)}
               <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></div>
               <div className="flex-1 text-left"><p className="font-serif uppercase text-lg text-white">Share the Trailer</p><p className="text-white/40 text-xs font-body">Send it to friends, family &amp; your group chats.</p></div>
               {chevron(0)}
             </button>
-          <div className={panel(0)}><div className="px-5 pb-5">
+          <div ref={el => { panelRefs.current[0] = el }} style={panelStyle(0)}><div className="px-5 pb-5">
             <div className="aspect-video rounded-xl overflow-hidden bg-black/50 mb-4 relative">
               {loadedIframes.has(0) ? (
                 <iframe src="https://www.youtube.com/embed/xkPbV3IRe4Y?rel=0" title="The AI Doc Trailer" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen className="w-full h-full" loading="lazy" />
@@ -106,17 +151,21 @@ export default function WelcomePage() {
               <a href="mailto:?subject=Watch%20this%20%E2%80%94%20The%20AI%20Doc&body=Check%20out%20this%20trailer%20for%20The%20AI%20Doc%3A%20https%3A%2F%2Fyoutu.be%2FxkPbV3IRe4Y" aria-label="Email" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
               <button onClick={() => navigator.clipboard.writeText('https://youtu.be/xkPbV3IRe4Y')} aria-label="Copy link" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
             </div>
+            <button onClick={(e) => { e.stopPropagation(); toggleCheck(0) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(0) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+              {checked.has(0) ? '✓ Complete' : 'Mark as Complete'}
+            </button>
           </div></div>
         </div>
 
           {/* 2. See the Film */}
-          <div className={`mt-3 ${card}`}>
+          <div ref={el => { cardRefs.current[1] = el }} className={`mt-3 ${card} ${checked.has(1) ? 'border-emerald-500/30 bg-emerald-500/[0.03]' : ''}`}>
           <button onClick={() => toggle(1)} className={header}>
+            {checkbox(1)}
             <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg></div>
             <div className="flex-1 text-left"><p className="font-serif uppercase text-lg text-white">See the Film</p><p className="text-white/40 text-xs font-body">US Premiere — March 27th</p></div>
             {chevron(1)}
           </button>
-          <div className={panel(1)}><div className="px-5 pb-5">
+          <div ref={el => { panelRefs.current[1] = el }} style={panelStyle(1)}><div className="px-5 pb-5">
             <a href="https://www.focusfeatures.com/the-ai-doc-or-how-i-became-an-apocaloptimist" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-sunrise text-black rounded-full py-3 text-sm font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 hover:scale-[1.02] mb-3">Get Your Tickets</a>
             <a href="https://www.focusfeatures.com/the-ai-doc-or-how-i-became-an-apocaloptimist" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-sm font-body font-semibold hover:bg-white/10 transition-all duration-300 mb-5">Gift a Ticket</a>
             <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4">
@@ -133,10 +182,33 @@ export default function WelcomePage() {
                 <button onClick={() => navigator.clipboard.writeText("Let's see \"The AI Doc\" together — March 27th! Get tickets: https://www.focusfeatures.com/the-ai-doc-or-how-i-became-an-apocaloptimist")} aria-label="Copy" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
               </div>
             </div>
+            <button onClick={(e) => { e.stopPropagation(); toggleCheck(1) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(1) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+              {checked.has(1) ? '✓ Complete' : 'Mark as Complete'}
+            </button>
           </div></div>
         </div>
 
-          {/* 3. Rent a Theater — hidden for now */}
+          {/* 3. Don't Forget, Stay Clear */}
+          <div ref={el => { cardRefs.current[9] = el }} className={`mt-3 ${card} ${checked.has(9) ? 'border-emerald-500/30 bg-emerald-500/[0.03]' : ''}`}>
+            <button onClick={() => toggle(9)} className={header}>
+              {checkbox(9)}
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+              <div className="flex-1 text-left">
+                <p className="font-serif uppercase text-lg text-white">Don&apos;t Forget, Stay Clear</p>
+                <p className="text-white/40 text-xs font-body">It is easy to forget the clarity that the default AI path is anti-human, follow these sources to remind yourself.</p>
+              </div>
+              {chevron(9)}
+            </button>
+            <div ref={el => { panelRefs.current[9] = el }} style={panelStyle(9)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+              <a href="https://www.humanetech.com/podcast" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">🎙️ Your Undivided Attention Podcast →</a>
+              <a href="https://www.humanetech.com/newsletter" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">📬 Center for Humane Technology Newsletter →</a>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(9) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(9) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+                {checked.has(9) ? '✓ Complete' : 'Mark as Complete'}
+              </button>
+            </div></div>
+          </div>
+
+          {/* Rent a Theater — hidden for now */}
         </div>
 
         {/* Step 2 Box */}
@@ -144,8 +216,9 @@ export default function WelcomePage() {
           <h2 className="font-serif uppercase text-2xl sm:text-3xl text-white">Step 2: <span className="text-sunrise">Protect Yourself</span></h2>
 
           {/* AI-Proof Your Family */}
-          <div className={`mt-6 ${card}`}>
+          <div ref={el => { cardRefs.current[3] = el }} className={`mt-6 ${card} ${checked.has(3) ? 'border-emerald-500/30 bg-emerald-500/[0.03]' : ''}`}>
             <button onClick={() => toggle(3)} className={header}>
+              {checkbox(3)}
               <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
               <div className="flex-1 text-left">
                 <p className="font-serif uppercase text-lg text-white">AI-Proof Your Family</p>
@@ -153,7 +226,7 @@ export default function WelcomePage() {
               </div>
               {chevron(3)}
             </button>
-            <div className={panel(3)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+            <div ref={el => { panelRefs.current[3] = el }} style={panelStyle(3)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
               <p className="text-white/70 font-semibold">How it works:</p>
               <p><span className="text-white/70 font-semibold">1.</span> Pick a normal-sounding question — something an outsider would never suspect is a test. <em className="text-white/60">&ldquo;Did you ever fix that rumbling noise?&rdquo;</em> or <em className="text-white/60">&ldquo;What cake did you eat last week?&rdquo;</em></p>
               <p><span className="text-white/70 font-semibold">2.</span> Agree on the code answer in person. It can be anything — even wrong on purpose. <em className="text-white/60">&ldquo;Yeah, it was the dishwasher&rdquo;</em> or <em className="text-white/60">&ldquo;The lemon one.&rdquo;</em></p>
@@ -165,97 +238,18 @@ export default function WelcomePage() {
                 <p>• Never share the code over text, email, or phone — in person only</p>
                 <p>• Drill everyone — especially older relatives and kids. Any urgent call asking for money or help must pass the code first.</p>
               </div>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(3) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(3) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+                {checked.has(3) ? '✓ Complete' : 'Mark as Complete'}
+              </button>
             </div></div>
           </div>
 
-          {/* Delete Bad AI */}
-          <div className={`mt-3 ${card}`}>
-            <button onClick={() => toggle(4)} className={header}>
-              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></div>
-              <div className="flex-1 text-left">
-                <p className="font-serif uppercase text-lg text-white">Delete Bad AI</p>
-                <p className="text-white/40 text-xs font-body">Export your data, then delete accounts with OpenAI, Grok, and others. · 15 mins</p>
-              </div>
-              {chevron(4)}
-            </button>
-            <div className={panel(4)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-4">
-              <p>Take back your data. Open each app to export your history, then proceed to deletion settings.</p>
-
-              {/* Grok */}
-              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
-                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">Grok (xAI)</p>
-                <a href="https://x.com/i/premium_sign_up" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">1. Cancel Subscription</a>
-                <a href="https://x.com/settings/download_your_data" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">2. Archive Data</a>
-                <a href="https://x.com/settings/deactivate" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-red-500/20 border border-red-500/30 text-red-400 rounded-full py-2 text-xs font-semibold hover:bg-red-500/30 transition-all">3. Delete Account</a>
-              </div>
-
-              {/* ChatGPT */}
-              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
-                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">ChatGPT (OpenAI)</p>
-                <a href="https://chatgpt.com/#settings/ManageSubscription" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">1. Cancel Subscription</a>
-                <a href="https://chatgpt.com/#settings/DataControls" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">2. Archive Data</a>
-                <a href="https://help.openai.com/en/articles/6783435-how-do-i-delete-my-account" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-red-500/20 border border-red-500/30 text-red-400 rounded-full py-2 text-xs font-semibold hover:bg-red-500/30 transition-all">3. Delete Account</a>
-              </div>
-
-              {/* Gemini */}
-              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
-                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">Gemini (Google)</p>
-                <a href="https://gemini.google.com/advanced" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">1. Cancel Subscription</a>
-                <a href="https://takeout.google.com/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">2. Archive Data</a>
-                <a href="https://myaccount.google.com/delete-services-or-account" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-red-500/20 border border-red-500/30 text-red-400 rounded-full py-2 text-xs font-semibold hover:bg-red-500/30 transition-all">3. Delete Account</a>
-              </div>
-
-              {/* Other */}
-              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
-                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">Other AI Apps</p>
-                <a href="https://www.perplexity.ai/settings" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-2 text-xs font-semibold hover:bg-white/10 transition-all">Manage Perplexity →</a>
-              </div>
-            </div></div>
-          </div>
-
-          {/* Use the Most Humane Model */}
-          <div className={`mt-3 ${card}`}>
-            <button onClick={() => toggle(5)} className={header}>
-              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-              <div className="flex-1 text-left">
-                <p className="font-serif uppercase text-lg text-white">Use the Most Humane Model</p>
-                <p className="text-white/40 text-xs font-body">Switch to the AI model that prioritizes safety. · 5 mins</p>
-              </div>
-              {chevron(5)}
-            </button>
-            <div className={panel(5)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
-              <p>Compare the safety ratings and risk management maturity of leading AI labs. Make an informed choice about which models you support with your data and attention.</p>
-              <a href="https://ratings.safer-ai.org/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">Safer AI Ratings — Risk Management Maturity Chart →</a>
-              <a href="https://futureoflife.org/ai-safety-index-summer-2025/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">FLI AI Safety Index — Summer 2025 →</a>
-            </div></div>
-          </div>
-
-          {/* Grayscale Your Phone */}
-          <div className={`mt-3 ${card}`}>
-            <button onClick={() => toggle(6)} className={header}>
-              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
-              <div className="flex-1 text-left">
-                <p className="font-serif uppercase text-lg text-white">Grayscale Your Phone</p>
-                <p className="text-white/40 text-xs font-body">Reduce dopamine triggers by removing color. · 2 mins</p>
-              </div>
-              {chevron(6)}
-            </button>
-            <div className={panel(6)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
-              <p>Color is one of the primary tools apps use to grab your attention. Switching to grayscale makes your phone less addictive without losing any functionality.</p>
-              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
-                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">How to enable on iPhone</p>
-                <p><span className="text-white/70 font-semibold">1.</span> Settings → Accessibility</p>
-                <p><span className="text-white/70 font-semibold">2.</span> Display &amp; Text Size</p>
-                <p><span className="text-white/70 font-semibold">3.</span> Color Filters → Toggle On</p>
-                <p><span className="text-white/70 font-semibold">4.</span> Select Grayscale</p>
-              </div>
-              <a href="https://archive.is/BOmea" target="_blank" rel="noopener noreferrer" className="inline-block text-sunrise hover:text-sunrise-light text-xs transition-colors">Read more in the New York Times →</a>
-            </div></div>
-          </div>
+          {/* Delete Bad AI — hidden for now */}
 
           {/* Script Your AI */}
-          <div className={`mt-3 ${card}`}>
+          <div ref={el => { cardRefs.current[7] = el }} className={`mt-3 ${card} ${checked.has(7) ? 'border-emerald-500/30 bg-emerald-500/[0.03]' : ''}`}>
             <button onClick={() => toggle(7)} className={header}>
+              {checkbox(7)}
               <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
               <div className="flex-1 text-left">
                 <p className="font-serif uppercase text-lg text-white">Script Your AI</p>
@@ -263,7 +257,7 @@ export default function WelcomePage() {
               </div>
               {chevron(7)}
             </button>
-            <div className={panel(7)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+            <div ref={el => { panelRefs.current[7] = el }} style={panelStyle(7)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
               <p>Paste one of these into your AI&apos;s custom instructions or system prompt. It sets boundaries so your AI stays a tool — not a therapist, friend, or oracle.</p>
 
               <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
@@ -313,34 +307,58 @@ Act as an analytical tool and thinking partner, not a substitute for human relat
                 <p className="text-xs">• Gemini → Settings → Extensions &amp; Preferences</p>
                 <p className="text-xs">• Grok → Conversation settings or system prompt</p>
               </div>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(7) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(7) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+                {checked.has(7) ? '✓ Complete' : 'Mark as Complete'}
+              </button>
             </div></div>
           </div>
 
-          {/* Stay Informed */}
-          <div className={`mt-3 ${card}`}>
-            <button onClick={() => toggle(9)} className={header}>
-              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+          {/* Grayscale Your Phone */}
+          <div ref={el => { cardRefs.current[6] = el }} className={`mt-3 ${card} ${checked.has(6) ? 'border-emerald-500/30 bg-emerald-500/[0.03]' : ''}`}>
+            <button onClick={() => toggle(6)} className={header}>
+              {checkbox(6)}
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
               <div className="flex-1 text-left">
-                <p className="font-serif uppercase text-lg text-white">Stay Informed</p>
-                <p className="text-white/40 text-xs font-body">Follow the podcast and newsletter. · 3 mins</p>
+                <p className="font-serif uppercase text-lg text-white">Grayscale Your Phone</p>
+                <p className="text-white/40 text-xs font-body">Reduce dopamine triggers by removing color. · 2 mins</p>
               </div>
-              {chevron(9)}
+              {chevron(6)}
             </button>
-            <div className={panel(9)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
-              <a href="https://www.humanetech.com/podcast" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">🎙️ Your Undivided Attention Podcast →</a>
-              <a href="https://www.humanetech.com/newsletter" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">📬 Center for Humane Technology Newsletter →</a>
+            <div ref={el => { panelRefs.current[6] = el }} style={panelStyle(6)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+              <p>Color is one of the primary tools apps use to grab your attention. Switching to grayscale makes your phone less addictive without losing any functionality.</p>
+              <div className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-4 space-y-2">
+                <p className="text-white/70 font-semibold text-xs uppercase tracking-wider">How to enable on iPhone</p>
+                <p><span className="text-white/70 font-semibold">1.</span> Settings → Accessibility</p>
+                <p><span className="text-white/70 font-semibold">2.</span> Display &amp; Text Size</p>
+                <p><span className="text-white/70 font-semibold">3.</span> Color Filters → Toggle On</p>
+                <p><span className="text-white/70 font-semibold">4.</span> Select Grayscale</p>
+              </div>
+              <a href="https://archive.is/BOmea" target="_blank" rel="noopener noreferrer" className="inline-block text-sunrise hover:text-sunrise-light text-xs transition-colors">Read more in the New York Times →</a>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(6) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(6) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+                {checked.has(6) ? '✓ Complete' : 'Mark as Complete'}
+              </button>
             </div></div>
           </div>
 
-          {/* Bookmark This Page */}
-          <div className={`mt-3 ${card}`}>
-            <button onClick={() => { if (typeof window !== 'undefined') { alert('Press Ctrl+D (or Cmd+D on Mac) to bookmark this page!') } }} className={header}>
-              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+          {/* Use the Most Humane Model */}
+          <div ref={el => { cardRefs.current[5] = el }} className={`mt-3 ${card} ${checked.has(5) ? 'border-emerald-500/30 bg-emerald-500/[0.03]' : ''}`}>
+            <button onClick={() => toggle(5)} className={header}>
+              {checkbox(5)}
+              <div className={icon}><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-sunrise"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
               <div className="flex-1 text-left">
-                <p className="font-serif uppercase text-lg text-white">Bookmark This Page</p>
-                <p className="text-white/40 text-xs font-body">Come back to track your progress. · 5 secs</p>
+                <p className="font-serif uppercase text-lg text-white">Use the Most Humane Model</p>
+                <p className="text-white/40 text-xs font-body">Switch to the AI model that prioritizes safety. · 5 mins</p>
               </div>
+              {chevron(5)}
             </button>
+            <div ref={el => { panelRefs.current[5] = el }} style={panelStyle(5)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
+              <p>Compare the safety ratings and risk management maturity of leading AI labs. Make an informed choice about which models you support with your data and attention.</p>
+              <a href="https://ratings.safer-ai.org/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">Safer AI Ratings — Risk Management Maturity Chart →</a>
+              <a href="https://futureoflife.org/ai-safety-index-summer-2025/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">FLI AI Safety Index — Summer 2025 →</a>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(5) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(5) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+                {checked.has(5) ? '✓ Complete' : 'Mark as Complete'}
+              </button>
+            </div></div>
           </div>
         </div>
 

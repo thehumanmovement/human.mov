@@ -549,7 +549,7 @@ export default function WatchPage() {
             href="https://humanstatement.org/?utm_source=human.mov"
             target="_blank"
             rel="noopener noreferrer"
-            className="font-body text-sm sm:text-base text-white/70 hover:text-white border border-white/20 hover:border-white/40 rounded-full px-6 py-3 transition-all"
+            className="font-body text-sm sm:text-base text-white/70 hover:text-white border border-white/20 hover:border-white/40 rounded-full px-6 py-3 transition-all text-center"
           >
             See the Pro-Human AI Declaration →
           </a>
@@ -596,18 +596,18 @@ export default function WatchPage() {
             </svg>
           </button>
           <div className="w-full max-w-lg rounded-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
-            <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug text-center">{t(lang, 'joinTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span></p>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} />
+            <SignupForm lang={lang} variant="hero-popup" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug text-center">{t(lang, 'joinTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span></p>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} />
           </div>
         </div>
       )}
 
       <GlobeSection lang={lang} />
 
-      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton="I Agree" />
+      <SignupForm lang={lang} variant="i-agree" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton="I Agree" />
 
       <GetInformed lang={lang} />
 
-      <SignupForm lang={lang} variant="after-protect" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'joinTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span></p>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} />
+      <SignupForm lang={lang} variant="after-videos" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'joinTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span></p>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} />
 
       {/* In Alliance With */}
       <section className="px-6 pt-40 pb-44 sm:pt-52 sm:pb-56 bg-[#111]">
