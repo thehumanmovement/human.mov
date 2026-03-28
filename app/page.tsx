@@ -296,7 +296,7 @@ export default function WatchPage() {
         {!isFullscreen && (
           <div className="absolute top-0 right-0 z-50 flex items-center gap-3 p-4">
             {isSignedUp && (
-              <a href="/share" className="bg-sunrise text-black text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full hover:bg-sunrise/90 transition-all">
+              <a href="/share" className="bg-sunrise text-black text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-sunrise/90 transition-all whitespace-nowrap">
                 Take Action
               </a>
             )}
