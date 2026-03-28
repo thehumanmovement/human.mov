@@ -293,10 +293,7 @@ export default function WatchPage() {
       post({ method: 'addEventListener', value: 'pause' })
       post({ method: 'addEventListener', value: 'volumechange' })
       post({ method: 'getDuration' })
-      post({ method: 'setVolume', value: 1 })
       post({ method: 'play' })
-      // Check if unmute actually worked after a delay
-      setTimeout(() => post({ method: 'getVolume' }), 300)
     }
     init()
     setTimeout(init, 500)
@@ -378,18 +375,6 @@ export default function WatchPage() {
                     </svg>
                   </div>
                 )}
-                {isPlaying && isMuted && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleUnmute() }}
-                    className="absolute bottom-32 left-1/2 -translate-x-1/2 flex items-center gap-2 px-5 py-3 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-sm font-body animate-pulse hover:bg-white/25 transition-colors cursor-pointer"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5.586v12.828a1 1 0 01-1.707.707L5.586 15z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
-                    </svg>
-                    Tap to unmute
-                  </button>
-                )}
               </div>
 
               {/* Bottom bar: progress + controls */}
@@ -460,6 +445,20 @@ export default function WatchPage() {
                 </div>
               </div>
             </div>
+
+            {/* Persistent unmute button — always visible until user taps */}
+            {isMuted && (
+              <button
+                onClick={(e) => { e.stopPropagation(); handleUnmute() }}
+                className="absolute bottom-24 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-5 py-3 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-sm font-body hover:bg-white/25 transition-colors cursor-pointer pointer-events-auto"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5.586v12.828a1 1 0 01-1.707.707L5.586 15z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                </svg>
+                Tap to unmute
+              </button>
+            )}
           </div>
         ) : (
           <>
