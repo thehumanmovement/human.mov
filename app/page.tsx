@@ -618,12 +618,12 @@ export default function WatchPage() {
       <GlobeSection lang={lang} />
 
       {/* In Alliance With */}
-      <section className="px-6 pt-40 pb-16 sm:pt-52 sm:pb-20 bg-[#111]">
-        <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-28">
+      <section className="px-6 pt-16 pb-10 sm:pt-20 sm:pb-14 bg-[#111]">
+        <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-12">
           {t(lang, 'partnersTitle')}
         </p>
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36 mb-20 sm:mb-24">
+          <div className="flex flex-wrap items-center justify-center gap-12 sm:gap-20 lg:gap-28 mb-10 sm:mb-14">
             {[
               { src: '/images/partners/CHT_logo.svg', alt: 'Center for Humane Technology', h: 'h-20 sm:h-28', href: 'https://www.humanetech.com/' },
               { src: '/images/partners/FLI_logo.webp', alt: 'Future of Life Institute', h: 'h-24 sm:h-32', href: 'https://futureoflife.org/' },
@@ -633,7 +633,7 @@ export default function WatchPage() {
               </a>
             ))}
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-20 sm:gap-28 lg:gap-36">
+          <div className="flex flex-wrap items-center justify-center gap-12 sm:gap-20 lg:gap-28">
             {[
               { src: '/images/partners/APHRC_logo.svg', alt: 'APHRC', h: 'h-8 sm:h-10', href: 'https://aiphrc.org/' },
               { src: '/images/partners/humanchange_logo.svg', alt: 'Human Change', h: 'h-18 sm:h-24', href: 'https://humanchange.com/' },
