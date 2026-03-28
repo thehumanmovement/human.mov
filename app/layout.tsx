@@ -28,11 +28,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'The Human Movement',
     description: "A global force fighting to protect our jobs, our kids and our freedom in the age of AI.",
-    url: 'https://www.human.mov',
+    url: 'https://thehumanmovement.org',
     siteName: 'The Human Movement',
     images: [
       {
-        url: 'https://www.human.mov/api/og',
+        url: 'https://thehumanmovement.org/og-image.png',
         width: 1200,
         height: 630,
         type: 'image/png',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'The Human Movement',
     description: "A global force fighting to protect our jobs, our kids and our freedom in the age of AI.",
-    images: ['https://www.human.mov/api/og'],
+    images: ['https://thehumanmovement.org/og-image.png'],
   },
 }
 
