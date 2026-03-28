@@ -277,6 +277,7 @@ export default function WatchPage() {
       post({ method: 'addEventListener', value: 'play' })
       post({ method: 'addEventListener', value: 'pause' })
       post({ method: 'getDuration' })
+      post({ method: 'setVolume', value: 1 })
       post({ method: 'play' })
     }
     init()
@@ -617,6 +618,12 @@ export default function WatchPage() {
 
       <GlobeSection lang={lang} />
 
+      <SignupForm lang={lang} variant="i-agree" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton="I Agree" />
+
+      <GetInformed lang={lang} />
+
+      <SignupForm lang={lang} variant="after-videos" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'joinTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span></p>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} />
+
       {/* In Alliance With */}
       <section className="px-6 pt-16 pb-10 sm:pt-20 sm:pb-14 bg-[#111]">
         <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-12">
@@ -646,12 +653,6 @@ export default function WatchPage() {
           </div>
         </div>
       </section>
-
-      <SignupForm lang={lang} variant="i-agree" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton="I Agree" />
-
-      <GetInformed lang={lang} />
-
-      <SignupForm lang={lang} variant="after-videos" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'joinTheHuman')} <span className="text-sunrise">{t(lang, 'humanMovement')}</span></p>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} />
 
       <ContactSection lang={lang} overrideHeading={
         <h2 className="font-serif uppercase text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
