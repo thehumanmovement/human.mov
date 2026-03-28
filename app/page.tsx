@@ -85,7 +85,19 @@ export default function WatchPage() {
 
   useEffect(() => {
     const saved = localStorage.getItem('lang')
-    if (saved && isValidLang(saved)) setLang(saved)
+    if (saved && isValidLang(saved)) {
+      setLang(saved)
+    } else {
+      // Auto-detect language from browser settings
+      const browserLangs = navigator.languages || [navigator.language]
+      for (const bl of browserLangs) {
+        const code = bl.split('-')[0].toLowerCase()
+        if (isValidLang(code)) {
+          setLang(code as Lang)
+          break
+        }
+      }
+    }
     setBgQuality(getBgQuality())
     setIsSignedUp(!!localStorage.getItem('thm-signed-up'))
     const handler = () => setIsSignedUp(!!localStorage.getItem('thm-signed-up'))
