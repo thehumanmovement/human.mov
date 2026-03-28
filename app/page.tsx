@@ -72,6 +72,7 @@ export default function WatchPage() {
   const [showControls, setShowControls] = useState(true)
   const [showRoadmap, setShowRoadmap] = useState(false)
   const [showSignupPopup, setShowSignupPopup] = useState(false)
+  const [isMuted, setIsMuted] = useState(true)
   const [bgLoaded, setBgLoaded] = useState(false)
   const [isSignedUp, setIsSignedUp] = useState(false)
   const bgLoadedRef = useRef(false)
@@ -169,6 +170,7 @@ export default function WatchPage() {
     bgInitTimers.current.forEach(clearTimeout)
     bgInitTimers.current = []
     setIsFullscreen(true)
+    setIsMuted(true) // Start muted; will attempt unmute on iframe load
     setIsPlaying(true)
     setProgress(0)
     setCurrentTime(0)
@@ -186,6 +188,11 @@ export default function WatchPage() {
     if (fullscreenIframeRef.current?.contentWindow) {
       fullscreenIframeRef.current.contentWindow.postMessage(JSON.stringify(msg), '*')
     }
+  }
+
+  function handleUnmute() {
+    postToPlayer({ method: 'setVolume', value: 1 })
+    setIsMuted(false)
   }
 
   function togglePlayPause() {
@@ -258,6 +265,14 @@ export default function WatchPage() {
         }
         if (data.event === 'play') setIsPlaying(true)
         if (data.event === 'pause') setIsPlaying(false)
+        // Track volume changes to detect if unmute succeeded
+        if (data.event === 'volumechange') {
+          const vol = data.data?.volume ?? 0
+          setIsMuted(vol === 0)
+        }
+        if (data.method === 'getVolume' && typeof data.value === 'number') {
+          setIsMuted(data.value === 0)
+        }
       } catch {}
     }
     window.addEventListener('message', onMessage)
@@ -276,9 +291,12 @@ export default function WatchPage() {
       post({ method: 'addEventListener', value: 'playProgress' })
       post({ method: 'addEventListener', value: 'play' })
       post({ method: 'addEventListener', value: 'pause' })
+      post({ method: 'addEventListener', value: 'volumechange' })
       post({ method: 'getDuration' })
       post({ method: 'setVolume', value: 1 })
       post({ method: 'play' })
+      // Check if unmute actually worked after a delay
+      setTimeout(() => post({ method: 'getVolume' }), 300)
     }
     init()
     setTimeout(init, 500)
@@ -325,7 +343,7 @@ export default function WatchPage() {
             {/* Vimeo iframe — no controls, we overlay our own */}
             <iframe
               ref={fullscreenIframeRef}
-              src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=0&loop=0&quality=1080p&controls=0&title=0&byline=0&portrait=0&api=1&dnt=1#t=0s`}
+              src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=1&loop=0&quality=1080p&controls=0&title=0&byline=0&portrait=0&api=1&dnt=1#t=0s`}
               allow="autoplay; fullscreen"
               allowFullScreen
               onLoad={onPlayerIframeLoad}
@@ -351,7 +369,7 @@ export default function WatchPage() {
                 </button>
               </div>
 
-              {/* Center: play/pause tap area */}
+              {/* Center: play/pause tap area + unmute prompt */}
               <div className="flex-1 flex items-center justify-center pointer-events-auto cursor-pointer" onClick={togglePlayPause}>
                 {!isPlaying && (
                   <div className="w-24 h-24 rounded-full bg-black/40 backdrop-blur-md border border-white/20 flex items-center justify-center transition-transform hover:scale-110">
@@ -359,6 +377,18 @@ export default function WatchPage() {
                       <path d="M8 5v14l11-7z" />
                     </svg>
                   </div>
+                )}
+                {isPlaying && isMuted && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleUnmute() }}
+                    className="absolute bottom-32 left-1/2 -translate-x-1/2 flex items-center gap-2 px-5 py-3 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-sm font-body animate-pulse hover:bg-white/25 transition-colors cursor-pointer"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5.586v12.828a1 1 0 01-1.707.707L5.586 15z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                    </svg>
+                    Tap to unmute
+                  </button>
                 )}
               </div>
 
@@ -385,6 +415,21 @@ export default function WatchPage() {
                       <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" /></svg>
                     ) : (
                       <svg className="w-8 h-8 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                    )}
+                  </button>
+
+                  {/* Volume / Unmute */}
+                  <button onClick={isMuted ? handleUnmute : () => { postToPlayer({ method: 'setVolume', value: 0 }); setIsMuted(true) }} className="text-white hover:text-sunrise transition-colors cursor-pointer">
+                    {isMuted ? (
+                      <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5.586v12.828a1 1 0 01-1.707.707L5.586 15z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+                      </svg>
+                    ) : (
+                      <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707A1 1 0 0112 5.586v12.828a1 1 0 01-1.707.707L5.586 15z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728" />
+                      </svg>
                     )}
                   </button>
 

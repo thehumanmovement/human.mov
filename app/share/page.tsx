@@ -151,7 +151,7 @@ export default function WelcomePage() {
               <a href="mailto:?subject=Watch%20this%20%E2%80%94%20The%20AI%20Doc&body=Check%20out%20this%20trailer%20for%20The%20AI%20Doc%3A%20https%3A%2F%2Fyoutu.be%2FxkPbV3IRe4Y" aria-label="Email" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
               <button onClick={() => navigator.clipboard.writeText('https://youtu.be/xkPbV3IRe4Y')} aria-label="Copy link" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
             </div>
-            <button onClick={(e) => { e.stopPropagation(); toggleCheck(0) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(0) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+            <button onClick={(e) => { e.stopPropagation(); toggleCheck(0) }} className={`w-full mt-3 px-4 py-3 rounded-md text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${checked.has(0) ? 'bg-emerald-500/90 text-white border border-emerald-400/50 hover:bg-emerald-500 shadow-sm shadow-emerald-500/20' : 'bg-white/[0.07] border-2 border-white/20 text-white/70 hover:bg-white/[0.12] hover:border-white/30'}`}>
               {checked.has(0) ? '✓ Complete' : 'Mark as Complete'}
             </button>
           </div></div>
@@ -182,7 +182,7 @@ export default function WelcomePage() {
                 <button onClick={() => navigator.clipboard.writeText("Let's see \"The AI Doc\" together — March 27th! Get tickets: https://www.focusfeatures.com/the-ai-doc-or-how-i-became-an-apocaloptimist")} aria-label="Copy" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white/70 hover:bg-white/20 transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
               </div>
             </div>
-            <button onClick={(e) => { e.stopPropagation(); toggleCheck(1) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(1) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+            <button onClick={(e) => { e.stopPropagation(); toggleCheck(1) }} className={`w-full mt-3 px-4 py-3 rounded-md text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${checked.has(1) ? 'bg-emerald-500/90 text-white border border-emerald-400/50 hover:bg-emerald-500 shadow-sm shadow-emerald-500/20' : 'bg-white/[0.07] border-2 border-white/20 text-white/70 hover:bg-white/[0.12] hover:border-white/30'}`}>
               {checked.has(1) ? '✓ Complete' : 'Mark as Complete'}
             </button>
           </div></div>
@@ -202,7 +202,7 @@ export default function WelcomePage() {
             <div ref={el => { panelRefs.current[9] = el }} style={panelStyle(9)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
               <a href="https://www.humanetech.com/podcast" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">🎙️ Your Undivided Attention Podcast →</a>
               <a href="https://www.humanetech.com/newsletter" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">📬 Center for Humane Technology Newsletter →</a>
-              <button onClick={(e) => { e.stopPropagation(); toggleCheck(9) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(9) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(9) }} className={`w-full mt-3 px-4 py-3 rounded-md text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${checked.has(9) ? 'bg-emerald-500/90 text-white border border-emerald-400/50 hover:bg-emerald-500 shadow-sm shadow-emerald-500/20' : 'bg-white/[0.07] border-2 border-white/20 text-white/70 hover:bg-white/[0.12] hover:border-white/30'}`}>
                 {checked.has(9) ? '✓ Complete' : 'Mark as Complete'}
               </button>
             </div></div>
@@ -238,7 +238,7 @@ export default function WelcomePage() {
                 <p>• Never share the code over text, email, or phone — in person only</p>
                 <p>• Drill everyone — especially older relatives and kids. Any urgent call asking for money or help must pass the code first.</p>
               </div>
-              <button onClick={(e) => { e.stopPropagation(); toggleCheck(3) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(3) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(3) }} className={`w-full mt-3 px-4 py-3 rounded-md text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${checked.has(3) ? 'bg-emerald-500/90 text-white border border-emerald-400/50 hover:bg-emerald-500 shadow-sm shadow-emerald-500/20' : 'bg-white/[0.07] border-2 border-white/20 text-white/70 hover:bg-white/[0.12] hover:border-white/30'}`}>
                 {checked.has(3) ? '✓ Complete' : 'Mark as Complete'}
               </button>
             </div></div>
@@ -307,7 +307,7 @@ Act as an analytical tool and thinking partner, not a substitute for human relat
                 <p className="text-xs">• Gemini → Settings → Extensions &amp; Preferences</p>
                 <p className="text-xs">• Grok → Conversation settings or system prompt</p>
               </div>
-              <button onClick={(e) => { e.stopPropagation(); toggleCheck(7) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(7) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(7) }} className={`w-full mt-3 px-4 py-3 rounded-md text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${checked.has(7) ? 'bg-emerald-500/90 text-white border border-emerald-400/50 hover:bg-emerald-500 shadow-sm shadow-emerald-500/20' : 'bg-white/[0.07] border-2 border-white/20 text-white/70 hover:bg-white/[0.12] hover:border-white/30'}`}>
                 {checked.has(7) ? '✓ Complete' : 'Mark as Complete'}
               </button>
             </div></div>
@@ -334,7 +334,7 @@ Act as an analytical tool and thinking partner, not a substitute for human relat
                 <p><span className="text-white/70 font-semibold">4.</span> Select Grayscale</p>
               </div>
               <a href="https://archive.is/BOmea" target="_blank" rel="noopener noreferrer" className="inline-block text-sunrise hover:text-sunrise-light text-xs transition-colors">Read more in the New York Times →</a>
-              <button onClick={(e) => { e.stopPropagation(); toggleCheck(6) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(6) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(6) }} className={`w-full mt-3 px-4 py-3 rounded-md text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${checked.has(6) ? 'bg-emerald-500/90 text-white border border-emerald-400/50 hover:bg-emerald-500 shadow-sm shadow-emerald-500/20' : 'bg-white/[0.07] border-2 border-white/20 text-white/70 hover:bg-white/[0.12] hover:border-white/30'}`}>
                 {checked.has(6) ? '✓ Complete' : 'Mark as Complete'}
               </button>
             </div></div>
@@ -355,7 +355,7 @@ Act as an analytical tool and thinking partner, not a substitute for human relat
               <p>Compare the safety ratings and risk management maturity of leading AI labs. Make an informed choice about which models you support with your data and attention.</p>
               <a href="https://ratings.safer-ai.org/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">Safer AI Ratings — Risk Management Maturity Chart →</a>
               <a href="https://futureoflife.org/ai-safety-index-summer-2025/" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">FLI AI Safety Index — Summer 2025 →</a>
-              <button onClick={(e) => { e.stopPropagation(); toggleCheck(5) }} className={`w-full mt-3 py-2.5 rounded-lg text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 ${checked.has(5) ? 'bg-emerald-500 text-white hover:bg-emerald-600' : 'bg-white/10 border border-white/20 text-white/80 hover:bg-white/20'}`}>
+              <button onClick={(e) => { e.stopPropagation(); toggleCheck(5) }} className={`w-full mt-3 px-4 py-3 rounded-md text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${checked.has(5) ? 'bg-emerald-500/90 text-white border border-emerald-400/50 hover:bg-emerald-500 shadow-sm shadow-emerald-500/20' : 'bg-white/[0.07] border-2 border-white/20 text-white/70 hover:bg-white/[0.12] hover:border-white/30'}`}>
                 {checked.has(5) ? '✓ Complete' : 'Mark as Complete'}
               </button>
             </div></div>
