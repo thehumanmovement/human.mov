@@ -7,6 +7,7 @@ import { isValidLang, LANGUAGES, t, type Lang } from '@/lib/i18n'
 import LanguageSelector from './components/LanguageSelector'
 import SignupForm, { type SignupFormHandle } from './components/SignupForm'
 import ContactSection from './components/ContactSection'
+import CountryTicker from './components/CountryTicker'
 
 const GlobeSection = dynamic(() => import('./components/WatchGlobeScroll'), { ssr: false })
 const GetInformed = dynamic(() => import('./components/GetInformed'), { ssr: false })
@@ -467,6 +468,7 @@ export default function WatchPage() {
               >
                 Join Now
               </button>
+              <CountryTicker />
             </div>
           </>
         )}
