@@ -618,7 +618,7 @@ export default function WatchPage() {
       <GlobeSection lang={lang} />
 
       {/* In Alliance With */}
-      <section className="px-6 pt-40 pb-44 sm:pt-52 sm:pb-56 bg-[#111]">
+      <section className="px-6 pt-40 pb-16 sm:pt-52 sm:pb-20 bg-[#111]">
         <p className="text-center text-base sm:text-lg font-body font-semibold tracking-widest uppercase text-white/50 mb-28">
           {t(lang, 'partnersTitle')}
         </p>
