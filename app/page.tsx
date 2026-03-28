@@ -468,7 +468,6 @@ export default function WatchPage() {
               >
                 Join Now
               </button>
-              <CountryTicker />
             </div>
           </>
         )}
@@ -483,6 +482,7 @@ export default function WatchPage() {
         </div>
       </div>
       <SignupForm ref={formRef} lang={lang} variant="after-globe" overrideHeading={<></>} overridePlaceholder={t(lang, 'enterMyEmail')} overrideButton={t(lang, 'getInfoNow')} className="!pt-8 sm:!pt-10" />
+      <CountryTicker />
       {/* What We Can Do Section */}
       <section className="relative z-10 py-20 px-6">
         <h2 className="font-serif uppercase text-4xl sm:text-5xl text-white text-center mb-12">{t(lang, 'whatWeCanDo')}</h2>

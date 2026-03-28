@@ -65,7 +65,7 @@ export default function CountryTicker() {
     <div className="w-full max-w-md mx-auto mt-6 animate-fade-in">
       <div className="bg-white/[0.05] backdrop-blur-sm border border-white/[0.08] rounded-2xl px-5 py-4">
         <p className="text-white/50 text-xs font-body uppercase tracking-widest text-center mb-3">
-          {total.toLocaleString()} people joined from
+          People joined from
         </p>
         <div className="flex flex-wrap justify-center gap-2">
           {countries.slice(0, 12).map((c) => (
