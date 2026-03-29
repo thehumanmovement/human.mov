@@ -225,7 +225,7 @@ export default function ContactSection({ lang, overrideHeading, hideDesc, emailP
                         <input
                           ref={countrySearchRef}
                           type="text"
-                          placeholder="Search..."
+                          placeholder={t(lang, 'searchPlaceholder')}
                           value={countrySearch}
                           onChange={(e) => setCountrySearch(e.target.value)}
                           className="w-full bg-white/[0.07] border border-white/[0.12] rounded px-3 py-2 text-sm text-white outline-none placeholder:text-white/40 focus:border-sunrise"

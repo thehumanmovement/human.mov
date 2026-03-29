@@ -15,7 +15,7 @@ const GetInformed = dynamic(() => import('./components/GetInformed'), { ssr: fal
 const VIMEO_VIDEO_ID = '1177797002'
 const VIMEO_HASH = '09abb31a4f'
 const LOOP_START = 83   // 1:23
-const LOOP_END = 139    // 2:19
+const LOOP_END = 138    // 2:18
 
 function WhatWeCanDoItem({ icon, title, details }: { icon: React.ReactNode; title: string; details: string[] }) {
   const [open, setOpen] = useState(false)
@@ -240,8 +240,8 @@ export default function WatchPage() {
         if (data.event === 'timeupdate' || data.event === 'playProgress') {
           const s = data.data?.seconds ?? 0
           const d = data.data?.duration ?? 0
-          const maxTime = d > 1 ? d - 1 : d
-          // Stop 1 second before the end
+          const maxTime = d > 0.5 ? d - 0.5 : d
+          // Stop 0.5 seconds before the end
           if (d > 0 && s >= maxTime) {
             fullscreenIframeRef.current?.contentWindow?.postMessage(
               JSON.stringify({ method: 'pause' }), '*'
@@ -295,9 +295,15 @@ export default function WatchPage() {
       post({ method: 'getDuration' })
       post({ method: 'play' })
     }
+    function unmute() {
+      post({ method: 'setVolume', value: 1 })
+    }
     init()
-    setTimeout(init, 500)
-    setTimeout(init, 1500)
+    // Unmute after a short delay — must happen after play starts on mobile
+    setTimeout(() => { init(); unmute() }, 300)
+    setTimeout(() => { unmute() }, 800)
+    setTimeout(() => { unmute() }, 1500)
+    setTimeout(() => { unmute() }, 3000)
   }, [])
 
   // When fullscreen opens, listen for Escape key
@@ -325,7 +331,7 @@ export default function WatchPage() {
           <div className="absolute top-0 right-0 z-50 flex items-center gap-3 p-4">
             {isSignedUp && (
               <a href="/share" className="bg-sunrise text-black text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 sm:px-4 py-1.5 sm:py-2 rounded-full hover:bg-sunrise/90 transition-all whitespace-nowrap">
-                Take Action
+                {t(lang, 'takeAction')}
               </a>
             )}
             <LanguageSelector lang={lang} mounted={mounted} onSelect={selectLang} inline />
@@ -341,7 +347,7 @@ export default function WatchPage() {
             <iframe
               ref={fullscreenIframeRef}
               src={`https://player.vimeo.com/video/${VIMEO_VIDEO_ID}?h=${VIMEO_HASH}&autoplay=1&muted=1&loop=0&quality=1080p&controls=0&title=0&byline=0&portrait=0&api=1&dnt=1#t=0s`}
-              allow="autoplay; fullscreen"
+              allow="autoplay; fullscreen; encrypted-media"
               allowFullScreen
               onLoad={onPlayerIframeLoad}
               className="w-full max-w-[177.78vh] aspect-video pointer-events-none"
@@ -523,7 +529,7 @@ export default function WatchPage() {
                 onClick={(e) => { e.stopPropagation(); setShowSignupPopup(true) }}
                 className="mt-6 bg-sunrise text-black rounded-full px-8 py-3 text-sm font-body font-bold uppercase tracking-widest hover:bg-sunrise-light transition-all duration-300 hover:scale-[1.02]"
               >
-                Join Now
+                {t(lang, 'joinNow')}
               </button>
             </div>
           </>
@@ -610,7 +616,7 @@ export default function WatchPage() {
             rel="noopener noreferrer"
             className="font-body text-sm sm:text-base text-white/70 hover:text-white border border-white/20 hover:border-white/40 rounded-full px-6 py-3 transition-all text-center"
           >
-            See the Pro-Human AI Declaration →
+            {t(lang, 'seeDeclaration')}
           </a>
         </div>
       </section>
@@ -662,7 +668,7 @@ export default function WatchPage() {
 
       <GlobeSection lang={lang} />
 
-      <SignupForm lang={lang} variant="i-agree" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton="I Agree" />
+      <SignupForm lang={lang} variant="i-agree" overrideHeading={<p className="font-serif uppercase text-3xl sm:text-4xl text-white leading-snug">{t(lang, 'antiHumanFuture')} <span className="text-sunrise">{t(lang, 'notInevitable')}</span></p>} overridePlaceholder={t(lang, 'addEmailToAgree')} overrideButton={t(lang, 'iAgree')} />
 
       <GetInformed lang={lang} />
 

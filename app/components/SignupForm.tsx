@@ -300,7 +300,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
           ✓ {t(lang, 'youreIn')}
         </a>
         <a href="/share" onDoubleClick={handleSignOut} className="block mt-4 sm:mt-6 w-full bg-sunrise text-black rounded-full py-3 sm:py-4 text-sm sm:text-base font-body font-bold uppercase tracking-widest text-center cursor-pointer select-none hover:bg-sunrise/90 transition-all active:scale-95">
-          Take Action →
+          {t(lang, 'takeAction')} →
         </a>
       </div>
     </section>
@@ -344,7 +344,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
               >
                 {overrideButton ?? getVariantCopy(lang, variant).button}
               </button>
-              <p className="text-sm text-white/40 text-center mt-2 font-body whitespace-nowrap">You&apos;ll get movement updates, actions, and tools to defend yourself.</p>
+              <p className="text-sm text-white/40 text-center mt-2 font-body">{t(lang, 'signupSubtitle')}</p>
             </form>
           </div>
         )}
@@ -382,7 +382,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
                       <input
                         ref={countrySearchRef}
                         type="text"
-                        placeholder="Search..."
+                        placeholder={t(lang, 'searchPlaceholder')}
                         value={countrySearch}
                         onChange={(e) => setCountrySearch(e.target.value)}
                         className="w-full bg-white/[0.07] border border-white/[0.12] rounded px-3 py-2 text-sm text-white outline-none placeholder:text-white/40 focus:border-sunrise"
