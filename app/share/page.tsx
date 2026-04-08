@@ -201,7 +201,7 @@ export default function WelcomePage() {
             </button>
             <div ref={el => { panelRefs.current[9] = el }} style={panelStyle(9)}><div className="px-5 pb-5 text-white/50 text-sm font-body space-y-3">
               <a href="https://www.humanetech.com/podcast" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">🎙️ Your Undivided Attention Podcast →</a>
-              <a href="https://www.humanetech.com/newsletter" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">📬 Center for Humane Technology Newsletter →</a>
+              <a href="https://www.humanetech.com/substack" target="_blank" rel="noopener noreferrer" className="block w-full text-center bg-white/[0.07] border border-white/[0.12] text-white/70 rounded-full py-3 text-xs font-semibold hover:bg-white/10 transition-all">📬 Center for Humane Technology Newsletter →</a>
               <button onClick={(e) => { e.stopPropagation(); toggleCheck(9) }} className={`w-full mt-3 px-4 py-3 rounded-md text-sm font-body font-bold uppercase tracking-wider transition-all duration-300 cursor-pointer ${checked.has(9) ? 'bg-emerald-500/90 text-white border border-emerald-400/50 hover:bg-emerald-500 shadow-sm shadow-emerald-500/20' : 'bg-white/[0.07] border-2 border-white/20 text-white/70 hover:bg-white/[0.12] hover:border-white/30'}`}>
                 {checked.has(9) ? '✓ Complete' : 'Mark as Complete'}
               </button>
