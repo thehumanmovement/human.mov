@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, forwardRef, useImperativeHandle, type FormEvent } from 'react'
 import { track } from '@vercel/analytics'
 import { t, type Lang } from '@/lib/i18n'
+import { getStoredAttribution } from '@/lib/attribution'
 
 type Step = 'email' | 'details' | 'verify-email'
 
@@ -212,6 +213,8 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
     setLoading(true)
     setError('')
 
+    const attribution = getStoredAttribution()
+
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -221,6 +224,7 @@ const SignupForm = forwardRef<SignupFormHandle, SignupFormProps>(function Signup
         country,
         zipCode,
         lang,
+        ...attribution,
       }),
     })
     const data = await res.json()

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback, type MouseEvent as ReactMouseEvent } from 'react'
+import { captureAttribution } from '@/lib/attribution'
 import dynamic from 'next/dynamic'
 import { track } from '@vercel/analytics'
 import { isValidLang, LANGUAGES, t, type Lang } from '@/lib/i18n'
@@ -100,6 +101,7 @@ export default function WatchPage() {
       }
     }
     setBgQuality(getBgQuality())
+    captureAttribution()
     setIsSignedUp(!!localStorage.getItem('thm-signed-up'))
     const handler = () => setIsSignedUp(!!localStorage.getItem('thm-signed-up'))
     window.addEventListener('thm-signed-up', handler)
