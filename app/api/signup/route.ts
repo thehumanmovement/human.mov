@@ -6,7 +6,20 @@ import { t, isValidLang, type Lang } from '@/lib/i18n'
 
 export async function POST(req: Request) {
   try {
-    const { fullName, email, country, zipCode, lang = 'en' } = await req.json()
+    const {
+      fullName,
+      email,
+      country,
+      zipCode,
+      lang = 'en',
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_content,
+      utm_term,
+      referrer,
+      landing_path,
+    } = await req.json()
     const l: Lang = isValidLang(lang) ? lang : 'en'
 
     if (!fullName || fullName.trim().length < 2) {
@@ -28,6 +41,13 @@ export async function POST(req: Request) {
         email_verified: false,
         country: country?.trim() || null,
         zip_code: zipCode?.trim() || null,
+        utm_source: utm_source?.slice(0, 255) || null,
+        utm_medium: utm_medium?.slice(0, 255) || null,
+        utm_campaign: utm_campaign?.slice(0, 255) || null,
+        utm_content: utm_content?.slice(0, 255) || null,
+        utm_term: utm_term?.slice(0, 255) || null,
+        referrer: referrer?.slice(0, 2048) || null,
+        landing_path: landing_path?.slice(0, 255) || null,
       })
       .select('id')
       .single()
