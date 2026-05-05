@@ -1,3 +1,4 @@
+// smoke test — preview deploy verification (safe to revert)
 import type { Metadata } from 'next'
 import { Inter, Oswald } from 'next/font/google'
 import Script from 'next/script'
